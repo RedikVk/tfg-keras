@@ -1,22 +1,24 @@
 \chapter{Redes neuronales: Deep Learning}
 \lsection{Redes neuronales}
 \subsection {Historia de las redes neuronales}
-Las redes neuronales, como su nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano. 
+TODO: Agrupar los items por fechas amplias: 50s, 60s...\\
+TODO: mencionar a Hinton-Sejnowski\\
+Las redes neuronales, como su nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano.
 \begin{itemize}
 \item Entre los pioneros en el modelado de neuronas se encuentra Warren McCulloch y Walter Pitts, investigadores que propusieron un modelo matemático.
 \item En 1949, Hebb definió dos conceptos muy importantes:
 \begin{itemize}
-\item El proceso de aprendizaje se localiza principalmente en la sinapsis o conexion entre neuronas.
-\item La informacion se representa en el cerebro mediante un conjunto de neuronas activas o inactivas.
+\item El proceso de aprendizaje se localiza principalmente en la sinapsis o conexión entre neuronas.
+\item La información se representa en el cerebro mediante un conjunto de neuronas activas o inactivas.
 \end{itemize}
-Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue siendo usada en los modelos actuales. Esta regla nos dice que los cambios en los pesos de la sinapsis se basan en la interacción entre las neuronas pre y post sintacticas, y el numero de veces que se activan de manera simultanea.
-\item En 1956, en la ciudad de Dartmouth, se llevó a cabo la primera conferencia sobre Inteligencia Artificial donde se discutio sobre la capacidad de las maquinas para simular el aprendizaje humano.
-\item En 1959, Widrow escribió la Teoria sobre la adaptacion neuronal, y desarrolló los Algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Con ellos, se consiguió llevar a cabo la primera aplicación de redes neuronales para solventar problemas reales: un filtro para eliminar ecos en las lineas telefonicas.
-\item En 1962 Rosemblatt desarrolló el concepto de Perceptron. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida. 
-\item En 1984, Kohonen desarrolló una familia de redes de memoria asociativa y mapas auto-organizativos, actualemente llamadas redes de Kohonen.
+Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue siendo usada en algunos modelos actuales. Esta regla nos dice que los cambios en los pesos de la sinapsis se basan en la interacción entre las neuronas pre y post sintacticas, y el numero de veces que se activan de manera simultanea.
+\item En 1956, en la ciudad de Dartmouth, se llevó a cabo la primera conferencia sobre Inteligencia Artificial donde se discutió sobre la capacidad de las maquinas para simular el aprendizaje humano.
+\item En 1959, Widrow escribió la Teoría sobre la adaptación neuronal, y desarrolló los Algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Con ellos, se consiguió llevar a cabo la primera aplicación de redes neuronales para solventar problemas reales: un filtro para eliminar ecos en las lineas telefonicas.
+\item En 1962 Rosemblatt desarrolló el concepto de perceptrón. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida.
+\item En 1984, Kohonen desarrolló una familia de redes de memoria asociativa y mapas auto-organizativos, actualmente llamadas redes de Kohonen.
 \item Anderson desarrolló una red denominada Brain-State-in-a-Box, la cual trunca la salida lineal para que no se vuelva demasiado grande en las iteraciones de la red.
 \item Grossberg y Carpenter desarrollaron las redes autoorganizativas de categorías ART (Teoria de la Resonancia Adaptativa)
-\item Mediante las redes de Hopfield, se demostró que las redes asociativas pueden aprender por analogía a la autoorganizacion de los sistemas físicos.
+\item Mediante las redes de Hopfield, se demostró que las redes asociativas pueden aprender por analogía a la autoorganización de los sistemas físicos.
 \item Neocognitrón: Kinihiko Fukushima desarrolló una familia de redes para el reconocimiento de caracteres.
 \item Mediante las máquinas de Boltzman se desarrolló la regla de aprendizaje basada en funciones de densidad de probabilidad.
 \end{itemize}
@@ -28,21 +30,21 @@ Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue sie
 \end{figure}
 
 \subsection {La neurona biologica} \mbox{}\\
-El cerebro, visto a un alto nivel y simplificando enormemente su estructura, podriamos decir que es un conjunto de millones y millones de celulas, llamadas neuronas, interconectadas entre ellas mediante sinapsis. La sinapsis se lleva a cabo en la zona donde 2 neuronas se conectan, y las partes de la célula que se encargan de realizarla son las dentritras y las ramificaciones del axón.
+El cerebro, visto a un alto nivel y simplificando enormemente su estructura, podríamos decir que es un conjunto de millones y millones de células, llamadas neuronas, interconectadas entre ellas mediante sinapsis. La sinapsis se lleva a cabo en la zona donde 2 neuronas se conectan, y las partes de la célula que se encargan de realizarla son las dendritas y las ramificaciones del axón.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{images/neurona.png}
 \caption{Estructura de una neurona}
 \end{figure}\\
 Cada neurona desarrolla impulsos eléctricos que se trasmiten a lo largo de esta mediante su axón. Este, al final se ramifica en ramificaciones axionales, que conectan con otras neuronas mediante sus dentritras.\\
-El conjunto de elementos que hay entre la ramificacion axional y la dentrita forman la sinapsis, que regula la transmisión del impulso eléctrico mientre unos elementos químicos llamados neurotransmisores.
+El conjunto de elementos que hay entre la ramificación axional y la dendrita forman la sinapsis, que regula la transmisión del impulso eléctrico mediante unos elementos químicos llamados neurotransmisores.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.70]{images/sinapsis.png}
 \caption{Sinapsis}
 \end{figure}\\
-Los neurotransmisones liberados en la sinapsis puedes tener un efecto negativo o positivo sobre la transmision del impulso eléctrico en la neurona que los recibe en sus dentritas. Esta neurona recibe varias señales de las distintas sinapsis, y las combina consiguiendo un cierto nivel de estimulacion. En función de de este nivel de activación, la neurona emite señales eléctricas mediante impulsos, con una intensidad determinada y con una frecuencia llamada tasa de disparo.\\
-En resumen, si consideramos que la informacion del cerebro está codificada en impulsos eléctricos que se transmiten entre neuronas, y que los impulsos se ven modificados básicamente en la sinapsis, podemos intuir que la codificacion del aprendizaje estará en la sinapsis y en la forma en la que las neuronas dejan pasar o inhiben las señales segregando neurotransmisores.
+Los neurotransmisores liberados en la sinapsis pueden tener un efecto negativo o positivo sobre la transmisión del impulso eléctrico en la neurona que los recibe en sus dendritas. Esta neurona recibe varias señales de las distintas sinapsis, y las combina consiguiendo un cierto nivel de estimulación. En función de este nivel de activación, la neurona emite señales eléctricas mediante impulsos, con una intensidad determinada y con una frecuencia llamada tasa de disparo.\\
+En resumen, si consideramos que la información del cerebro está codificada en impulsos eléctricos que se transmiten entre neuronas, y que los impulsos se ven modificados básicamente en la sinapsis, podemos intuir que la codificación del aprendizaje estará en la sinapsis y en la forma en la que las neuronas dejan pasar o inhiben las señales segregando neurotransmisores.
 
 \subsection {La neurona artificial} \mbox{}
 Las neuronas artificiales son modelos que tratan de simular el comportamiento de las neuronas biológicas. Cada neurona se representa como una unidad de proceso que forma parte de una entidad mayor, la red neuronal.
@@ -51,15 +53,15 @@ Las neuronas artificiales son modelos que tratan de simular el comportamiento de
 \includegraphics[scale=1]{images/neuronaartificial.jpg}
 \caption{Esquema de una neurona artificial}
 \end{figure}\\
-Como podemos intuir observando la imagen anterior, la neurona aritifical se comporta como una biológica, pero de forma simplificada:
+Como podemos intuir observando la imagen anterior, la neurona artificial se comporta en cierto modo como una biológica, pero de forma simplificada:
 \begin{itemize}
-\item Entradas (${x_{1}, x_{2}, x_{3}}$): estos valores pueden ser enteros, reales o binarios y equivaldrían a los impulsos que envian otras neuronas a través de sus dentritras.
-\item Pesos (${w_{1}, w_{2}, w_{3}}$): equivaldrían a los mecanismos de sinapsis para transmitir el impulso. 
-\item De este modo, la union de los valores ${x_{i} , w_{i}}$ equivaldría a las señales químicas inhibidoras y excitadoras que se dan en la neurona. Estos valores son la entrada de la funcion de activacion, que convierte todo el conjunto de valores en uno solo llamado potencial. La función de ponderación suele ser la suma ponderada de las entradas y los pesos sinápticos.
+\item Entradas (${x_{1}, x_{2}}$): estos valores pueden ser enteros, reales o binarios y equivaldrían a los impulsos que envían otras neuronas a través de sus dendritas.
+\item Pesos (${w_{1}, w_{2}}$): equivaldrían a los mecanismos de sinapsis para transmitir el impulso.
+\item De este modo, el producto de los valores ${x_{i} , w_{i}}$ equivaldría a las señales químicas inhibidoras y excitadoras que se dan en la neurona. Estos valores son la entrada de la función de activación, que convierte todo el conjunto de valores en uno solo llamado potencial. La función de ponderación suele ser la suma ponderada de las entradas y los pesos sinápticos.
 \item La salida de función de ponderación llega a la función de activación que transforma este valor en otro en el dominio que trabajen las salidas de las neuronas. Suele ser una función no lineal como la función paso o la función sigmoide, aunque también se usa funciones lineales.
-\item El valor de salida cumpliría la función de la tasa de disparo en las neuronas biológicas. Suele ser la función identidad, aunque sistemas mas complejos no siguen esta regla.
+\item El valor de salida cumpliría la función de la tasa de disparo en las neuronas biológicas.
 \end{itemize}
-En resumen:
+En resumen, podemos establecer las siguientes analogías:
 \begin{itemize}
 \item Neuronas biológicas $\Longleftrightarrow$ Neuronas Artificiales.
 \item Conexiones sinápticas $\Longleftrightarrow$ Conexiones ponderadas.
@@ -70,16 +72,17 @@ conexión.
 \end{itemize}
 
 \subsection {Funciones de las neuronas artificiales}
-\subsubsection {Funcion de red o propagación}
-Esta función se encarga de tranformar las diferentes entradas que provienen de la sinapsis, en el potencial de la neurona. Normalmente, las neuronas han de tratar simultaneamente con varios valores de entrada, y han de hacerlo como si se tratase de uno solo. Esta funcion viene a resolver el problema de combinar las entradas simples (${x_{1},x_{2},x_{3}...}$) en una sola entrada global. Podría describirme mediante la siguiente ecuación:
+\subsubsection {Función de red o propagación}
+TODO: No entiendo bien lo que quieres decir\\
+Esta función se encarga de transformar las diferentes entradas que provienen de la sinapsis, en el potencial de la neurona. Normalmente, las neuronas han de tratar simultáneamente con varios valores de entrada, y han de hacerlo como si se tratase de uno solo. Esta función viene a resolver el problema de combinar las entradas simples (${x_{1},x_{2},x_{3}...}$) en una sola entrada global. Podría describirme mediante la siguiente ecuación:
 \begin{equation}
 input = (x_{1}:w_{1})*(x_{2}:w_{2})*...*(x_{n}:w_{n})
 \end{equation}
 siendo ":" el operador apropiado (por ejemplo: máximo, sumatorio, producto...), "n" el numero de entradas y w el peso de las conexiones. Multiplicando las entradas por los pesos, se permite que un valo muy grande de entrada pueda tener una influencia pequeña, si sus pesos son pequeños.
-\subsubsection {Funcion de activacion}
-La funcion de activacion combina el potencial que nos proporciona la funcion de propagación con el estado actual de la neurona, para conseguir el estado futuro de esta (activada/desactivada). Esta funcion es normalmente creciente y monótona. Las funciones mas comunes son:
+\subsubsection {Función de activación}
+La función de activación combina el potencial que nos proporciona la función de propagación con el estado actual de la neurona, para conseguir el estado futuro de esta (activada/desactivada). Esta función es normalmente creciente y monótona. Las funciones mas comunes son:
 \begin{itemize}
-\item Identidad: es una funcion de activacion muy simle que siempre devuelve como salida su valor de entrada. Su rango es va de menos infinito a infinito, es monotona y derivativamente monotona.
+\item Identidad: es una función de activación muy simple que siempre devuelve como salida su valor de entrada. Su rango es va de menos infinito a infinito, es monótona y derivativamente monótona.
 \begin{equation}
 f(x) = x
 \end{equation}
@@ -88,19 +91,19 @@ f(x) = x
 \includegraphics[scale=1]{images/Activation_identity.png}
 \caption{Funcion de activación identidad}
 \end{figure}
-\item Escalón binario: Es la más usada por redes neuronales binarias ya que no es lineal, y es bastante sencilla. El Perceptron y Hopfield son algunos ejemplos de redes que usan esta funcion. Cuenta con un rango {0,1}, y es monótona.
+\item Escalón binario: Es la más usada por redes neuronales binarias ya que no es lineal, y es bastante sencilla. El Perceptrón y Hopfield son algunos ejemplos de redes que usan esta función. Cuenta con un rango {0,1}, y es monótona.
 \begin{equation}
 f(x) = \begin{Bmatrix}
-0 & x<0\\ 
+0 & x<0\\
 1 & x\geq 0
 \end{Bmatrix}
 \end{equation}
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{images/Activation_binary_step.png}
-\caption{Funcion de activación escalón binario}
+\caption{Función de activación escalón binario}
 \end{figure}
-\item Logistica / Softstep: .............. Su rango va es (0,1), y es monótona.
+\item Logística / Softstep: .............. Su rango va es (0,1), y es monótona.
 \begin{equation}
 f(x) = \frac{1}{1+e^{-x}}
 \end{equation}
@@ -109,7 +112,7 @@ f(x) = \frac{1}{1+e^{-x}}
 \includegraphics[scale=1]{images/Activation_logistic.png}
 \caption{Funcion de activación logistica}
 \end{figure}
-\item Hiperbólica o tangencial: Esta funcion es utilizada por redes con salidas continuas. Un ejemplo sería el Perceptrón multicapa con retropropagación, ya que su algoritmo de aprendizaje necesita una función derivable. Cuenta con un rango (-1,1), es monótona, y se aproxima a la funcion identidad en su origen.
+\item Tangente hiperbólica: Esta función es utilizada por redes con salidas continuas. Un ejemplo sería el Perceptrón multicapa con retropropagación, ya que su algoritmo de aprendizaje necesita una función derivable. Cuenta con un rango (-1,1), es monótona, y se aproxima a la función identidad en su origen.
 \begin{equation}
 f(x) = \tanh(x) = \frac{2}{1+e^{-2x}}-1
 \end{equation}
@@ -118,7 +121,7 @@ f(x) = \tanh(x) = \frac{2}{1+e^{-2x}}-1
 \includegraphics[scale=1]{images/Activation_tanh.png}
 \caption{Funcion de activación tangencial}
 \end{figure}
-\item Rectificadora (ReLU): Esta funcion de activacion la introdujo por primera vez en el año 2000  Hahnloser, con motivaciones biológicas y matematicas. Se viene usando en redes convolucionales mas que la ampliamente extendida funcion logistica sigmoide (se basa en probabilidades), y es más practica que la tangente hiperbólica. La función rectificadora es, por tanto, una de las funciones de activacion más populares para deep learning.
+\item Rectificadora (ReLU - Rectified Linear Unit): Esta función de activación la introdujo por primera vez en el año 2000 Hahnloser, con motivaciones biológicas y matemáticas. Se viene usando en redes convolucionales mas que la ampliamente extendida función logística sigmoide (se basa en probabilidades), y es más practica que la tangente hiperbólica. La función rectificadora es, por tanto, una de las funciones de activación más populares para deep learning.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{images/Activation_rectified_linear.png}
@@ -134,6 +137,7 @@ f(x) = ln(1+e^{x})
 \caption{Funcion de activación softplus}
 \end{figure}
 \end{itemize}
+TODO: Seguir corrigiendo desde aqui\\
 Las propiedades deseables de una funcion de activación son:
 \begin{itemize}
 \item No lineal: Cuando contamos con una funcion de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una funcion universal de aproximacion. La funcion identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activacion identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
@@ -153,13 +157,13 @@ Esta función convierte el estado de la neurona en la salida hacia la siguiente.
 
 
 \subsection{Tipos de aprendizaje en redes neuronales}
-\subsubsection {Aprendizaje supervisado} 
+\subsubsection {Aprendizaje supervisado}
 Cuando el problema nos presenta el conjunto de datos y los atributos que queremos precedir. Nos encontramos dos categorias:
 \begin{itemize}
 \item Regresion: los valores de salida son una o mas variables continuas. Un ejemplo sería predecir el valor de una casa en funcion de sus metros cuadrados, el numero de habitaciones, tamaño de la piscina...
 \item Clasificación: los datos pertenecen a dos o mas clases, y queremos aprender como clasificar nuevas entradas en esas clases, a partir de datos que ya conocemos. Uno de los ejemplos más conocidos es el Iris dataset, donde se intenta clasificar los datos en 4 tipos de flores segun la longitud y la anchura de sus petalos y sépalos.
 \end{itemize}
-\subsubsection {Aprendizaje no supervisado} 
+\subsubsection {Aprendizaje no supervisado}
 Cuando no hay informacion previa de salidas dado un conjunto de entradas. En estos casos, el objetivo es encontrar grupos mediante clustering, o determinar una distribución de probabilidad sobre un conjunto de entrada.
 
 
@@ -308,7 +312,7 @@ Aquí es donde entra en juego un segundo termino llamado momento (${\eta}$), que
 Podemos modificar la ecuacion 2.XXXXXXXX para añadir esta mejora, de la siguiente manera:
 \begin{equation}
 w(n) = w(n-1) = - \alpha \frac{\partial e(n)}{\partial w} + \eta \Delta w(n-1)
-\end{equation} 
+\end{equation}
 siendo ${\Delta}$w(n-1)=w(n-1)-w(n-2) el incremento que sufrió el parametro w en la anterior iteración.
 \subsection{Sobreajuste y early stopping}
 El sobreajuste o overfitting es el efecto secundario de sobreentrenar un algoritmo de aprendizaje con ciertos datos para los que ya se conoce el resultado deseado. El algortismo debe alcanzar un estado en el cual sea capaz de predecir otros casos a partir de lo ya aprendido mediante datos de entrenamiento, generalizando para poder resolver distintas situaciones a las ya presentes durante el entrenamiento. No obstante, cuando un sistema se entrena demasiado o se entrena con datos extraños, el algoritmo tiende a quedarse ajustado a unas caracteristicas muy especificas de los datos de entrenamiento, que no representan un estado general de problema. En este estado, nuestro diseño es mas eficaz al responder a muestras del conjunto de entrenamiento, pero ante nuevas entradas el resultado empeora.\\
@@ -405,4 +409,4 @@ En el caso de modelado de lenguaje, ahora es cuando desechamos la informacion so
 En el ejemplo de modelado de lenguaje, una vez que nos encontremos con el nuevo sujeto, sacaremos informacion a cerca de él como puede ser el si es singular o plural, para después poder conjugar correctamente el verbo que le sigue.
 \end{enumerate}
 Como he comentado anteriormente, la mayoría de los mejores resultados utilizando redes recurrentes, es mediante las redes LSTMs. Pero a pesar de que su descubrimiento ha sido un gran hito, todavia quedan metas por cumplir. Uno de ellos sería dotar a las RNN de una capacidad para decidir que información consultar en una fuente muy grande de información. Por ejemplo, si estamos usando redes RNN para crear un titulo que describa una imagen, sería util elegir que partes de la imagen usar para cada palabra.
-\label{ch:teoria} 
+\label{ch:teoria}
