@@ -1,0 +1,507 @@
+\chapter{Ejemplos de uso de Keras}
+\lsection{Problema de diabetes - Regresión logistica}
+Como primer ejemplo, voy a usar el dataset de diabetes en los indios americanos. Este conocido dataset está sacado del reporsitorio de UCI Machine Learning, y describe informacion medica de pacientes indios, y si tienen diabetes o no en los siguientes 5 años.\\		
+La información especificada es:
+\begin{itemize}[noitemsep]
+\item Numero de embarazos.		
+\item Concentración de glucosa.		
+\item Presión en sangre.		
+\item Tamaño de la doblez de la piel en el triceps.		
+\item Insulina		
+\item Indice de masa corporal		
+\item Funcion que representa el numero de antepasados con diabetes.		
+\item Edad		
+\end{itemize}
+\subsection{Cargando datos}
+
+Cuando trabajamos con algoritmos de machine learning que usan numeros aleatorios, es una buena metodología de trabajo predefinir de antemano la semilla. Con ello, podremos correr el mismo código varias veces, y obtener así el mismo resultado. Esta idea es bastante útil a la hora de demostrar un resultado, comparar algoritmos utilizando la misma fuente de aleatoriedad, debuguear parte del código...\\
+Podemos iniciar la generacion de numeros aleatorios con la semilla que queramos, por ejemplo:
+\begin{verbatim}
+from keras.models import Sequential
+from keras.layers import Dense
+import numpy
+seed = 7
+numpy.random.seed(seed)
+\end{verbatim}
+Nos encontramos ante un problema de clasificacion binaria (tener diabetes representa salida 1, y no tenerla salida 0). Todas las variables que definen al paciente son numericas, lo cual hace fácil su uso directamente en redes neuronales, que esperan datos numericos como entradas y salidas.\\
+Una vez que tenemos descargado nuestra fuente de datos, podremos cargarla directamente usando la funcion loadtxt() de la libreria NumPy. En los datos, podemos apreciar 8 datos de entrada, y 1 variable de salida (la ultima columna). Una vez cargado, podemos separar los datos en variables.
+\begin{verbatim}
+dataset = numpy.loadtxt("pima-indians-diabetes.csv", delimiter=",")
+# split into input (X) and output (Y) variables
+X = dataset[:,0:8]
+Y = dataset[:,8]
+\end{verbatim}
+
+\subsection{Definiendo el modelo}
+Los medelos en Keras se definen como una secuencia de capas. La primera cosa de la que hay que asegurarse, es de que la capa de entrada tiene el número correcto de entradas. Esto lo conseguiremos especificandolo mediante el argumento \textbf{input\_dim}, a la hora de crear la primera capa.\\
+Las capas totalmente conectadas se definen usando la clase Dense. Podemos especificar el número de neuronas de la capa utilizando el primer argumento, el método de inicialización con el segundo argumento (\textbf{init}), y la funcion de activación usando el argumento  \textbf{activation}.\\
+En este caso, inicializaremos los pesos de la red con pequeños numeros aleatorios siguiendo una distribución uniforme (\textbf{'uniform'}) (entre 0 y 0.05, los pesos uniformes por defecto de Keras). Otro alternativa bastante comun es utilizar pequeños números aleatorios de una distribucion Gaussiana (\textbf{'normal'}).\\
+En este ejemplo, usaremos la funcion de activacion rectificadora (\textbf{'relu'}) en las primeras dos capas, y la funcion sigmoide en la capa de salida. Las funciones sigmoide e hiperbólica solían ser las funciones de activación más utilizadas. Sin embargo, a día de hoy, se consiguen mejores resultados utilizando la funcion de activación rectificadora. Utilizaré tambien una funcion sigmoide para la salida para asegurarme que está comprende valores entre 0 y 1.\\
+La primera capa tendrá  12 neuronas y espera 8 variables de entrada. La segunda tiene 8 neuronas, y la ultima solo 1, la cual predecirá la case (tener diabetes o no)
+\begin{verbatim}
+model = Sequential()
+model.add(Dense(12, input_dim=8, init='uniform', activation='relu'))
+model.add(Dense(8, init='uniform', activation='relu'))
+model.add(Dense(1, init='uniform', activation='sigmoid'))
+\end{verbatim}
+
+\subsection{Compilando el modelo}
+Una vez que hemos definido el modelo, podemos pasar a compilarlo. Aquí es donde entra en juego el backend elegido (Theano o Tensorflow), ya que se utilizan sus librerias numéricas. El propio backend es el encargado de elegir la mejor forma para entrenar la red y hacer predicciones, utilizando la CPU, la GPU o ambas.\\
+Cuando compilamos, debemos especificar algunas propiedades adicionales para entrenar la red (recordar que entrenar una red significa encontrar los mejores pesos para hacer predicciones de un problema). Debemos especificar la función de perdida para evaluar los pesos, el optimizador usado para elegir entre los diferentes pesos, y metricas opcionales para recoger y pintar los datos durante el entrenamiento.\\
+En este caso, utilizaremos una funcion de perdida logaritmica, que para los problemas de clasificación está definida en Keras como \textbf{"binary\_crossentropy"}. Como optimizador utilizaremos el algoritmo de gradiente descendiente \textbf{"adam"}, el que usa por defecto Keras.\\
+Finalmente, como se trata de un problema de clasificacion, recogeremos y mostraremos la eficiencia de la clasificación (argumento \textbf{"accuracy"}).
+
+\begin{verbatim}
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+\end{verbatim}
+
+\subsection{Ajustando el modelo}
+Una vez compilado, el siguiente paso es ejecutar el modelo con los datos de entrada. Podemos entrenar o ajustar nuestro modelo cargando los datos utilizando la funcion fit.\\
+El proceso de entrenamiento se ejecutará para un numero de iteraciones definido mediante el argumento \textbf{"nb\_epoch"}. También podemos definir el numero de entradas que serán evaluadas antes de que haya una actualización de los pesos de la red mediante el argumento \textbf{"batch\_size"}). De nuevo, estas medidas pueden ser elegidas experimentalmente a base de prueba y error.
+\begin{verbatim}
+model.fit(X, Y, nb_epoch=150, batch_size=10)
+\end{verbatim}
+
+\subsection{Evaluando el modelo}
+Una vez entrenada la red neuronal, podemos evaluar el rendimiento de esta con el mismo dataset. Esto nos puede dar una idea de como hemos modelado los datos de entrada, pero no tendremos idea de como de bien el algoritmo clasificará los nuevos datos.\\
+Para evaluar el modelo, utilizaremos la función \textbf{"evaluate()"}. En este ejemplo, le pasaremos las mismas entradas y salidas que cuando entrenamos la red, generando así una preccion por cada par de entrada-salida, además de informacion sobre las metricas perdida media y eficiencia, configuradas previamente. Nuestro programa generará una prediccion por cada par entrada-salida, así como la perdida media y la precisión del modelo.
+\begin{verbatim}
+scores = model.evaluate(X, Y)
+print("%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+\end{verbatim}
+
+\subsection{Analizando datos}
+Ejecutando el codigo, podemos ver un mensaje por cada 150 ciclos mostrando la perdida y la precisión de cada uno, seguido de los resultados finales.
+\begin{verbatim}
+Epoch 145/150
+768/768 [==============================] - 0s - loss: 0.4674 - acc: 0.7734     
+Epoch 146/150
+768/768 [==============================] - 0s - loss: 0.4779 - acc: 0.7682     
+Epoch 147/150
+768/768 [==============================] - 0s - loss: 0.4694 - acc: 0.7786     
+Epoch 148/150
+768/768 [==============================] - 0s - loss: 0.4661 - acc: 0.7826     
+Epoch 149/150
+768/768 [==============================] - 0s - loss: 0.4702 - acc: 0.7669     
+Epoch 150/150
+768/768 [==============================] - 0s - loss: 0.4724 - acc: 0.7760     
+ 32/768 [>.............................] - ETA: 0sacc: 77.08%
+ \end{verbatim}
+Podemos adaptar el ejemplo anterior y usarlo para generar predicciones sobre el dataset de entrenamiento, simulando que nos encontramos ante un nuevo dataset que nunca hemos analizado antes. Esta función se realiza facilmente llamando a la funcion \textbf{model.predict}.\\
+Mediante las siguientes lineas, mostraremos predicciones para cada entrada del dataset, que en su mayor parte, coincidirán con los datos de salida ya descritos en el dataset. Recordar que 1 es tener diabetes, y 0 no.
+ \begin{verbatim}
+predictions = model.predict(X)
+rounded = [round(x) for x in predictions]
+print(rounded)
+\end{verbatim}
+
+
+\lsection{Problema Boston Housing - Regresión Lineal}
+\subsection{Descripcion del problema}
+Nos encontramos ante un problema de regresión. El dataset describe 13 propiedades numericas de 506 casas de los suburbios de Boston, con el precio de dichas casas en millones de dolares. Como atributos de entrada, tenemos:
+\begin{itemize}[noitemsep]
+\item CRIM:  ratio de crimen per capita por poblacion.
+\item ZN: proporcion de tierras residenciales zonificadas con mas de 25000 pies cuadrados.
+\item INDUS: proporcion de acres no comerciales por ciudad
+\item CHAS: Charles River dummy variable ( 1 si el tramo se encuentra en el rio, 0 en caso contrario) 
+\item NOX: concentracion de oxidos nitricos.
+\item RM: numero medio de habitaciones por vivienda.
+\item AGE: proporcion de viviendas ocupadas construidas antes de 1940.
+\item DIS: distancias ponderadas a cinco centros de empleo.
+\item RAD: indice de accesibilidad a las autopistas radiales.
+\item TAX: ratio de impuestos a la propiedad por cada 10.000\$ 
+\item PTRATIO: ratio de alumnos-profesores
+\item B: 1000(Bk - 0.63)\^2 donde Bk es la proporcion de ciudadanos negros por poblacion.
+\item LSTAT: porcentaje de nivel bajo de la poblacion.
+\item MEDV: Valor medio de las casas ocupadas en miles de dolares.
+\end{itemize}
+Un rendimiento razonable para modelos usando el Error cuadrático medio (MSE) está en torno a 20 (miles de dolares al cuadrado), o 4500\$ si utilizamos el la raiz cuadrada.
+\subsection{Desarrollo de la red neuronal}
+Lo primero, será cargar todas las librerias necesarias, asi como el dataset.
+\begin{verbatim}
+import numpy
+import pandas
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+dataframe = pandas.read_csv("housing.csv", delim_whitespace=True, header=None)
+dataset = dataframe.values
+
+X = dataset[:,0:13]
+Y = dataset[:,13]
+\end{verbatim}
+Podemos crear modelos en Keras y evaluarlos con Scikit-learn, ya que esta librería de machine learning es bastante potente a la hora de evaluar modelos con pocas lineas de código.\\
+El siguiente paso sería crear el modelo de la red neuronal. Para el problema boston-housing basta con diseñar un modelo con una sola capa oculta totalmente conectada con el mismo numero de neuronas que de entradas (13). Como funcion de activacion en la capa oculta se usa la funcion rectificadora. Para la capa de salida no se usa funcion funcion de activacion debido a que nos encontramos ante un problema de regresion, y el objetivo es predecir valores numericos directamente sin aplicarles ninguna transformación. Como algoritmo de optimizacion usaremos ADAM, y como funcion de perdida el Error cuadrático medio. Estas métricas tambien serán usadas para evaluar el rendimiento del modelo. Se ha elegido esta metrica ya que al usar la raiz cuadrada nos da un valor de error directamente entendible en el contexto del problema (miles de dolares).
+\begin{verbatim}
+# define base mode
+def baseline_model():
+	model = Sequential()
+	model.add(Dense(13, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+\end{verbatim}
+El wrapper de Keras para usar scikit-learn como un estimador de regresión se llama KerasRegressor. Podemos crear una instancia y pasarle como argumentos:\\
+1. El nombre de la funcion que define la red neuronal (baseline\_model())\\
+2. Parametros para pasarle a la funcion fit(), como el numero de ciclo o el tamaño de los lotes.\\
+Como siempre, además debemos inicializar una semilla aleatoria constante para asegurarnos que la comparación de los modelos es consistente.
+\begin{verbatim}
+# fix random seed for reproducibility
+seed = 7
+numpy.random.seed(seed)
+# evaluate model with standardized dataset
+estimator = KerasRegressor(build_fn=baseline_model, nb_epoch=100, batch_size=5, verbose=0)
+\end{verbatim}
+El paso siguiente es evaluar el modelo. Para ello, usaremos una validacion cruzada de 10 iteraciones.\\
+\begin{verbatim}
+kfold = KFold(n_splits=10, random_state=seed)
+results = cross_val_score(estimator, X, Y, cv=kfold)
+print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+\end{verbatim}
+Ejecutando todo este código veremos una estimacion del rendimiento del modelo. El resultado muestra el error cuadrático medio incluyendo la media y la desviación típica a lo largo de las 10 iteraciones de la evaluacion por validación cruzada.
+\begin{verbatim}
+Results: 38.04 (28.15) MSE
+\end{verbatim}
+\subsection{Mejorando los resultados}
+Aunque ya hayamos conseguido entrenar nuestra red para obtener resultados, hay muchas maneras de mejorar nuestro modelo. En este ejemplo, veremos 3:
+\begin{itemize}
+\item Modelar el dataset de entrada
+\item Aumentar el numero de capas
+\item Aumentar el numero de neuronas en las capas
+\end{itemize}
+\subsubsection{Modelando el dataset}
+Un factor muy importante en el dataset de Boston-housing es que los atributos de entrada varían mucho sus escalas, ya que miden cantidades diferentes. Por este tipo de razones, siempre suele ser una buena practica preparar los datos antes de modelarlos usarlos en nuestra red neuronal.\\
+Para ver la diferencia con esta mejora, se va a usar el mismo modelo de red neuronal que en el apartado anterior. Se va a usar el framework Pipeline de scikit-learn para estandarizar el modelo de datos durante el proceso de evaluacion dentro de cada pliegue de la validacion cruzada. Esto asegura que no haya datos sin evaluar en cada pliegue de la validacion cruzada de nuestro set de entrenamiento.
+\begin{verbatim}
+# evaluate model with standardized dataset
+numpy.random.seed(seed)
+estimators = []
+estimators.append(('standardize', StandardScaler()))
+estimators.append(('mlp', KerasRegressor(build_fn=baseline_model, nb_epoch=50, batch_size=5, verbose=0)))
+pipeline = Pipeline(estimators)
+kfold = KFold(n_splits=10, random_state=seed)
+results = cross_val_score(pipeline, X, Y, cv=kfold)
+print("Standardized: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+\end{verbatim}
+En el código anterior, se estandariza el dataset mediante Pipeline, y se evalua el modelo desarrollado en el apartado anterior. Al ejecutar todo el código, vemos una mejora en el rendimiento respecto al modelo sin estandarizar los datos, mejorando el error en 10 dolares al cuadrado.\\
+????????????????????????????????
+A further extension of this section would be to similarly apply a rescaling to the output variable such as normalizing it to the range of 0-1 and use a Sigmoid or similar activation function on the output layer to narrow output predictions to the same range.
+\begin{verbatim}
+Standardized: 28.24 (26.25) MSE
+\end{verbatim}
+\subsection{Red neuronal más profunda}
+Una manera de mejorar nuestra red es añadir capas, lo cual permitirá al modelo extraer mas cantidad de caracteristicas del dataset.\\
+En este apartado evaluaremos el efecto de añadir más de una capa al modelo. Esto es tan facil como crear una nueva funcion copia de la anterior, pero insertando nuevas lineas despues de la primera capa oculta. En este caso, tendrán la mitad de neuronas que la capa anterior.
+\begin{verbatim}
+def larger_model():
+	# create model
+	model = Sequential()
+	model.add(Dense(13, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(6, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	# Compile model
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+\end{verbatim}
+Como podemos ver, nuestros datos pasarán por una capa de de entrada de 13 neuronas, despues por una de 6, para acabar en una capa de salida con una sola neurona.\\
+La forma de evaluar el modelo será la misma que en el apartado anterior, usando la estandarización de los datos de entrada para mejorar aún mas el rendimiento.\\
+Ejecutando todo el codigo podemos ver una mejora de 28 a 24 miles de dolares al cuadrado.
+\subsection{Red neuronal más ancha}
+Otra forma de incrementar la capacidad de nuestro modelo es crear un red mas ancha. En este apartado se evaluará el efecto de añadir a nuestra arquitectura una capa oculta con el doble de neuronas de las que tiene la capa de entrada.\\
+De nuevo, se ha de definir una nueva funcion como en los ejemplos anteriores, pero que cuente con una capa oculta entre la capa de entrada y la de salida de 20 neuronas.
+\begin{verbatim}
+def wider_model():
+	# create model
+	model = Sequential()
+	model.add(Dense(20, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	# Compile model
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+\end{verbatim}
+Como podemos ver, nuestros datos pasarán de una capa de entrada de 13 neurnas, a una capa oculta de 20, para luego acabar en una capa de salida de 1 neurona.\\
+De nuevo, la forma de evaluar el modelo será la misma que en los dos apartados anteriores, usando la estandarización de los datos de entrada para mejorar aún mas el rendimiento.\\
+Ejecutando todo el codigo podemos ver una mejora a 21 miles de dolares al cuadrado. No es nada mal resultado para este tipo de problema.\\
+Como se ha comentado ya varias veces, no es del todo facil ver que con una red mas profunda se consigan mejores resultados en este tipo de problemas. Esto demuestra la importancia de testear varios tipos de modelos, para conseguir los mejores resultados.
+
+\lsection{MNIST - Perceptrón multicapa vs Red convolucional}
+MNIST es un dataset desarrollado para evaluar modelos de redes neuronales utilizando el problema de clasificación de digitos escritos a mano. Este dataset esta constituido por un gran numero de documentos escaneados por el National Institute of Standards and Technology (NIST), a los cuales se la han extraido y normalizado sus caracteres. Cada imagen es de 28x28 pixeles, y se usan 60.000 imagenes para entrenar el modelo, y otras 10.000 para probarlo.\\
+Estamos hablando de una tarea de reconocimiento de dígitos. Al haber 10 digitos (del 0 al 9), hay 10 clases para clasificar. El resultado se muestra mediante el error de predicción, que no es mas que el inverso de la eficacia de clasificación.\\
+Los mejores resultados alcanzan un error de prediccion menor al 1\%. El state-of-art del error de prediccion es del 0,2\%, que puede ser alcanzado con grandes redes neuronales convolucionales. Podemos encontrar un listado de los resultados actuales en \url{http://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html#4d4e495354}\\
+\subsection{Cargando el dataset}
+Mediante la libreria Keras, podemos descargarnos el dataset de manera automática. Para ello, llamaremos a la funcion mnist.load\_data(), que almacenará la información en el directorio ~/.keras/datasets/mnist.pkl.gz. Con este pequeño script se puede visualizar las dos primeras imagenes.
+\begin{verbatim}
+from keras.datasets import mnist
+import matplotlib.pyplot as plt
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+# plot 4 images as gray scale
+plt.subplot(221)
+plt.imshow(X_train[0], cmap=plt.get_cmap('gray'))
+plt.subplot(222)
+plt.imshow(X_train[1], cmap=plt.get_cmap('gray'))
+plt.show()
+\end{verbatim}
+
+\mbox{}
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.60]{images/mnist.png}
+\caption{Historia de las redes neuronales}
+\end{figure}\\
+No es estrictamentre necesario una red neuronal convolucional para conseguir los mejores resultados con el el dataset MNIST. Mediante una red neuronal sencilla, con una sola capa oculta, podemos alcanzar un ratio de error del 1.74\%. Usaremos este dato como base para comparar mas modelos de redes convolucionales más adelante.\\
+Lo primero de todo, como ya hemos visto, es cargar los modulos necesarios, generar una semilla aleatoria (aunque fija), y cargar el dataset.\\
+El set de entrenamiento está estructurado como un array tridimensional compuesto de la instancia de la imagen, su ancho y su alto. Para poder utilizarlo con un perceptrón, tenemos que convertir las imagenes en un vector de pixeles. En este caso, las imagenes de 28x28 se convertirán en 748 valores de entrada. Podemos hacer esto facilmente  con la funcion reshape() de NumPy.
+\begin{verbatim}
+import numpy
+from keras.datasets import mnist
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.utils import np_utils
+
+numpy.random.seed(7)
+
+n_pixels = X_train.shape[1] * X_train.shape[2]
+X_train = X_train.reshape(X_train.shape[0], n_pixels).astype('float32')
+X_test = X_test.reshape(X_test.shape[0], n_pixels).astype('float32')
+\end{verbatim}
+
+Los valores van de 0 a 255, en una escala de grises. Cuando trabajamos con modelos de redes neuronales, suele ser buena idea escalar o normalizar los datos de entrada. Para ello, convertiremos estos valores de 0-255 a 0-1.\\
+Además, la salida será un entero entre 0 y 9 (ya que como hemos dicho, tenemos 10 clases en las que nuestra imagen puede ser clasificada). Nos encontramos ante un problema de multiclasificación, por lo que será util codificar el vector de enteros en una matriz binaria:
+\begin{verbatim}
+X_train = X_train / 255
+X_test = X_test / 255
+
+y_train = np_utils.to_categorical(y_train)
+y_test = np_utils.to_categorical(y_test)
+num_classes = y_test.shape[1]
+\end{verbatim}
+
+Con todo esto, ya podemos crear el modelo de la red neuronal. En este ejemplo, vamos a diseñar tanto un modelo de red neuronal utilizando un perceptron multicapa, como un modelo convolucional, para ver sus diferencias y rendimientos a la hora de tratar imagenes.\\
+\subsubsection{Perceptrón multicapa}
+\begin{verbatim}
+def perceptron_model():
+	model = Sequential()
+	model.add(Dense(n_pixels, input_dim=n_pixels, init='normal', activation='relu'))
+	model.add(Dense(num_classes, init='normal', activation='softmax'))
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+\end{verbatim}
+Como podemos observar, se trata de un modelo con una sola capa oculta, con el mismo numero de neuronas que de entradas, es decir, 784. Además, sobre ella se aplica una funcion de activacion rectificadora.\\
+En la capa de salida, se usa la funcion de activacion softmax para convertir las salidad en probabilidad, y permitir que se seleccionen una de las 10 clases que el modelo ha de predecir. Como función de perdida, se utiliza la perdida logarítmica (en Keras, categorical\_crossentropy). Por ultimo, para aprender los pesos, se utiliza el algoritmo gradiente descendiente ADAM.\\
+\subsubsection{Red convolucional}
+\begin{verbatim}
+def convolutional_model():
+	model = Sequential()
+	model.add(Convolution2D(32, 5, 5, border_mode='valid', input_shape=(1, 28, 28), activation='relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+	model.add(Dropout(0.2))
+	model.add(Flatten())
+	model.add(Dense(128, activation='relu'))
+	model.add(Dense(num_classes, activation='softmax'))
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+	\begin{lstlisting}
+\end{verbatim}
+Como podemos observar, las redes convolucionales son bastante mas complejas que los perceptrones multicapa. En resumen, nuestro modelo cuenta con las siugientes capas:\\
+1. La primera capa es una capa convolucional (Convolution2D). Cuenta con 32 mapeadores, de tamaño 5x5, y una funcion de activación rectificadora. Al ser la capa de entrada, esperará imagenes de la forma [[pixeles][ancho][alto]].
+2. Después definiremos una capa de pooling que utilizará la funcion maximo, con un tamaño de 2x2.\\
+3. La siguiente capa será regularizadora. Se ha configurado para excluir aleatoreamente el 20\% de las neuronas de la capa para reducir el sobreajuste.\\
+4. La siguiente capa convertirá la matriz de 2 dimensiones en un vector, permitiendo asñi que la salida pueda ser procesada por una capa totalmente conectada.\\
+5. Después se ha añadido una capa totalmente conectada con 128 neuronas y una funcion de activacion rectificadora.\\
+6. Finalmente, la capa tendrá 10 neuronas, una por cada clase, y una funcion de activación softmax para hacer una aproximacion de la probabilidad de que cada entrada se corresponda con cada clase (es decir, con cada numero).
+\subsection{Resultados}
+Ahora ya podemos ajustar y evaluar los modelos. Estos se ajustán cada 10 ciclos, con actualizaciones cada 200 imagenes. Finalmente, se pinta  el ratio de error de clasificación.
+\begin{verbatim}
+model = perceptron_model() // model.convolutional_model
+model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=10, batch_size=200, verbose=2)
+scores = model.evaluate(X_test, y_test, verbose=0)
+print("Baseline Error: %.2f%%" % (100-scores[1]*100))
+\end{verbatim}
+Ejecutando todo el codigo anterior utilizando el modelo del perceptrón multicapa, veremos la siguiente salida. Como podemos observar, esta red neuronal tiene un ratio de error de 1.74\%.
+\begin{verbatim}
+Train on 60000 samples, validate on 10000 samples
+Epoch 1/10
+11s - loss: 0.2791 - acc: 0.9203 - val\_loss: 0.1422 - val\_acc: 0.9583
+Epoch 2/10
+11s - loss: 0.1121 - acc: 0.9680 - val\_loss: 0.0994 - val\_acc: 0.9697
+Epoch 3/10
+12s - loss: 0.0724 - acc: 0.9790 - val\_loss: 0.0786 - val\_acc: 0.9748
+...
+Epoch 8/10
+12s - loss: 0.0149 - acc: 0.9967 - val\_loss: 0.0628 - val\_acc: 0.9814
+Epoch 9/10
+12s - loss: 0.0108 - acc: 0.9980 - val\_loss: 0.0595 - val\_acc: 0.9816
+Epoch 10/10
+12s - loss: 0.0072 - acc: 0.9989 - val\_loss: 0.0577 - val\_acc: 0.9826
+Baseline Error: 1.74\%
+\end{verbatim}
+Sin embargo, si ejecutamos el código utilizando el modelo convolucional, tendriamos un ratio de error de 1.10\%, y la siguiente salida:
+\begin{verbatim}
+Epoch 1/10
+84s - loss: 0.2065 - acc: 0.9370 - val_loss: 0.0759 - val_acc: 0.9756
+Epoch 2/10
+84s - loss: 0.0644 - acc: 0.9802 - val_loss: 0.0475 - val_acc: 0.9837
+Epoch 3/10
+89s - loss: 0.0447 - acc: 0.9864 - val_loss: 0.0402 - val_acc: 0.9877
+...
+Epoch 8/10
+89s - loss: 0.0142 - acc: 0.9956 - val_loss: 0.0323 - val_acc: 0.9904
+Epoch 9/10
+88s - loss: 0.0120 - acc: 0.9961 - val_loss: 0.0343 - val_acc: 0.9901
+Epoch 10/10
+89s - loss: 0.0108 - acc: 0.9965 - val_loss: 0.0353 - val_acc: 0.9890
+Classification Error: 1.10%
+\end{verbatim}
+Como se puede observar, hemos reducido el error de clasificacion del 1.74\% al 1.10\%. Pero... ¿Podriamos obtener mejores resultados? La respuesta es sí. En este ejemplo, se ha utilizado una red convolucional muy simple. Sin embargo, añadiendo mas capas convolucionales, de pooling y totalmente conectadas, podemos acercanos a una ratios de error muy cercanos al state-of-art actual. Por ejemplo, añadiendo una nueva capa convolucional (model.add(Convolution2D(15, 3, 3, activation='relu')), model.add(MaxPooling2D(pool\_size=(2, 2)))),y una nueva capa totalmente conectada (model.add(Dense(50, activation='relu'))), obtendriamos un ratio de error de  0.89\%.
+
+\section{Generación de textos - Red LSTM}
+En este ejemplo, vamos a intentar generar textos que más o menos tengan sentido. Hasta la aparición de las redes neuronales que un ordenador pudiese llevar a cabo esta tarea parecía una idea sacado de una pelicula de ciencia ficción. Sin embargo, con las redes LSTM esto es posible.\\
+Las redes neuronales, además de ser usadas para predecir modelos, pueden ser utilizadas para aprender secuencias de un problema y generar mediante estos conocimientos nuevas secuencias. Los modelos que generan nuevas secuencias como este, no solo son utiles para saber como de bien nuestra máquina ha aprendido un problema, si no también para saber mas de un problema en sí mismo.\\
+En este ejemplo, vamos a utilizar el libro "La metamorfosis" de Kafka, como dataset para nuestra red neuronal. Esta, va a aprender  las dependencias entre los diferentes caracteres que se vaya encontrando a lo largo del texto, así como las probabilidades de que estos caracteres aparezcan, con el objetivo de generar una nueva secuencia de caracteres, formando así un nuevo texto, y una nueva historia. Sin embargo, este ejemplo también es válido para otro tipo de textos: poemas, código fuente... (siempre que estos se encuentren en codigo ASCII).
+\subsection{Aprendiendo secuencias de caracteres}
+Primero importaremos las clases que vamos a utilizar en el modelo, y cargaremos el texto convirtiéndolo todo a minúsculas.
+\begin{verbatim}
+import numpy
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import LSTM
+from keras.callbacks import ModelCheckpoint
+from keras.utils import np_utils
+
+# load ascii text and covert to lowercase
+filename = "metamorfosis.txt"
+raw_text = open(filename).read()
+raw_text = raw_text.lower()
+\end{verbatim}
+Una vez cargado el libro en memoria, debemos preparlo para ser tratado por una red neuronal. Una buena idea es convertir los caracteres a numeros enteros. Para ello, primero se identifican todos los caracteres que componen el texto y se asocia un numero a cada uno. Con ello, conseguiremos reducir el numero de caracteres a analizar, ya que también eliminado los repetidos.
+\begin{verbatim}
+# create mapping of unique chars to integers
+chars = sorted(list(set(raw_text)))
+char_to_int = dict((c, i) for i, c in enumerate(chars))
+\end{verbatim}
+El siguiente paso es definir el conjunto de entrenamiento. Se dividirá el texto en conjuntos de caracteres (en este ejemplo 100), para pasarselos como entrada a la red neuronal. El objetivo es que la red prediga el caracter 101. Esto se conseguirá desplazando de 1 en 1 los 100 caracteres seleccionados, permitiendo así que cada caracter sea aprendido por los 100 caracteres que le preceden. Por ejemplo, si hiciesemos divisiones de 5 en 5, y tuviesemos la palabra CAPITULO, las iteraciones serían:
+\begin{verbatim}
+CAPIT -> U
+APITU -> L
+PITUL -> O
+\end{lstlisting}
+Dado que las redes neuronales trabajan con numeros en vez de caracteres, debemos convertir estos caracteres a enteros usando la tabla que generamos anteriormente.
+\begin{lstlisting}
+# prepare the dataset of input to output pairs encoded as integers
+seq_length = 100
+dataX = []
+dataY = []
+for i in range(0, n_chars - seq_length, 1):
+	seq_in = raw_text[i:i + seq_length]
+	seq_out = raw_text[i + seq_length]
+	dataX.append([char_to_int[char] for char in seq_in])
+	dataY.append(char_to_int[seq_out])
+n_patterns = len(dataX)
+print "Total Patterns: ", n_patterns
+\end{verbatim}
+Si ejecutamos el código hasta este punto, podemos ver el numero de dataset de entrenamiento: 147574\\
+Una vez que hemos preparado el dataset, necesitamos tranformalo para que pueda ser usado por Keras. Primero, debemos transformar la lista de entradas (seq\_in) en una secuencia de de la forma [muestra, intervalo de tiempo, característica], esperada por una red LSTM. Después, se necesita escalar los enteros al rango 0-1 para conseguir patrones mas faciles de aprender por la red LSTM que usa la función de activación sigmoide. Finalmente, se convertirán los patrones de salida. Para ello, se representará la salida como una prababilidad de que aparezca cada uno de los 47 diferentes catacteres del vocabulario, en vez de intentar predecir estrictamente el siguiente caracter. Cada valor será convertido a un vector de longitud 47, relleno de 0 menos un 1 que concidirá con la columna de la letra que el patron representa. Por ejemplo, si la letra fuese la C (entero numero 3), la codificacion seróa... [0,0,1,0,0,0,0,0...0]
+Esto se consigue mediante las siguientes lineas de codigo.
+\begin{verbatim}
+# reshape X to be [samples, time steps, features]
+X = numpy.reshape(dataX, (n_patterns, seq_length, 1))
+# normalize
+X = X / float(n_vocab)
+# one hot encode the output variable
+y = np_utils.to_categorical(dataY)
+\end{verbatim}
+Una vez que tenemos los datos preparados, es hora de definir nuestra red LSTM. Para este ejemplo, se define una sola capa oculta LSTM con 256 unidades de memoria. En este ejemplo se usa la tecnica de regularización para evitar el sobreajuste conocida como Dropout, con una probabilidad de 20. La capa de salida será una capa Dense usando softmax como función de activación para producir una salida en función de la probabilidad de que aparezca uno de los 47 caracteres.\\
+En realidad, podemos observar que el problema es realmente un problema de clasificacion con 47 clases, y por ello se define la funcion de perdida logaritmica cross entropy, y se aplica el algoritmo de optimización ADAM para mejorar la velocidad.
+\begin{verbatim}
+# define the LSTM model
+model = Sequential()
+model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2])))
+model.add(Dropout(0.2))
+model.add(Dense(y.shape[1], activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='adam')
+\end{verbatim}
+En este ejemplo, no estamos interesados en la precisión de la clasificación, ya que creariamos un modelo que predeciría cada caracter del conjunto de entrenamiento perfectamente. En vez de eso, estamos interesados en una generalizacion del dataset que minimice la funcion de perdida. Es decir, estamos buscando un balance entre generalización y sobreajuste.\\
+Esta red es lenta de entrenar. Por ello, se ha decidido usar una serie de checkpoints para almacenar todos los pesos de la red en un fichero cada vez que se observe una mejora en la perdida, al final de cada ciclo. Usaremos los mejores pesos (menores perdidas) para generar nuestro modelo en el siguente punto.
+\begin{verbatim}
+# define the checkpoint
+filepath="weights-improvement-{epoch:02d}-{loss:.4f}.hdf5"
+checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min')
+callbacks_list = [checkpoint]
+\end{verbatim}
+Por ultimo, ya solo queda ajustar nuestro modelo. Usaremos 20 ciclos y una tamaño de lote de 128 patrones.
+\begin{verbatim}
+model.fit(X, y, nb_epoch=20, batch_size=128, callbacks=callbacks_list)
+\end{verbatim}
+Cada vez que ejecutamos el modelo, podemos apreciar que nos encontramos ante diferentes valores. Esto es debido a la naturaleza aleatoria del modelo y a que es dificil elegir una semilla aleatoria para las redes LSTM que reproduzcan los resultados con un 100x100 de exactitud. A pesar de ello, este no es el objetivo del modelo.\\
+Una vez ejecutado el script completo, se deben haber generado una serie de archivos checkpoint con los mejores pesos de cada ciclo. Para ejecutar el codigo del siguiente apartado donde ya generaremos nuevas secuencias de caracteres, usaremos los valores del ultimo archivo, ya que son los que tienen un menor valor de perdida.
+\subsection{Generando secuencias de caracteres}
+Una vez entrenada nuestra red, tenemos que cargar los pesos que hemos calculado anteriormente y hemos guardado en nuestro checkpoint.
+\begin{verbatim}
+filename = "weights-improvement-19-1.9435.hdf5"
+model.load_weights(filename)
+model.compile(loss='categorical_crossentropy', optimizer='adam')
+\end{verbatim}
+Además, tambien tenemos que crear un mapeo inverso de caracteres a enteros para convertir de nuevo los enteros utilizados en la red a caracteres.
+\begin{verbatim}
+int_to_char = dict((i, c) for i, c in enumerate(chars))
+\end{verbatim}
+Por último, ya solo queda hacer predicciones. La manera mas simple es iniciar con una secuencia de semillas como entrada, generar el siguiente caracter, después actualizar la secuencia de semillas para añadir el caracter generado al final, y quitar el primer caracter.  Este proceso se repetirá mientras queramos generar nuevos caracteres. Elegiremos un patron aleatorio de entrada como nuestra secuencia de semillas, y pintar los caracteres segun se vayan generando.
+\begin{verbatim}
+start = numpy.random.randint(0, len(dataX)-1)
+pattern = dataX[start]
+print "Seed:"
+print "\"", ''.join([int_to_char[value] for value in pattern]), "\""
+
+for i in range(1000):
+	x = numpy.reshape(pattern, (1, len(pattern), 1))
+	x = x / float(n_vocab)
+	prediction = model.predict(x, verbose=0)
+	index = numpy.argmax(prediction)
+	result = int_to_char[index]
+	seq_in = [int_to_char[value] for value in pattern]
+	sys.stdout.write(result)
+	pattern.append(index)
+	pattern = pattern[1:len(pattern)]
+print "\nDone."
+\end{verbatim}
+\subsection{Analizando resultados}
+Al ejecutar el codigo anterior, nuestro programa genera el siguiente texto:
+\begin{verbatim}
+R
+E
+L
+L
+E
+N
+A
+R
+\end{verbatim}
+Como podemos ver, los resultados no son perfectos. Hay palabras que si han sido generadas correctamente (como RELLENAR), y otras que sin embargo, no tienen mucho sentido (como RELLENAR).\\
+Con diseños mas avanzados, nuestra red reflejaría mejores resultados. Una propuesta de modelo mas avanzado, pero que por tanto, tardaría mas en entrenarse sería por ejemplo la siguiente:
+\begin{verbatim}
+model = Sequential()
+model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(256))
+model.add(Dropout(0.2))
+model.add(Dense(y.shape[1], activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='adam')
+\end{verbatim}
+Además, tambien podemos incrementar el numero de ciclos de entrenamiento de 20 a 50, y disminuir el tamaño de lote de 128 a 64 para dar a la red la oportunidad de aprender más.
+\begin{verbatim}
+model.fit(X, y, nb_epoch=50, batch_size=64, callbacks=callbacks_list)
+\end{verbatim}
+Además, hay una serie de tecnicas que ayudarían a mejorar nuestro nuevo texto, pero que en este ejemplo no han sido aplicadas. Algunas de ellas son:
+\begin{itemize}
+\item Predecir menos de 1000 caracteres de salida por semilla
+\item Borrar todos los signos de puntuacion y por tanto, del vocabulario del modelo.
+\item Añadir mas capas al modelo
+\item Reducir el tamaño de lote (el más eficiente seria de 1, pero nuestro modelo tardaría mucho en entrenarse)
+\end{itemize}
