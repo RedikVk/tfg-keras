@@ -1,9 +1,9 @@
 \chapter{Keras}
 \section{Introducción}
-Keras es una libreria de redes neuronales escrita en Python y capaz de correr tanto en Tensorflow como en Theano. Sus principales características de Keras son:
+Keras es una librería de redes neuronales escrita en Python y capaz de correr tanto en Tensorflow como en Theano. Sus principales características son:
 \begin{itemize}[noitemsep]
 \item Fácil y rápido prototipado gracias a su modularidad, minimalismo y extensibilidad.
-\item Soporta tanto redes neuronales convolucionales como recurrentes (y la combinación de ambas)
+\item Soporta tanto redes neuronales convolucionales como recurrentes (así como la combinación de ambas)
 \item Soporta esquemas de conectividad arbitrarios (incluyendo entrenamiento multi-entrada y multi-salida)
 \item Corre en CPU y GPU
 \item Es compatible con Python 2.7-3.5
@@ -14,8 +14,8 @@ Keras es una libreria de redes neuronales escrita en Python y capaz de correr ta
  \begin{itemize}[noitemsep]
 \item numpy y scipy
 \item pyyaml
-\item HDF5 y h5py (Opcional, pero requirido si usas funciones para cargar/guardar modelos)
-\item cuDNN (Opcional pero recomendado si usas CNNs)
+\item HDF5 y h5py (Opcional, pero requírido si se usan funciones para cargar/guardar modelos)
+\item cuDNN (Opcional pero recomendado si se usan CNNs)
 \item Tensorflow o Theano
  \end{itemize}
  Para instalar Keras, existen 2 opciones:
@@ -23,111 +23,105 @@ Keras es una libreria de redes neuronales escrita en Python y capaz de correr ta
  \item Desde PyPI: sudo pip install keras
  \item Desde repositorio Keras (https://github.com/fchollet/keras/tree/master/keras): sudo python setup.py install
  \end{itemize}
- Por defecto, Keras usa Tensorflow como motor backend. Sin embargo, esta opcion puede ser configurada. La primera vez que ejecutas Keras, se crea un fichero de configuración en "/.keras/keras.json", que puede ser modificado.
-\begin{verbatim}
+ Por defecto, Keras usa Tensorflow como motor backend. Sin embargo, esta opción puede ser configurada. La primera vez se ejecut Keras, se crea un fichero de configuración en "/.keras/keras.json", que puede ser modificado.
+\begin{lstlisting}
 {
     "image_dim_ordering": "tf",
     "epsilon": 1e-07,
     "floatx": "float32",
     "backend": "tensorflow"
 }
-\end{verbatim}
- 
+\end{lstlisting}
+
 \section{Modelos}
+TODO
 %Hay 2 tipos de modelos en Keras: el modelo secuencial, y la clase modelo (más general) que proporciona la API. Ambos modelos presentan varias funciones en comun, como summary(), get\_config() o to\_json() que devuelven información basica sobre el modelo o get\_weights() y set\_weights() que son las funciones getter y setter para los pesos del modelo.
 \subsection{Modelo secuencial}
-Las funciones basicas del modelo secuencial son:
+Las funciones básicas del modelo secuencial son:
 \begin{itemize}
-\item compile(self, optimizer, loss, metrics=[], sample\_weight\_mode=None) : Configura el proceso de aprendizaje.
-\item fit(self, x, y, batch\_size=32, nb\_epoch=10, verbose=1, callbacks=[], validation\_split=0.0, validation\_data=None, shuffle=True, class\_weight=None, sample\_weight=None) : entrena el modelo para un numero fijado de ciclos.
-\item evaluate(self, x, y, batch\_size=32, verbose=1, sample\_weight=None) : devuelve la perdida para unos datos de entrada, lote por lote.
-\item predict(self, x, batch\_size=32, verbose=0) : genera como salida predicciones para los valores de entrada.
+\item \lstinline{compile(self, optimizer, loss, metrics=[], sample\_weight\_mode=None)} : Configura el proceso de aprendizaje.
+\item \lstinline{fit(self, x, y, batch\_size=32, nb\_epoch=10, verbose=1, callbacks=[], validation\_split=0.0, validation\_data=None, shuffle=True, class\_weight=None, sample\_weight=None)} : Entrena el modelo para un número fijado de ciclos.
+\item \lstinline{evaluate(self, x, y, batch\_size=32, verbose=1, sample\_weight=None)} : Calcula la función perdida dados unos datos de entrada, lote por lote.
+\item \lstinline{predict(self, x, batch\_size=32, verbose=0)} : Genera predicciones para unos valores de entrada.
 \end{itemize}
 \subsection{Clase modelo de la API}
 Con la API, dadas una entrada y una salida, podemos inicializar nuestro modelo de la siguiente forma:
-\begin{verbatim}
+\begin{lstlisting}[language=Python]
 a = Input(shape=(32,))
 b = Dense(32)(a)
 model = Model(input=a, output=b)
-\end{verbatim}
-En caso de que tengamos multiples conjuntos de entradas y de salidas, tambien podriamos inicializarlo así:
-\begin{verbatim}
+\end{lstlisting}
+En caso de que tengamos múltiples conjuntos de entradas y de salidas, también podríamos inicializarlo de la siguiente manera:
+\begin{lstlisting}[language=Python]
 model = Model(input=[a1, a2], output=[b1, b3, b3])
-\end{verbatim}
+\end{lstlisting}
 \section{Capas}
 \subsection{Funciones basicas de las capas}
 A la hora de diseñar las capas de nuestra red neuronal, tenemos una serie de funciones disponibles:
 \begin{itemize}
 \item Dense: Para capas regulares totalmente conectadas.\\
-keras.layers.core.Dense(output\_dim, init='glorot\_uniform', activation='linear', weights=None, W\_regularizer=None, b\_regularizer=None, activity\_regularizer=None, W\_constraint=None, b\_constraint=None, bias=True, input\_dim=None)\\\\
-Por ejemplo: model.add(Dense(32, input\_dim=16))\\
-Este modelo contaría con una array de entrada de tamaño 16, y de salida de 32.
-\item Activacion: Se aplica una funcion de activacion a una salida. Las principales funciones que nos ofrece Keras son:
+\lstinline{keras.layers.core.Dense(output\_dim, init='glorot\_uniform', activation='linear', weights=None, W\_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True, input_dim=None)}\\
+Ejemplo de uso: \lstinline{model.add(Dense(32, input\_dim=16))} sería un modelo que contaría con una array de entrada de tamaño 16, y de salida de 32.
+\item Activation: Se aplica una función de activación a una salida. Las principales funciones que nos ofrece Keras son:
 \begin{itemize}
-\item softmax: generalizacion de la funcion logística.
+\item softmax: generalización de la función logística.
 \item softplus
 \item softsign
-\item relu: funcion rectificadora
+\item relu: función rectificadora
 \item tanh: función tangente hiperbólica
 \item sigmoid: función sigmoide
 \item hard\_sigmoid
-\item linear: funcion lineal
+\item linear: función lineal
 \end{itemize}
-Podemos encontrar funciones de activaciones mas avanzadas como PReLu o LeakyReLU en el modulo keras.layers.advanced\_activations.\\\\
-Ejemplo de uso: model.add(Activation('tanh'))\\
-\item Dropout: Proporciona una manera simple de prevenir un sobreajuste. \\
-keras.layers.core.Dropout(p)
+Podemos encontrar funciones de activaciones mas avanzadas como PReLu o LeakyReLU en el modulo \lstinline{keras.layers.advanced_activations}.\\
+Ejemplo de uso: \lstinline{model.add(Activation('tanh'))}
+\item Dropout: Proporciona una manera simple de prevenir que se produzca sobreajuste.\\
+\lstinline{keras.layers.core.Dropout(p)}
 \item Reshape: Transforma la salida en una forma concreta.\\
-Ejemplo de uso: model.add(Reshape((3, 4), input\_shape=(12,)))\\
-El modelo en este caso tendría una capa de salida de 3x4\\
-\item Permute: Transforma la dimension de una entrada dado un cierto patrón.\\
-Ejemplo de uso: model.add(Permute((2, 1), input\_shape=(10, 64)))\\
-
-
+Ejemplo de uso: \lstinline{model.add(Reshape((3, 4), input_shape=(12,)))}
+definiría una capa de salida de 3x4 para nuestro modelo.
+\item Permute: Transforma la dimensión de una entrada dado un cierto patrón.\\
+Ejemplo de uso: \lstinline{model.add(Permute((2, 1), input_shape=(10, 64)))}
 \end{itemize}
 
 \subsection{Capas convolucionales}
-Keras presenta diversas funciones para desarrollar capas convolucionales según las dimensiones de su entrada. La mas destacable, y como ejemplo, podría ser:
-\begin{verbatim}
-Convolution2D(nb_filter, nb_row, nb_col, init='glorot_uniform', activation=None, weights=None, border_mode='valid', subsample=(1, 1), dim_ordering='default', W_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True)
-\end{verbatim}
-Además de la version en 2D, Keras nos ofrece funciones para entradas de 1 dimension o 3 dimensiones. A parte, tenemos funcionalidades para desarrollar capas convolucionales dilatadas (AtrousConvolution2D), hacer deconvolucion (Deconvolution2D), cropping (Cropping2D)...
+Keras presenta diversas funciones para desarrollar capas convolucionales según las dimensiones de su entrada. La mas destacable, a modo de ejemplo, podría ser:\\
+\lstinline{Convolution2D(nb_filter, nb_row, nb_col, init='glorot_uniform', activation=None, weights=None, border_mode='valid', subsample=(1, 1), dim_ordering='default', W_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True)}\\\\
+Además de la versión en 2D, Keras nos ofrece funciones para entradas de 1 dimensión o 3 dimensiones. A parte, tenemos funcionalidades para desarrollar capas convolucionales dilatadas (AtrousConvolution2D), hacer deconvolución (Deconvolution2D), cropping (Cropping2D)...
 \subsection{Capas "pooling"}
-Al igual que ocurre con las capas convolucionales, Keras ofrece un buen numero de funciones para desarrollar capas pooling en redes convolucionales, dependiendo de las dimensiones de la entrada. Como en el caso anterior, una funcion representativa seria:
-\begin{verbatim}
-MaxPooling2D(pool_size=(2, 2), strides=None, border_mode='valid', dim_ordering='default')
-\end{verbatim}
-Si en vez de utilizar la funcion máximo queremos que nuestra capa utilice otro tipo de funciones, Keras tambien nos ofrece funciones como: AveragePooling2D, GlobalMaxPooling2D, GlobalAveragePooling2D... Además de sus variantes para 1D y 3D.
+Al igual que ocurre con las capas convolucionales, Keras ofrece un buen numero de funciones para desarrollar capas pooling en redes convolucionales, dependiendo de las dimensiones de la entrada. Como en el caso anterior, una función representativa sería:\\
+\lstinline{MaxPooling2D(pool_size=(2, 2), strides=None, border_mode='valid', dim_ordering='default')}\\\\
+Si en vez de utilizar la función máximo queremos que nuestra capa utilice otro tipo de algoritmos, Keras también nos ofrece funciones como: AveragePooling2D, GlobalMaxPooling2D, GlobalAveragePooling2D... Además de sus variantes para 1D y 3D.
 \subsection{Capas recurrentes}
 Keras presenta 3 tipos de capas recurrentes:
 \begin{itemize}[noitemsep]
 \item SimpleRNN : Red recurrente totalmente conectada cuya salida realimenta la entrada.
-\item LSTM : Long-Short Term Memory unit 
+\item LSTM : Long-Short Term Memory unit
 \item GRU : Gated Recurrent Unit
 \end{itemize}
 
 \section{Preprocesado}
-Keras cuenta con una serie de funciones para procesas tanto modelos secuenciales, como texto, como imagenes. Las más importantes son:
+Keras cuenta con una serie de funciones para procesar tanto modelos secuenciales, como texto, como imágenes. Las más importantes son:
 \begin{itemize}
-\item Modelos secuenciales: pad\_sequences(...) transforma una lista en un array 2D.
-\item Texto: text\_to\_word\_sequence(...) separa una frase en palabras, one\_hot(...) codifica un texto en una lista de palabras indexadas en un vocabulario de tamaño n...
-\item Imagenes: ImageDataGenerator(...) genera ciclos con para los datos de la imagen con aumento en tiempo real.
+\item Modelos secuenciales: \lstinline{pad_sequences(...)} transforma una lista en un array 2D.
+\item Texto: \lstinline{text_to_word_sequence(...)} separa una frase en palabras, \lstinline{one_hot(...)} codifica un texto en una lista de palabras indexadas en un vocabulario de tamaño n...
+\item Imágenes: \lstinline{ImageDataGenerator(...)} genera ciclos con los datos de la imagen con aumento en tiempo real.
 \end{itemize}
-\section{Funciones de perdida}
-La función de perdida es uno de los dos parametros necesarios para compilar un modelo. Algunas de las funciones mas conocidas que nos proporciona Keras son:
+\section{Funciones de pérdida}
+La función de perdida es uno de los dos parámetros necesarios para compilar un modelo. Algunas de las funciones mas conocidas que nos proporciona Keras son:
 \begin{itemize}[noitemsep]
-\item mean\_squared\_error(y\_true, y\_pred) : calcula el error cuadrático medio. 
-\item mean\_absolute\_error / mae: calcula el error medio absoluto.
-\item binary\_crossentropy: calcula la entropia cruzada en problemas de clasificación binaria. Tambien conocida como perdida logaritmica.
+\item \lstinline{mean_squared_error(y_true, y_pred)} : Calcula el error cuadrático medio.
+\item \lstinline{mean_absolute_error / mae} : Calcula el error medio absoluto.
+\item \lstinline{binary_crossentropy}: Calcula la entropía cruzada en problemas de clasificación binaria. También conocida como perdida logarítmica.
 \end{itemize}
 \section{Optimizadores}
 El optimizador es uno de los dos valores necesarios para compilar un modelo. En los ejemplos que se describirán mas adelante, se usará el optimizador Adam.
 \begin{itemize}
-\item Adam(lr=0.001, beta\_1=0.9, beta\_2=0.999, epsilon=1e-08, decay=0.0)
+\item \lstinline{Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)}
 \end{itemize}
 Adam, es un algoritmo para la optimización basado en el gradiente de primer orden de funciones estocásticas objetivas. Está basado en estimaciones adaptativas de momentos de orden inferior. Este método es sencillo de implementar, es eficiente computacionalmente hablando, necesita poca capacidad de memoria, y es bueno en problemas con una gran cantidad de datos y/o parámetros.
 \section{Activadores}
-El modo de activación puede ser implementado mediante una capa de Activacion (model.add(Dense(64)); model.add(Activation('tanh'))), o mediante un parametro que soportan todas las capas (model.add(Dense(64, activation='tanh'))).\\
+El modo de activación puede ser implementado mediante una capa de Activation (\lstinline{model.add(Dense(64)); model.add(Activation('tanh')))}, o mediante un parámetro que soportan todas las capas (\lstinline{model.add(Dense(64, activation='tanh'))}).\\
 Las funciones más comunes son:
 \begin{itemize}[noitemsep]
 \item softmax
@@ -137,21 +131,21 @@ Las funciones más comunes son:
 \item linear
 \end{itemize}
 \section{Callbacks}
-Los callbacks son una serie de funciones que pueden ser aplicadas en ciertos momentos del proceso de entrenamiento. Estos callbacks pueden ser utilizados para echar un vistazo a los estados intermos y estadisticas del modelo que estamos entrenando. Para usarlos, basta con pasar como argumento a la función fit() una lista de métodos, que serán llamados en cada fase del entrenamiento.\\
+Los callbacks son una serie de funciones que pueden ser aplicadas en ciertos momentos del proceso de entrenamiento. Estos callbacks pueden ser utilizados para echar un vistazo a los estados internos y estadísticas del modelo que estamos entrenando. Para usarlos, basta con pasar como argumento a la función \lstinline{fit()} una lista de métodos, que serán llamados en cada fase del entrenamiento.\\
 Las principales funciones son:
 \begin{itemize}
-\item BaseLogger(): se aplica en todo modelo de Keras, y acumula la media de las metricas por ciclo.
-\item Callback(): clase base abstracta, utilizada para crear nuevos callbacks. Como parametros, recibe los propios para configurar el entrenamiento (numero de ciclos, verbosidad...), así como la instancia del modelo que queremos entrenar.
-\item{ProgbarLogger}: callback que printa las salidas en la salida estandar (stdout).
-\item{History}: callback aplicado en cada modelo Keras, que almacena eventos en un objeto de tipo History.
-\item{ModelCheckpoint}: almacena el modelo después de cada cilo. Como argumentos recibe el fichero donde dejar la información, la cantidad de de elementos a monitorizar, el modo de verbosidad, un booleano para decidir si el sobreescribir o no el mejor modelo, el modo, y otro booleano para guardar solo pesos o información de todo el modelo.
+\item \lstinline{BaseLogger()}: Se aplica en todo modelo de Keras, y acumula la media de las métricas por ciclo.
+\item \lstinline{Callback()}: Clase base abstracta, utilizada para crear nuevos callbacks. Como parámetros, recibe los propios para configurar el entrenamiento (numero de ciclos, verbosidad...), así como la instancia del modelo que queremos entrenar.
+\item \lstinline{ProgbarLogger()}: Callback que pinta las salidas en la salida estándar (stdout).
+\item \lstinline{History()}: Callback aplicado en cada modelo Keras, que almacena eventos en un objeto de tipo History.
+\item \lstinline{ModelCheckpoint(...)}: Almacena el modelo después de cada ciclo. Como argumentos recibe el fichero donde dejar la información, la cantidad de de elementos a monitorizar, el modo de verbosidad, un booleano para decidir si el sobreescribir o no el mejor modelo, el modo, y otro booleano para guardar solo pesos o información de todo el modelo.
 \end{itemize}
 \section{Datasets}
 Keras cuenta con una serie de dataset ya predefinidos y listos para realizar nuestras pruebas:
 \begin{itemize}
-\item CIFAR10: dataset que cuenta con 50.000 imagenes a color de entrenamiento, a clasificar en 10 categorias, y 10.000 imagenes para testear los resultados. Tambien existe una version con 100 categorias (CIFAR100).
-\item Clasificacion de sentimientos en reviews de IMDB: Este dataset cuenta con 25.000 peliculas etiquetadas segun el sentimiento (bueno/malo). Estas reviwes han sido preprocesadas, y los palabras han sido indexadas segun su frecuencia.
-\item MNIST: dataset que contiene 60.000 imagenes en blanco y negro de 10 tipos de digitos, y 10.000 imagenes para testear los modelos.
+\item \textbf{CIFAR10}: dataset que cuenta con 50.000 imágenes a color de entrenamiento, a clasificar en 10 categorías, y 10.000 imágenes para testear los resultados. También existe una versión con 100 categorías (CIFAR100).
+\item \textbf{Clasificación de sentimientos en reviews de IMDB}: Este dataset cuenta con 25.000 películas etiquetadas según el sentimiento (bueno/malo). Estas reviews han sido preprocesadas, y los palabras han sido indexadas según su frecuencia.
+\item \textbf{MNIST}: dataset que contiene 60.000 imágenes en blanco y negro de 10 tipos de dígitos, y 10.000 imágenes para testear los modelos.
 \end{itemize}
 \section{Inicializadores}
 Los inicializadores definen la manera de inicializar los pesos de las capas de nuestro modelo. El argumentos usado en para definir este inicializador en las capas es \textbf{init}. Las opciones mas comunes son:
@@ -162,21 +156,16 @@ Los inicializadores definen la manera de inicializar los pesos de las capas de n
 \item zero
 \end{itemize}
 \section{Regularizadores}
-Los regularizadores permiten aplicar penalizaciones a en las capas durante la optimizacion. Estas penalizaciones se incorporan a la funcion de perdida que la red optimiza.\\
+Los regularizadores permiten aplicar penalizaciones a en las capas durante la optimización. Estas penalizaciones se incorporan a la función de perdida que la red optimiza.\\
 Ejemplo de uso:
-\begin{verbatim}
-model.add(Dense(64, input_dim=64, W_regularizer=l2(0.01), activity_regularizer=activity_l2(0.01)))
-\end{verbatim}
+\lstinline{model.add(Dense(64, input_dim=64, W_regularizer=l2(0.01), activity_regularizer=activity_l2(0.01)))}
 \section{Visualización}
-El módulo \textbf{keras.utils.visualize\_util} proporciona funciones utiles para pintar graficamente un modelo (acompañado del uso de graphviz). La siguiente función pintaría una gráfica del modelo y lo guardaría en un fichero .png.
-\begin{verbatim}
-from keras.utils.visualize_util import plot
-plot(model, to_file='model.png')
-\end{verbatim}
+El módulo \textbf{keras.utils.visualize\_util} proporciona funciones útiles para pintar gráficamente un modelo (acompañado del uso de graphviz). La siguiente función pintaría una gráfica del modelo y lo guardaría en un fichero .png.\\
+\lstinline{plot(model, to_file='model.png')}
 \section{Wrapper para Scikit-Learn API}
 Keras presenta compatibilidad con Scikit-Learn API. Se pueden usar modelos Keras secuenciales como parte del ciclo de trabajo de Scikit-Learn mediante sus wrappers. Hay 2 disponibles:
 \begin{itemize}[noitemsep]
-\item KerasClassifier(build\_fn=None, **sk\_params) : implementa una interfaz de clasificación.
-\item KerasRegressor(build\_fn=None, **sk\_params) : implementa una interfaz de regresión.
+\item \lstinline{KerasClassifier(build\_fn=None, **sk\_params)} : implementa una interfaz de clasificación.
+\item \lstinline{KerasRegressor(build\_fn=None, **sk\_params)} : implementa una interfaz de regresión.
 \end{itemize}
-El primer argumento es la instancia de la clase o la funcion a llamar, y el segundo los parámetros del modelo y de ajuste.
+El primer argumento es la instancia de la clase o la función a llamar, y el segundo los parámetros del modelo y de ajuste.

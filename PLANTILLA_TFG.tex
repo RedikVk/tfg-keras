@@ -23,7 +23,7 @@
 
 \usepackage{natbib}
 %\usepackage[english,spanish]{babel}
-%\selectlanguage{spanish} 
+%\selectlanguage{spanish}
 \usepackage{graphicx}
 \usepackage{psfrag}
 %\usepackage{quotchap}
@@ -96,6 +96,25 @@
 \newcommand{\carrera}{Grado en Ingenieria Informática}
 
 
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{courier}
+\usepackage{listingsutf8}
+\lstset{
+backgroundcolor=\color{white}, % choose the background color
+basicstyle=\scriptsize\ttfamily, % size of fonts used for the code
+breaklines=true, % automatic line breaking only at whitespace
+captionpos=b, % sets the caption-position to bottom
+commentstyle=\color{green}, % comment style
+escapeinside={\%*}{*)}, % if you want to add LaTeX within your code
+keywordstyle=\color{blue}, % keyword style
+stringstyle=\color{magenta}, % string literal style
+showstringspaces=false,
+extendedchars=false,
+inputencoding=utf8,
+}
+
+
 \begin{document}
 \setlength{\baselineskip}{18pt}  %% Espacio interlinea
 \setlength{\parskip}{6pt plus 1pt minus 1pt} %% Espacio interparrafo
@@ -115,13 +134,13 @@
 \newpage \thispagestyle{empty} % Pagina vacia
 
 \addcontentsline{toc}{chapter}{Indice de Figuras}    %Para que aparezca en el indice
-\renewcommand{\listfigurename}{Indice de Figuras} 
+\renewcommand{\listfigurename}{Indice de Figuras}
 \listoffigures
 
 \newpage \thispagestyle{empty} % Pagina vacia
 
 \addcontentsline{toc}{chapter}{Indice de Tablas}    %Para que aparezca en el indice
-\renewcommand{\listtablename}{Indice de Tablas} 
+\renewcommand{\listtablename}{Indice de Tablas}
 \listoftables
 
 \newpage \thispagestyle{empty} % Pagina vacia
@@ -132,7 +151,7 @@
 
 \input{cap_intro}
 
-\include{teoria_redes_neuronales}  
+\include{teoria_redes_neuronales}
 \include{documentacion_keras}
 \include{modelos_keras}
 \include{cap_conclusiones}
