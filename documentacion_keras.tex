@@ -32,8 +32,7 @@ Existen 2 modos de instalacion:
 \end{lstlisting}
 
 \section{Modelos}
-TODO
-Hay 2 tipos de modelos disponibles para su implementacion en Keras: el modelo secuencial, y la clase Model (más general). Ambos modelos presentan varias funciones en común, como summary(), get\_config() o to\_json() que devuelven información basica sobre el modelo, o get\_weights() y set\_weights(), las funciones getter y setter para los pesos del modelo.
+Hay 2 tipos de modelos disponibles para su implementacion en Keras: el modelo secuencial, y la clase Model (más general). Ambos modelos presentan varias funciones en común, como \lstinline{summary()}, \lstinline{get_config()} o \lstinline{to_json()} que devuelven información basica sobre el modelo, o \lstinline{get\_weights()} y \lstinline{set\_weights()}, las funciones getter y setter para los pesos del modelo.
 \subsection{Modelo secuencial}
 Las funciones básicas del modelo secuencial son:
 \begin{itemize}
@@ -157,7 +156,7 @@ Los regularizadores permiten aplicar penalizaciones en las capas durante la opti
 Ejemplo de uso:
 \lstinline{model.add(Dense(64, input_dim=64, W_regularizer=l2(0.01), activity_regularizer=activity_l2(0.01)))}
 \section{Visualización}
-El módulo \textbf{keras.utils.visualize_util} proporciona funciones útiles para pintar gráficamente un modelo (acompañado del uso de graphviz). La siguiente función pintaría una gráfica del modelo y lo guardaría en un fichero .png.\\
+El módulo \textbf{keras.utils.visualize\_util} proporciona funciones útiles para pintar gráficamente un modelo (acompañado del uso de graphviz). La siguiente función pintaría una gráfica del modelo y lo guardaría en un fichero .png.\\
 \lstinline{plot(model, to_file='model.png')}
 \section{Wrapper para Scikit-Learn API}
 Keras presenta compatibilidad con Scikit-Learn API. Se pueden usar modelos Keras secuenciales como parte del ciclo de trabajo de Scikit-Learn mediante sus wrappers. Hay 2 disponibles:

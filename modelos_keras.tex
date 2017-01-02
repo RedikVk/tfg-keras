@@ -193,7 +193,7 @@ Standardized: 28.24 (26.25) MSE
 Otra manera de mejorar nuestra red neuronal es añadirle capas, lo cual permitirá al modelo extraer mas cantidad de características del dataset.\\
 En este apartado evaluaremos el efecto de añadir más de una capa al modelo. Esto es tan fácil como crear una nueva función copia de la anterior, pero insertando nuevas lineas después de la primera capa oculta. En este ejemplo, tendrán la mitad de neuronas que la capa anterior.
 \begin{lstlisting}[language=Python]
-def larger_model():
+def modelo_profundo():
 	model = Sequential()
 	model.add(Dense(13, input_dim=13, init='normal', activation='relu'))
 	model.add(Dense(6, init='normal', activation='relu'))
@@ -207,47 +207,46 @@ Ejecutando todo el código podemos ver una mejora de 28 a 24 miles de dolares al
 \subsection{Red neuronal más ancha}
 Otra forma de incrementar la capacidad de nuestro modelo es crear un red mas ancha. En este apartado se evaluará el efecto de añadir a nuestra arquitectura una capa oculta con el doble de neuronas de las que tiene la capa de entrada.\\
 De nuevo, se ha de definir una nueva función como en los ejemplos anteriores, pero que cuente con una capa oculta entre la capa de entrada y la de salida de 20 neuronas.
-\begin{verbatim}
-def wider_model():
+\begin{lstlisting}[language=Python]
+def modelo_ancho():
 	model = Sequential()
 	model.add(Dense(20, input_dim=13, init='normal', activation='relu'))
 	model.add(Dense(1, init='normal'))
 	model.compile(loss='mean_squared_error', optimizer='adam')
 	return model
-\end{verbatim}
+\end{lstlisting}
 Como podemos ver, nuestros datos pasarán de una capa de entrada de 13 neuronas, a una capa oculta de 20, para luego acabar en una capa de salida de una sola neurona.\\
 De nuevo, la forma de evaluar el modelo será la misma que en los dos apartados anteriores, usando la estandarización de los datos de entrada para mejorar el rendimiento.\\
 Ejecutando el código podemos ver una mejora a 21 miles de dolares al cuadrado. No es nada mal resultado para este tipo de problema.\\
 Como se ha comentado anteriormente, no es del todo fácil ver que con una red mas profunda se consigan mejores resultados en este tipo de problemas. Esto demuestra la importancia de tener que testear varios tipos de modelos, para conseguir así los mejores resultados.
 
 \lsection{MNIST - Perceptrón multicapa vs Red convolucional}
-MNIST es un dataset desarrollado para evaluar modelos de redes neuronales utilizando el problema de clasificación de digitos escritos a mano. Este dataset esta constituido por un gran numero de documentos escaneados por el National Institute of Standards and Technology (NIST), a los cuales se la han extraido y normalizado sus caracteres. Cada imagen es de 28x28 pixeles, y se usan 60.000 imagenes para entrenar el modelo, y otras 10.000 para probarlo.\\
-Estamos hablando de una tarea de reconocimiento de dígitos. Al haber 10 digitos (del 0 al 9), hay 10 clases para clasificar. El resultado se muestra mediante el error de predicción, que no es mas que el inverso de la eficacia de clasificación.\\
-Los mejores resultados alcanzan un error de prediccion menor al 1\%. El state-of-art del error de prediccion es del 0,2\%, que puede ser alcanzado con grandes redes neuronales convolucionales. Podemos encontrar un listado de los resultados actuales en \url{http://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html#4d4e495354}\\
+El dataset MNIST fue desarrollado con el objetivo de evaluar modelos de redes neuronales utilizando el problema de clasificación de dígitos escritos a mano. Este dataset esta constituido por un gran numero de documentos escaneados por el National Institute of Standards and Technology (NIST), a los cuales se le han extraído y normalizado sus caracteres. Cada imagen es de 28x28 píxeles, y se usan 60.000 imágenes para entrenar el modelo, y otras 10.000 para probarlo.\\
+Estamos hablando de una tarea de reconocimiento de dígitos. Al haber 10 dígitos (del 0 al 9), hay 10 clases para clasificar. El resultado se muestra mediante el error de predicción, que no es mas que el inverso de la eficacia de clasificación.\\
+El state-of-art del error de predicción está en el 0,2\%, que puede ser alcanzado con grandes redes neuronales convolucionales en las que se aplican técnicas avanzadas como DropConnect, aumento de patrones, multi-columnas...\\
 \subsection{Cargando el dataset}
-Mediante la libreria Keras, podemos descargarnos el dataset de manera automática. Para ello, llamaremos a la funcion mnist.load\_data(), que almacenará la información en el directorio ~/.keras/datasets/mnist.pkl.gz. Con este pequeño script se puede visualizar las dos primeras imagenes.
-\begin{verbatim}
+Mediante la librería Keras, es posible descargarse el dataset de manera automática. Para ello, se llamará a la función \lstinline{mnist.load_data()}, que almacenará la información en el directorio ~/.keras/datasets/mnist.pkl.gz. Con este pequeño script es posible visualizar las dos primeras imágenes:
+\begin{lstlisting}[language=Python]
 from keras.datasets import mnist
 import matplotlib.pyplot as plt
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
-# plot 4 images as gray scale
 plt.subplot(221)
 plt.imshow(X_train[0], cmap=plt.get_cmap('gray'))
 plt.subplot(222)
 plt.imshow(X_train[1], cmap=plt.get_cmap('gray'))
 plt.show()
-\end{verbatim}
+\end{lstlisting}
 
 \mbox{}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.60]{images/mnist.png}
-\caption{Historia de las redes neuronales}
-\end{figure}\\
-No es estrictamentre necesario una red neuronal convolucional para conseguir los mejores resultados con el el dataset MNIST. Mediante una red neuronal sencilla, con una sola capa oculta, podemos alcanzar un ratio de error del 1.74\%. Usaremos este dato como base para comparar mas modelos de redes convolucionales más adelante.\\
-Lo primero de todo, como ya hemos visto, es cargar los modulos necesarios, generar una semilla aleatoria (aunque fija), y cargar el dataset.\\
-El set de entrenamiento está estructurado como un array tridimensional compuesto de la instancia de la imagen, su ancho y su alto. Para poder utilizarlo con un perceptrón, tenemos que convertir las imagenes en un vector de pixeles. En este caso, las imagenes de 28x28 se convertirán en 748 valores de entrada. Podemos hacer esto facilmente  con la funcion reshape() de NumPy.
-\begin{verbatim}
+\includegraphics[scale=0.20]{images/mnist.png}
+\caption{Patrones dataset MNIST}
+\end{figure}
+\\No es estrictamente necesario una red neuronal convolucional para conseguir buenos resultados con el el dataset MNIST. Mediante una red neuronal sencilla, con una sola capa oculta, podemos alcanzar un ratio de error del 1.74\%. Se usará este dato como base para comparar más modelos de redes convolucionales más adelante.\\
+Lo primero de todo, como ya hemos visto, es cargar los módulos necesarios, generar una semilla aleatoria (aunque fija), y cargar el dataset.\\
+El set de entrenamiento está estructurado como un array tridimensional compuesto por la imagen, su ancho y su alto. Para poder utilizarlo con un perceptrón, tenemos que convertir las imágenes en un vector de píxeles. En este caso, las imágenes de 28x28 se convertirán en 748 valores de entrada. Podemos hacer esto fácilmente  con la función reshape() de NumPy.
+\begin{lstlisting}[language=Python]
 import numpy
 from keras.datasets import mnist
 from keras.models import Sequential
@@ -260,31 +259,31 @@ numpy.random.seed(7)
 n_pixels = X_train.shape[1] * X_train.shape[2]
 X_train = X_train.reshape(X_train.shape[0], n_pixels).astype('float32')
 X_test = X_test.reshape(X_test.shape[0], n_pixels).astype('float32')
-\end{verbatim}
+\end{lstlisting}
 
-Los valores van de 0 a 255, en una escala de grises. Cuando trabajamos con modelos de redes neuronales, suele ser buena idea escalar o normalizar los datos de entrada. Para ello, convertiremos estos valores de 0-255 a 0-1.\\
-Además, la salida será un entero entre 0 y 9 (ya que como hemos dicho, tenemos 10 clases en las que nuestra imagen puede ser clasificada). Nos encontramos ante un problema de multiclasificación, por lo que será util codificar el vector de enteros en una matriz binaria:
-\begin{verbatim}
+Los valores van de 0 a 255, en una escala de grises. Cuando se trabaja con modelos de redes neuronales, suele ser buena idea escalar o normalizar los datos de entrada. Para ello, se convertirán estos valores del rango 0-255 al 0-1.\\
+Además, la salida será un entero entre 0 y 9 (ya que como hemos dicho, tenemos 10 clases en las que nuestra imagen puede ser clasificada). Nos encontramos ante un problema de multiclasificación, por lo que será útil codificar el vector de enteros en una matriz binaria:
+\begin{lstlisting}[language=Python]
 X_train = X_train / 255
 X_test = X_test / 255
 
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 num_classes = y_test.shape[1]
-\end{verbatim}
+\end{lstlisting}
 
-Con todo esto, ya podemos crear el modelo de la red neuronal. En este ejemplo, vamos a diseñar tanto un modelo de red neuronal utilizando un perceptron multicapa, como un modelo convolucional, para ver sus diferencias y rendimientos a la hora de tratar imagenes.\\
+Con todo esto, ya se puede crear el modelo de la red neuronal. En este ejemplo, vamos a diseñar tanto un modelo de red neuronal basado en un perceptrón multicapa como un modelo convolucional, para ver sus diferencias y rendimientos a la hora de tratar imágenes.\\
 \subsubsection{Perceptrón multicapa}
-\begin{verbatim}
+\begin{lstlisting}[language=Python]
 def perceptron_model():
 	model = Sequential()
 	model.add(Dense(n_pixels, input_dim=n_pixels, init='normal', activation='relu'))
 	model.add(Dense(num_classes, init='normal', activation='softmax'))
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
-\end{verbatim}
+\end{lstlisting}
 Como podemos observar, se trata de un modelo con una sola capa oculta, con el mismo numero de neuronas que de entradas, es decir, 784. Además, sobre ella se aplica una funcion de activacion rectificadora.\\
-En la capa de salida, se usa la funcion de activacion softmax para convertir las salidad en probabilidad, y permitir que se seleccionen una de las 10 clases que el modelo ha de predecir. Como función de perdida, se utiliza la perdida logarítmica (en Keras, categorical\_crossentropy). Por ultimo, para aprender los pesos, se utiliza el algoritmo gradiente descendiente ADAM.\\
+En la capa de salida, se usa la funcion de activacion softmax para convertir las salidad en una probabilidad, y permitir que se seleccionen una de las 10 clases que el modelo ha de predecir. Como función de perdida, se utiliza la perdida logarítmica (en Keras, \lstinline{categorical_crossentropy}). Por último, para aprender los pesos, se utiliza el algoritmo gradiente descendiente ADAM.\\
 \subsubsection{Red convolucional}
 \begin{verbatim}
 def convolutional_model():

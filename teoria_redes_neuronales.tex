@@ -137,10 +137,9 @@ f(x) = ln(1+e^{x})
 \caption{Funcion de activación softplus}
 \end{figure}
 \end{itemize}
-TODO: Seguir corrigiendo desde aqui\\
-Las propiedades deseables de una funcion de activación son:
+Las propiedades deseables de una función de activación son:
 \begin{itemize}
-\item No lineal: Cuando contamos con una funcion de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una funcion universal de aproximacion. La funcion identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activacion identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
+\item No lineal: Cuando contamos con una función de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una función universal de aproximación. La función identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activacion identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
 \item Continuamente diferenciable: Esta propiedad es necesaria para que sean posibles los métodos de optimización basados en el gradiente. Por ejemplo, la funcion de activación de escalón binario no es diferenciable en el 0, y su derivada es 0 en todos los demas valores, asi que los metodos basados en el gradiente no funcionan con ella.
 \item Rango: Cuando el rango de la funcion de activación es finito, los métodos de entrenamiento basados en gradiente tienden a ser mas estables porque los pesos a elegir son mas limitados. Cuando el rango es infinito, el entrenamiento es por lo general mas eficiente porque los patrones afectan mas a los pesos.
 \item Monotona: Cuando la funcion de activación es monotona, el error en un modelo con una sola capa tiende a converger.
@@ -221,7 +220,7 @@ Para el perceptrón, existen 2 tipos de aprendizaje: uno utiliza una tasa de apr
 \item Salida
 \end{enumerate}
 
-\subsubsection{Capacidades de un perceptron simple}
+\subsubsection{Capacidades de un perceptrón simple}
 Hasta ahora, hemos descrito el perceptrón como un clasificador. Sin embargo, tambien pueden ser usados para emular funcines lógicas elementales como AND, OR y NAND. Consideremos las funciones AND y OR. Dado que son funciones linealmente separabales, pueden ser aprendidas por un perceptrón.
 \begin{figure}[htp]
 \centering
@@ -320,71 +319,71 @@ Una manera de resolver este problema es extraer un conjunto de entradas del data
 
 \section{Redes neuronales convolucionales}
 Las redes neuronales convolucionales son muy similares a las redes neuronales ordinarias descritas hasta ahora, como el perceptrón multicapa. Las neuronas tienen pesos, sesgos, reciben una entrada con la que realiza un producto escalar y sobre la que aplica una función de activación, tienen una función de perdida...\\
-Sin embargo, se utilizan principalmente para resolver el principal problema que tienen las redes neuronales ordinarias: el tratamiento de imagenes. Pese a que con las redes neuronales estandar es posible manejar imagenes como es el caso del dataset MNIST, en cuanto las imagenes aumentan su tamaño y calidad esto se vuelve intratable. Al tratarse de neuronas totalmente conectadas, provocariamos un desperdicio de recursos así como un rapido sobreajuste.\\
-Las redes neuronales convolucionales trabajan dividiendo y modelando la información en partes mas pequeñas, y combinando esta información en las capas mas profundas de la red. Por ejemplo, en el caso del tratamiento de una imagen, las primeras capas tratarían de detectar los bordes de las figuras. Las siguientes capas buscarían combinar los patrones de detección de bordes para conseguir formas mas simples, y aplicar patrones de posición de objetos, iluminacion... Por ultimo, en las últimas capas se intentará hacer coincidir la imagen con todos los patrones descubiertos, para conseguir una predicción final de la suma de todos ellos. Así es como las redes neuronales convolucionales consiguen modelar una gran cantidad de datos, diviendo previamente el problema en partes para conseguir predicciones mas sencillas y precisas.
+Sin embargo, se utilizan principalmente para resolver el mayor problema que tienen las redes neuronales ordinarias: el tratamiento de imágenes. Pese a que con las redes neuronales estándar es posible manejar imágenes (veremos el ejemplo del MNIST en el apartado 4.3), en cuanto las imágenes aumentan su tamaño y calidad esto se vuelve intratable. Al tratarse de neuronas totalmente conectadas, provocaríamos un desperdicio de recursos así como un rápido sobreajuste.\\
+Las redes neuronales convolucionales trabajan dividiendo y modelando la información en partes mas pequeñas, y combinando esta información en las capas mas profundas de la red. Por ejemplo, en el caso del tratamiento de una imagen, las primeras capas tratarían de detectar los bordes de las figuras. Las siguientes capas buscarían combinar los patrones de detección de bordes para conseguir formas mas simples, y aplicar patrones de posición de objetos, iluminación... Por ultimo, en las últimas capas se intentará hacer coincidir la imagen con todos los patrones descubiertos, para conseguir una predicción final de la suma de todos ellos. Así es como las redes neuronales convolucionales consiguen modelar una gran cantidad de datos, dividiendo previamente el problema en partes para conseguir predicciones mas sencillas y precisas.
 \subsection{Estructura}
-En general, todas las redes neuronales convoluciones estan formadas por una estructura compuesta por 3 tipos de capas:
+En general, todas las redes neuronales convoluciones están formadas por una estructura compuesta por 3 tipos de capas:
 \subsubsection{Capa convolucional}
-Esta capa le da nombre de la red. En vez de utilizar la multiplicación de matrices como en la redes neuronales estandar, se aplica un operación llamada convolución. Esta operación recibe como entrada una imagen, y sobre ella aplica un filtro que nos devuelve su mapa de caracteristicas, reduciendo así el tamaño de sus parametros. La convolución utilizada tres ideas que ayudan a mejorar cualquier sistema sobre el que se aplique machine learning:
+Esta capa le da nombre de la red. En vez de utilizar la multiplicación de matrices como en la redes neuronales estándar, se aplica una operación llamada convolución. Esta operación recibe como entrada una imagen, y sobre ella aplica un filtro que nos devuelve su mapa de características, reduciendo así el tamaño de sus parámetros. La convolución utiliza tres ideas que ayudan a mejorar cualquier sistema sobre el que se aplique machine learning:
 \begin{itemize}
-\item{Iteracciones dispersas:}
-Al aplicar un filtro de menos tamaño sobre la entrada, reducimos bastante el numero de parámetros y calculos.
-\item{Parametros compartidos:}
-Compartir parametros entre los distintos tipos de filtros ayuda a mejorar la eficiencia del sistema.
-\item{Representaciones equivariantes:}
+\item{\textbf{Iteracciones dispersas}:}
+Al aplicar un filtro de menos tamaño sobre la entrada, reducimos bastante el numero de parámetros y cálculos.
+\item{\textbf{Parametros compartidos}:}
+Compartir parámetros entre los distintos tipos de filtros ayuda a mejorar la eficiencia del sistema.
+\item{\textbf{Representaciones equivariantes}:}
 Si las entradas cambian, las salidas cambian de forma similar.
 \end{itemize}
-Además, la convolucion proporciona herramientas para trabajar con entradas de tamaño variable, lo que es muy util para trabajar con imagenes (cada imagen tiene un numero de pixeles distinto). Se basa en un operador matemático que transforma dos funciones f y g, en una tercera, que en cierto sentido, represenrta la magnitud en la que se superponen f y una versión transladada e invertida de g.
+Además, la convolución proporciona herramientas para trabajar con entradas de tamaño variable, lo cual es muy útil cuando se trabaja con imágenes (cada imagen tiene un numero distinto de píxeles). Se basa en un operador matemático que transforma dos funciones f y g, en una tercera, que en cierto sentido, representa la magnitud en la que se superponen f y una versión trasladada y rotada de g.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/conv_layer.png}
 \caption{Funcionamiento de capa convolucional}
 \end{figure}\\
 \subsubsection{Capa de reducción o pooling}
-Esta capa se coloca generalmente después de la capa convolucional. Reduce la cantidad de parametros a analizar reduciendo las dimensiones espaciales (ancho x alto), quedandose con las características mas comunes. La operación que lleva a cabo esta capa también se llama reduccion de muestreo, ya que la reducción de tamaño implica tambien una perdida de información. Sin embargo, para un red neuronal, este tipo de perdida puede ser beneficioso debido a:
+Esta capa se coloca generalmente después de la capa convolucional. Es la encargada de reducir la cantidad de parámetros a analizar reduciendo las dimensiones espaciales (ancho x alto), quedándose de esta forma con las características mas comunes. La operación que lleva a cabo esta capa también se llama reducción de muestreo, ya que la reducción de tamaño implica también una perdida de información. Sin embargo, para un red neuronal, este tipo de pérdida puede ser beneficioso debido a:
 \begin{itemize}
-\item La reducción del tamaño provoca una menor sobrecarga de calculo en las proximas capas de la red.
-\item Reducir el sobreajuste
+\item La reducción del tamaño provoca una menor sobrecarga de calculo en las próximas capas de la red.
+\item Reduce habitualmente el sobreajuste.
 \end{itemize}
-La operacion que se suele aplicar en esta capa es "max-pooling", que divide la imagen de entrada en un conjunto de rectángulos y respecto a cada uno de ellos, se queda con el máximo valor.
+La operación que se suele aplicar en esta capa es "max-pooling", que divide la imagen de entrada en un conjunto de rectángulos, y respecto a cada uno de ellos, se queda con el valor máximo.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/max_pooling.png}
 \caption{Max-pooling aplicado a una imagen}
 \end{figure}
 \subsubsection{Capa clasificadora totalmente conectada}
-Una vez que la imagen ha pasado por las capas convolucionales y de pooling, las redes convolucionales normalmente usan capas completamente conectadas en las que cada pixel se trata como una neurona independiente, separada como si se tratase de una red neuronal estandar. Esta ultima capa clasificadora tendrá tantas neuronas como el numero de clases a predecir, y nos ofrecerá el resultado final de la red.
+Una vez que la imagen ha pasado tanto por las capas convolucionales como las de pooling y se han extraído sus características mas destacadas, los datos llegan a la fase de clasificación. Para ello, ĺas redes convolucionales normalmente utilizan capas completamente conectadas en las que cada píxel se trata como una neurona independiente. Las neuronas de esta fase funcionan como las de un perceptrón multicapa, donde la salida de cada neurona se calcula multiplicando la salida de la capa anterior por el peso de la conexión, y aplicando a este dato una función de activación.
 
 \section{Redes neuronales recurrentes}
-Los humanos no empiezan a pensar de cero a cada segundo. Por ejemplo, mientras leemos, entendemos cada palabra basandonos en el contexto que forman las palabras anteriores. No desperdiciamos los ideas anteriores, si no que estas tienen persistencia en la memoria.\\
-Las redes neuronales tradicionales no cuentan con esta capacidad, y es su mayor defecto. Por ejemplo, imaginemos el caso en el que queremos clasificar que clase de evento está pasando en una punto de una película. No está muy claro como una red neuronal tradicional podría usar razonablemente las escenas anteriores para predecir las siguientes.\\
-Y aquí es donde entran en juego las redes neuronales recurrentes, ya que resuelven este problema. Su principal característica es que son redes con bucles, que permiten que la información persista.\\
+Los humanos no empiezan a pensar de cero a cada segundo. Por ejemplo, mientras leemos, entendemos cada palabra basándonos en el contexto que forman las palabras previas. No desperdiciamos los ideas anteriores, sino que estas tienen persistencia en la memoria.\\
+Las redes neuronales tradicionales no cuentan con esta capacidad, y es su mayor defecto. Por ejemplo, imaginemos el caso en el que queremos clasificar que clase de evento está pasando en una punto de una película. No está muy claro cómo una red neuronal tradicional podría usar razonablemente las escenas anteriores para predecir las siguientes.\\
+Y aquí es donde entran en juego las redes neuronales recurrentes, ya que estas sí resuelven este problema. Su principal característica es que son redes con bucles, que permiten que la información persista.\\
 \begin{figure}[htp]
 \centering
 \vspace{-1.5em}
 \includegraphics[scale=0.3]{images/rnnrolled.png}
 \caption{Ejemplo básico de red neuronal recurrente.}
 \end{figure}
-\\En el diagrama superior, podemos ver como una parte de la red neuronal, A, recibe una entrada x y devuelve una salida h. El bucle permite que la información pase de un paso de la red al siguiente. Pese a que el concepto de bucle parezca algo extraño, las redes neuronales que cuentan con ellos no son tan distantes de la redes neuronales tradicionales. Una red neuronal recurrente puede ser creada utilizando multiples copias de la misma red, pasando el mensaje o salida al nodo sucesor. Si desenrollamos el bucle, tendriamos algo parecido a lo siguiente:\\
+\\En el diagrama 2.18, podemos ver como una parte de la red neuronal, \textbf{A}, recibe una entrada \textbf{x} y devuelve una salida \textbf{h}. El bucle permite que la información pase de un ciclo de la red al siguiente. Pese a que el concepto de bucle parezca algo extraño, las redes neuronales que cuentan con ellos no son tan distantes de la redes neuronales tradicionales. Una red neuronal recurrente puede ser creada utilizando múltiples copias de la misma red, pasando el mensaje o salida al nodo sucesor. Si desenrollamos el bucle, tendríamos algo parecido a la figura 2.19:\\
 \begin{figure}[htp]
 \centering
 \vspace{-1.5em}
 \includegraphics[scale=0.3]{images/RNNunrolled.png}
 \caption{Red neuronal recurrente desenrollada.}
 \end{figure}
-\\Esta forma de cadena hace preveer que las redes neuronales recurrentes estan intimamente recolacionas con secuencias y listas. En los ultimos años, se han logrado autenticos grandes éxitos aplicando las RNN para resolver problemas: reconocimiento de discursos, modelación de lenguajes, traducciones, captación de imagenes... Un factor clave en estos exitos es la uso de LSTMs, un tipo muy especial de redes neuronales recurrentes, que trabajan por muchas razones de forma mas eficiente que la version estándar.
+\\Esta forma de cadena hace prever que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas. En los últimos años, se han logrado auténticos grandes éxitos aplicando las RNN para resolver problemas como: reconocimiento de discursos, modelación de lenguajes, traducciones, captación de imágenes... Un factor clave en estos éxitos es el uso de las redes LSTMs, un tipo muy especial de redes neuronales recurrentes que trabajan por muchas razones de forma mas eficiente que la versión estándar.
 \subsubsection{El problema de la longitud de las dependencias.}
-Uno de los intereses de las RNNs es la idea de conectar información antigua con la tarea actual. En temas de video, sería util por ejemplo utilizar frames anteriores para entender el actual, pero... ¿puedes las RNN hacer esto? Depende.\\
-Algunas veces, solo necesitamos utilizar información reciente para la tarea actual. Por ejemplo, en temas de modelación de lenguaje, para adivinar la siguiente palabra en un contexto, en la mayoría de los casos bastaría con analizar la frase en la que se encuentra. Sin embargo, hay casos en los que necesitamos acceder a un contexto mas grande. Desafortunadamente, a medida que el espacio entre la informacion requerida y la tarea actual aumental, las RNN cada vez tardan mas en aprender a conectar la información.\\
+Uno de los intereses de las RNNs es la idea de conectar información antigua con la tarea actual. En temas de vídeo, sería útil por ejemplo utilizar frames anteriores para entender el frame actual, pero... ¿pueden las RNN hacer esto? La respuesta es, depende.\\
+Algunas veces, solo necesitamos utilizar información reciente para la tarea actual. Por ejemplo, en temas de modelación de lenguaje, para adivinar la siguiente palabra en un contexto, en la mayoría de los casos bastaría con analizar la frase en la que se encuentra. Sin embargo, hay casos en los que se necesita acceder a un contexto mas grande. Desafortunadamente, a medida que el espacio entre la información requerida y la tarea actual aumenta, las RNN tardan cada vez más en aprender a conectar la información.\\
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.3]{images/RNN-longtermdependencies.png}
 \caption{Red neuronal recurrente desenrollada.}
 \end{figure}
-\\En teoria, las RNN son perfectamente capaces de resolver este problema (long-term dependencies), pero en la práctica no lo parece tanto. En 1991, Hochreiter estudió este problema, y encontró algunas razones por las que las RNN encuentran dificultades a la hora de aprender información sobre grandes contextos. Por suerte, las redes LSTMs solventan estos problemas.
+\\En teoría, las RNN son perfectamente capaces de resolver este problema (long-term dependencies), pero en la práctica no lo parece tanto. En 1991, Hochreiter estudió este problema, y encontró algunas razones por las que las RNN encuentran dificultades a la hora de aprender información sobre grandes contextos. Por suerte, las redes LSTMs solventan estos problemas.
 \subsection{Redes LSTM}
 Las redes Long Short Term Memory (normalmente llamadas LSTMs) son un tipo especial de redes neuronales recurrentes descritas por primera vez en 1997 por Hochreiter \& Schmidhuber, capaces de aprender una larga lista de dependencias en largos periodos de tiempo.\\
-Todas las redes neuronales recurrentes tienen forma de cadena al repetir sus modulos. En las RNN estandar, el modulo repetidor tiene una estructura muy simple, con una sola capa, como podria ser la de tipo tanh. Las redes LSTM tambien tienen forma de cadena, pero el modulo repetidor en vez de tener una sola capa, tiene cuatro.
+Todas las redes neuronales recurrentes tienen forma de cadena al repetir sus módulos. En las RNN estándar, el modulo repetidor tiene una estructura muy simple, con una sola capa, como podría ser la de tipo tanh. Las redes LSTM tambien tienen forma de cadena, pero el modulo repetidor en vez de tener una sola capa, tiene cuatro.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.35]{images/LSTM3-chain.png}
@@ -395,18 +394,18 @@ Todas las redes neuronales recurrentes tienen forma de cadena al repetir sus mod
 \includegraphics[scale=0.2]{images/LSTM2-notation.png}
 \caption{Notación del modulo repetidor.}
 \end{figure}
-\\La clave de las redes LSTMs se encuentra en el estado de la celda, es decir, en la linea horizontal de la parte superior del diagrama, ya que recorre toda la cadena con solo algunas pequeñas interacciones. Para la información, es muy facil recorrer la red sin ser alterada.\\
-La red tambien tiene la habilidad de borrar o añadir información al estado de la celda, reguladas cuidadosamente por estructuras llamadas puertas. Estas puertas son una manera de permitir opcionalmente a la información circular o no. Están compuestas por un capa sigmoide y una operación de multiplicación. La salida de la capa sigmoide alterna entre 0 y 1, describiendo si la informacion fluye o no. Una red LSTM tiene 3 de estas puertas, para proteger y controlar el estado de la celda.\\\\
-Las redes neuronales LSTM siguen una serie de pasos para decidir que información se va a ir almacenando o borrando. Podemos destacar los siguientes:
+\\La clave de las redes LSTMs se encuentra en el estado de la celda, es decir, en la linea horizontal que recorre la parte superior del diagrama 2.21, ya que permite a la información fluir por toda la red con solo algunas pequeñas interacciones, sin ser a penas alterada.
+La red también tiene la habilidad de borrar o añadir información al estado de la celda mediante estructuras llamadas puertas. Estas puertas son una manera de permitir opcionalmente a la información circular o no, y se componen de una capa sigmoide y una operación de multiplicación. Las salidas de la capa sigmoide alternan entre 0 y 1, describiendo si la información fluye o no. Una red LSTM tiene 3 de estas puertas, para proteger y controlar el estado de la celda.\\\\
+Las redes neuronales LSTM siguen una serie de pasos para decidir qué información se va a ir almacenando o borrando. Podemos destacar los siguientes:
 \begin{enumerate}
-\item \textbf{Decidir que información despreciar}. Esta decisión la toma la capa sigmoide, que  devuelve una salida igual a 1 si se busca mantener la informacion, o 0 si queremos deshacernos de ella.\\
-Volvamos al ejemplo de modelación del lenguaje, donde se quiere predecir una palabra basandose en las anteriores. En este problema, el estado de la celda almacenará el genero del sujeto, para usar los pronombres adecuados. Cuando nos encontremos un nuevo sujeto, olvidaremos el genero del anterior ya que no será de utilidad.
-\item \textbf{Decidir que información se va a almacenar}. Consta de dos partes: primero, una capa sigmoide deciden que valores son actualizados. Después, una capa tanh crea un vector con los nuevos valores candidatos, que pueden ser añadidos al estado.\\
-En el ejemplo anterior, se decidiría que queremos añadir el genero del nuevo sujeto al estado de la celda, para reemplazar el viejo que queremos olvidar.
-\item \textbf{Actualizar el estado de la celda}. En el paso anterior se decide que hacer, y ahora toca hacerlo. Multiplicamos el viejo estado por la salida de la capa sigmoide del primer paso, olvidando las cosas que decidimos olvidar. A esto, le sumamos el producto de la salida de la capa sigmoide y de la capa tanh del segundo paso. Con ello, conseguimos saber los nuevos valores candidatos, escalados segun la decisión de actualizar el estado de la celda.\\
-En el caso de modelado de lenguaje, ahora es cuando desechamos la informacion sobre el genero del viejo sujeto, y añadimos la nueva informacion, como decidimos en los pasos anteriores.
+\item \textbf{Decidir qué información despreciar}. Esta decisión la toma la capa sigmoide, que devuelve una salida igual a 1 si se busca mantener la información, o 0 si queremos deshacernos de ella.\\
+Volvamos al ejemplo de modelado del lenguaje, donde se quiere predecir una palabra basándose en las anteriores. En este problema, el estado de la celda puede almacenar el género del sujeto para usar los pronombres adecuados. Cuando nos encontremos un nuevo sujeto, olvidaremos el genero del anterior ya que no será de utilidad.
+\item \textbf{Decidir que información se va a almacenar}. Consta de dos partes: primero, una capa sigmoide decide que valores son actualizados. Después, una capa tanh crea un vector con los nuevos valores candidatos, que pueden ser añadidos al estado.\\
+En el ejemplo anterior, se decidiría que queremos añadir el género del nuevo sujeto al estado de la celda, para reemplazar el viejo que queremos olvidar.
+\item \textbf{Actualizar el estado de la celda}. En el paso anterior se decide que hacer, y ahora toca hacerlo. Se multiplica el viejo estado por la salida de la capa sigmoide del primer paso, olvidando así las cosas que decidimos olvidar. A esto, se le suma el producto de la salida de la capa sigmoide y de la capa tanh del segundo paso. Con ello, se consiguen saber los nuevos valores candidatos, escalados según la decisión de actualizar el estado de la celda.\\
+En el caso de modelado de lenguaje, ahora es cuando se desecha la información sobre el género del viejo sujeto, y se añade la nueva información, como decidimos en los pasos anteriores.
 \item \textbf{Decidir la salida basandonos en el estado de la celda, pero de manera filtrada}. Primero, mediante una capa sigmoide, se decide que partes del nuevo estado de la celda se van a sacar como salida. Después, se pasa el estado de la celda por una capa tanh para tener valores entre -1 y 1, y lo multiplicamos por la salida de la capa sigmoide, para sacar solo las partes que decidamos.\\
-En el ejemplo de modelado de lenguaje, una vez que nos encontremos con el nuevo sujeto, sacaremos informacion a cerca de él como puede ser el si es singular o plural, para después poder conjugar correctamente el verbo que le sigue.
+En el ejemplo de modelado de lenguaje, una vez que se encuentre el nuevo sujeto, se sacará información a cerca de él como puede ser si éste es singular o plural, para después poder conjugar correctamente el verbo que le sigue.
 \end{enumerate}
-Como he comentado anteriormente, la mayoría de los mejores resultados utilizando redes recurrentes, es mediante las redes LSTMs. Pero a pesar de que su descubrimiento ha sido un gran hito, todavia quedan metas por cumplir. Uno de ellos sería dotar a las RNN de una capacidad para decidir que información consultar en una fuente muy grande de información. Por ejemplo, si estamos usando redes RNN para crear un titulo que describa una imagen, sería util elegir que partes de la imagen usar para cada palabra.
+Como se ha comentado anteriormente, la mayoría de los mejores resultados utilizando redes recurrentes, es mediante las redes LSTMs. Pero a pesar de que su descubrimiento ha sido un gran hito, todavía quedan metas por cumplir. Una de ellas sería dotar a las RNN de una capacidad para decidir que información consultar en una fuente muy grande de información. Por ejemplo, si estamos usando redes RNN para crear un titulo que describa una imagen, sería útil elegir que partes de la imagen usar para cada palabra.
 \label{ch:teoria}
