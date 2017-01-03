@@ -103,6 +103,7 @@ f(x) = \begin{Bmatrix}
 \includegraphics[scale=1]{images/Activation_binary_step.png}
 \caption{Función de activación escalón binario}
 \end{figure}
+TODO: Logística
 \item Logística / Softstep: .............. Su rango va es (0,1), y es monótona.
 \begin{equation}
 f(x) = \frac{1}{1+e^{-x}}
@@ -137,6 +138,7 @@ f(x) = ln(1+e^{x})
 \caption{Funcion de activación softplus}
 \end{figure}
 \end{itemize}
+TODO: Borrar estas propiedades
 Las propiedades deseables de una función de activación son:
 \begin{itemize}
 \item No lineal: Cuando contamos con una función de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una función universal de aproximación. La función identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activacion identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
@@ -148,55 +150,59 @@ Las propiedades deseables de una función de activación son:
 \end{itemize}
 
 \subsubsection {Funcion de salida}
+TODO: revisar, no veo diferencia con función de activación
 Esta función convierte el estado de la neurona en la salida hacia la siguiente. Recordar que esta salida es transmitida mediante la sinapsis. En ocasiones podemos encontrar redes neuronales sin funcion de salida, por lo que la salida es el propio estado de activación de la neurona. Nos encontramos dos grandes tipos de funciones de salidas.
 \begin{itemize}
 \item Funciones de salida que transforman el estado de activación en una salida binaria. Para ello, se utiliza la función escalón.
-\item Funciones de salida que transforman el estado de activacion en probabilidades. Un ejemplo de uso nos lo encontramos en la máquina de Boltzman. Las redes con etse tipo de salidas no tiene un comportamiento determinista.
+\item Funciones de salida que transforman el estado de activación en probabilidades. Un ejemplo de uso nos lo encontramos en la máquina de Boltzman. Las redes con etse tipo de salidas no tiene un comportamiento determinista.
 \end{itemize}
 
 
 \subsection{Tipos de aprendizaje en redes neuronales}
 \subsubsection {Aprendizaje supervisado}
-Cuando el problema nos presenta el conjunto de datos y los atributos que queremos precedir. Nos encontramos dos categorias:
+Los modelos de aprendizaje supervisado son aquellos utilizados cuando el problema nos presenta el conjunto de datos y los atributos que queremos predecir. Nos encontramos dos categorías:
 \begin{itemize}
-\item Regresion: los valores de salida son una o mas variables continuas. Un ejemplo sería predecir el valor de una casa en funcion de sus metros cuadrados, el numero de habitaciones, tamaño de la piscina...
-\item Clasificación: los datos pertenecen a dos o mas clases, y queremos aprender como clasificar nuevas entradas en esas clases, a partir de datos que ya conocemos. Uno de los ejemplos más conocidos es el Iris dataset, donde se intenta clasificar los datos en 4 tipos de flores segun la longitud y la anchura de sus petalos y sépalos.
+\item Regresión: los valores de salida son una o mas variables continuas. Un ejemplo sería predecir el valor de una casa en función de sus metros cuadrados, el numero de habitaciones, tamaño de la piscina... (Problema Boston-Housing detallado en el punto 4.2)
+\item Clasificación: los datos pertenecen a dos o mas clases, y se busca aprender como clasificar nuevas entradas en esas clases a partir de datos que ya conocemos. Uno de los ejemplos más conocidos es el Iris dataset, donde se intenta clasificar los datos en 4 tipos de flores según la longitud y la anchura de sus pétalos y sépalos. Otro de ellos es el problema del dataset MNIST, que busca clasificar imágenes de números en los 10 tipos de caracteres numéricos (Problema detallado en el punto 4.3).
 \end{itemize}
 \subsubsection {Aprendizaje no supervisado}
-Cuando no hay informacion previa de salidas dado un conjunto de entradas. En estos casos, el objetivo es encontrar grupos mediante clustering, o determinar una distribución de probabilidad sobre un conjunto de entrada.
+Cuando no hay información previa de salidas dado un conjunto de entradas. En estos casos, el objetivo es encontrar grupos mediante clustering, o determinar una distribución de probabilidad sobre un conjunto de entrada.
 
 
-
-\section {Perceptron}
-En 1959, F.Rosenblatt desarrolló por primera vez la idea de Perceptrón, basandose en la regla de aprendizaje de Hebb y en los modelos de neuronas biológicas de McCulloch y Pitts. Uno de las carácteristicas que mas interés despertó de este modelo fue su capacidad para aprender a reconocer patrones.\\
-El perceptron se basa en una arquitectura monocapa. Está constituido por un conjunto de celulas de entrada, que reciben los patrones a reconocer o clasificar, y una o varias celulas de salida que se ocupa de clasificar estos patrones de entrada en clases. Cada célula de entrada está conectada con todas las células de salida. En la siguiente imagen se puede observar la arquitectura de un perceptron simple con 4 entradas y 1 salida.
+\section {Perceptrón}
+En los años 50, F.Rosenblatt desarrolló por primera vez la idea de Perceptrón, basándose en la regla de aprendizaje de Hebb y en los modelos de neuronas biológicas de McCulloch y Pitts. Uno de las carácteristicas que mas interés despertó de este modelo fue su capacidad para aprender a reconocer patrones.\\
+El perceptrón se basa en una arquitectura monocapa. Está constituido por un conjunto de células de entrada, que reciben los patrones a reconocer o clasificar, y una o varias células de salida que se ocupan de clasificar estos patrones de entrada en clases. Cada célula de entrada está conectada con todas las células de salida. En la figura \ref{perceptron} se puede observar la arquitectura de un perceptrón simple con 4 entradas y 1 salida.
 \begin{figure}[htp]
 \centering
 \vspace{-1em}
 \includegraphics[scale=0.5]{images/perceptron.png}
 \caption{Perceptron simple.}
+\label{perceptron}
 \end{figure}
 \\El umbral es un parámetro utilizado como factor de comparación a la hora de generar la salida. En esta arquitectura, la salida de la red se obtiene multiplicando los valores de las entradas, por los pesos de las conexiones:
 \begin{equation}\label{Umbral perceptron}
 y' =  \sum_{i=1}^{n} w_{i}x_{i}
 \end{equation}
-La salida definitiva se obtiene aplicandole la funcion de salida al nivel de activacion de la célula, es decir:
+TODO: Revisar estas formulas
+La salida definitiva se obtiene aplicándole la función de salida al nivel de activación de la célula, es decir:
 \begin{equation}\label{Salida perceptron}
 y =  F(y', \theta)
 \end{equation}
 Con estas formulas, podemos deducir que la salida de la célula será 1 (neurona activada) si el umbral es mayor que 0, o 0 (neurona desactivada) en caso contrario.\\
-La funcion de salida (F) produce una salida binaria, por lo que es un diferenciador en dos categorias. En el caso de tener unicamente dos dimensiones, la ecuación anterior se tranforma en:
+La funcion de salida (F) produce una salida binaria, por lo que es un diferenciador en dos categorías. En el caso de tener únicamente dos dimensiones, la ecuación anterior se transforma en:
 \begin{equation}
 w_{1}x_{1} + w_{2}x_{2} + \theta = 0
 \end{equation}
-Que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation}, y cuyo corte en la abscina en el eje y pasa por \begin{equation}-\frac{\theta}{w_{2}}\end{equation}
-Como podemos ver, podemos imaginarnos el percetron como una recta, que un gráfica de dos dimensiones, deja las dos categorías a separar a un lado y a otro de la misma.
+Que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation} y cuyo corte en la abscina en el eje y pasa por \begin{equation}-\frac{\theta}{w_{2}}\end{equation}
+Como podemos ver en la \ref{perceptron_recta}, podemos imaginarnos el perceptrón como una recta, que en un gráfica de dos dimensiones deja las dos categorías a separar a un lado y a otro de la misma.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.5]{images/Perceptron_example.png}
 \caption{Separacion lineal del perceptrón.}
+\label{perceptron_recta}
 \end{figure}
 \subsubsection{Aprendizaje}
+TODO: Volver a escribir esto
 El proceso de aprendizaje consiste en la inserción de un patrón de entrada del conjunto de aprendizaje perteneciente a la clase. Si la salida es correcta, no se realizará ninguna acciones, pero si no, se modificarán los pesos.
 Para el perceptrón, existen 2 tipos de aprendizaje: uno utiliza una tasa de aprendizaje, mientras que el otro no la utiliza. Esta tasa de aprendizaje regula la actualización de los valores de los pesos de la red, y es la misma para todas las neuronas. Los pasos a seguir para entrenar el perceptrón son:
 \begin{enumerate}
@@ -207,21 +213,19 @@ Para el perceptrón, existen 2 tipos de aprendizaje: uno utiliza una tasa de apr
 \begin{enumerate}
 \item Leer valores de entrada
 \item Calcular error
-\item Actualizar pesos segun el error
+\item Actualizar pesos según el error
 \begin{enumerate}
 \item Actualizar pesos de entradas
-\item Actualizarf el umbral
+\item Actualizar el umbral
 \end{enumerate}
-\item Incremental contador de numero de ejemplos entrenados
 \end{enumerate}
 \item Comprobar que el vector de pesos es correcto
-\item Incremental el contador de iteraciones
 \end{enumerate}
 \item Salida
 \end{enumerate}
 
 \subsubsection{Capacidades de un perceptrón simple}
-Hasta ahora, hemos descrito el perceptrón como un clasificador. Sin embargo, tambien pueden ser usados para emular funcines lógicas elementales como AND, OR y NAND. Consideremos las funciones AND y OR. Dado que son funciones linealmente separabales, pueden ser aprendidas por un perceptrón.
+Hasta ahora, hemos descrito el perceptrón como un clasificador. Sin embargo, también pueden ser usados para emular funciones lógicas elementales como AND, OR y NAND. Consideremos las funciones AND y OR. Dado que son funciones linealmente separables, pueden ser aprendidas por un perceptrón.
 \begin{figure}[htp]
 \centering
 \begin{minipage}[b]{0.4\textwidth}
@@ -234,22 +238,23 @@ Hasta ahora, hemos descrito el perceptrón como un clasificador. Sin embargo, ta
   \caption{Separacion lineal de la funcion OR.}
   \end{minipage}
 \end{figure}
-\\Sin embargo, la función XOR no puede ser aprendida por un unico perceptrón, ya que requerie el uso de al menos del lineas para separar las clases. Si se quiere alcanzar esta funcionalidad, es necesario utilizarse al menos una capa mas. Aquí es donde entra en juego el perceptrón multicapa.
+\\Sin embargo, la función XOR no puede ser aprendida por un único perceptrón, ya que requiere el uso de al menos dos lineas para separar las clases. Si se quiere alcanzar esta funcionalidad, es necesario utilizarse al menos una capa mas. Aquí es donde entra en juego el perceptrón multicapa.
 
 \section {Perceptron multicapa}
-El perceptrón muticapa tuvo su origen en los años 80, con la idea de solucionar el mayor problema del perceptron simple: no ser capaz de aprender funciones no linealmente separables (como es el caso de la función XOR). Se ha demostrado que es un aproximador universal de funciones.
-\\El perceptrón multicapa es un modelo de red neuronal con alimentacion hacia delante, es decir, con conexiones sin bucles (tipo de red feedforward). Está compuesto de varias capas ocultas entre la entrada y la salida de la misma, y caracterizado por tener salidas disjuntas pero relacionadas entre si, ya que la salida de una neurona es la entrada de la siguiente.
+El perceptrón muticapa tuvo su origen en los años 80, con la idea de solucionar el mayor problema del perceptrón simple: no ser capaz de aprender funciones no linealmente separables (como es el caso de la función XOR). Se ha demostrado que es un aproximador universal de funciones.
+\\El perceptrón multicapa es un modelo de red neuronal con alimentación hacia delante, es decir, con conexiones sin bucles (tipo de red feedforward). Está compuesto de varias capas ocultas entre la entrada y la salida de la misma, y caracterizado por tener salidas disjuntas pero relacionadas entre si, ya que la salida de una neurona es la entrada de la siguiente.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1.2]{images/multilayerperceptron.png}
 \caption{Perceptrón multicapa.}
 \end{figure}
-\\Las capacidades de decisión de un perceptron multicapa de 2 y 3 capas con una unica neurona de salida se muestran en la siguiente tabla:
+\\Las capacidades de decisión de un perceptron multicapa de 2 y 3 capas con una única neurona de salida se muestran en la \ref{perceptron23capas}:
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/perceptron23capas.png}
+\label{perceptron23capas}
 \end{figure}
-\\En el perceptrón multicapa, al igual que en el perceptrón simple, podemos diferenciar una fase de propagación de los valores de entrada hacia delante, y una fase de aprendizaje en la que los datos obtenidos a la salida del perceptrón se van propagando hacia atrás para observar el error y actualizar los pesos de las neuronas. Este algorirmo se llama backpropagation o retropropagación.
+\\En el perceptrón multicapa, al igual que en el perceptrón simple, podemos diferenciar una fase de propagación de los valores de entrada hacia delante, y una fase de aprendizaje en la que los errores obtenidos a la salida del perceptrón se van propagando hacia atrás con el objetivo de actualizar los pesos de las conexiones mediante el gradiente de la función de error. Este algoritmo se llama backpropagation o retropropagación.
 \subsection{Propagación}
 Imaginemos un perceptrón multicapa con C capas. Llamemos ${W^{C} = W^{c}_{ij}}$ a la matriz de pesos de la capa c y c+1, donde ${W^{c}_{ij}}$ representa el peso de la neurona i de la capa c a la neurona j de la capa c+1. Denominaremos ${U^{C} = u^{c}_{i}}$ al vector de umbrales de las neuronas de la capa c. Se denomina ${a^{c}_{i}}$ a la activación o entrada de la neurona i de la capa c. Las activaciones de las neuronas se calculan de forma distinta dependiendo de la capa en la que nos encontremos.
 \begin{itemize}
