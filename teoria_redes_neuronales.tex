@@ -256,7 +256,7 @@ El perceptrón muticapa tuvo su origen en los años 80, con la idea de soluciona
 \end{figure}
 \\En el perceptrón multicapa, al igual que en el perceptrón simple, podemos diferenciar una fase de propagación de los valores de entrada hacia delante, y una fase de aprendizaje en la que los errores obtenidos a la salida del perceptrón se van propagando hacia atrás con el objetivo de actualizar los pesos de las conexiones mediante el gradiente de la función de error. Este algoritmo se llama backpropagation o retropropagación.
 \subsection{Propagación}
-Imaginemos un perceptrón multicapa con C capas. Llamemos ${W^{C} = W^{c}_{ij}}$ a la matriz de pesos de la capa c y c+1, donde ${W^{c}_{ij}}$ representa el peso de la neurona i de la capa c a la neurona j de la capa c+1. Denominaremos ${U^{C} = u^{c}_{i}}$ al vector de umbrales de las neuronas de la capa c. Se denomina ${a^{c}_{i}}$ a la activación o entrada de la neurona i de la capa c. Las activaciones de las neuronas se calculan de forma distinta dependiendo de la capa en la que nos encontremos.
+Imaginemos un perceptrón multicapa con C capas. Llamemos ${W^{C} = W^{c}_{ij}}$ a la matriz de pesos de la capa ${c}$ y ${c+1}$, donde ${W^{c}_{ij}}$ representa el peso de la neurona ${i}$ de la capa ${c}$ a la neurona ${j}$ de la capa c+1. Denominaremos ${U^{C} = u^{c}_{i}}$ al vector de umbrales de las neuronas de la capa ${c}$. Se denomina ${a^{c}_{i}}$ a la activación o entrada de la neurona ${i}$ de la capa ${c}$. Las activaciones de las neuronas se calculan de forma distinta dependiendo de la capa en la que nos encontremos.
 \begin{itemize}
 \item Capa de entrada: la activación se corresponde con el patrón de entrada del perceptrón.
 \item Capa oculta: la activación procede de las salidas de las capas anteriores conectadas a las neuronas de esta capa. Esta activación se calcula como la suma de los productos de las activaciones que reciben las neuronas de las capas anteriores multiplicadas por su peso, añadiendoles el umbral, es decir:\\
@@ -265,7 +265,7 @@ a_{i}^{c} = f(\sum_{j=1}^{n_{c-1}}w_{ji}^{c-1}a_{j}^{c-1}+u_{i}^{c})
 \end{equation}
 \item Capa de salida: ocurre lo mismo que en las capas ocultas, salvo que ahora la salida de las neuronas se corresponde con la salida de la red.
 \end{itemize}
-La funcion f es a lo que llamamos funcion de activación. Las funciones de activación mas utilizadas en el perceptrón multicapa son la función sigmoidal y la función tangente hiperbólica. Ambas poseen un intervalo continuo dentro de [0,1] y [-1,1] y vienen dadas por las siguientes ecuaciones.
+La función ${f}$ es a lo que llamamos función de activación. Las funciones de activación mas utilizadas en el perceptrón multicapa son la función sigmoidal y la función tangente hiperbólica. Ambas poseen un intervalo continuo dentro de [0,1] y [-1,1] y vienen dadas por las siguientes ecuaciones.
 \begin{itemize}
 \item Función sigmoidal ${f_{sigm}(x)=\frac{1}{1+e^{-x}}}$
 \item Función tangente hiperbólica ${f_{thip}(x)=\frac{1-e^{-x}}{1+e^{-x}}}$
@@ -275,52 +275,43 @@ La funcion f es a lo que llamamos funcion de activación. Las funciones de activ
 \vspace{-1.5em}
 \includegraphics[scale=0.6]{images/tansig_vs_logsig.png}
 \end{figure}
-Ambas funciones estan relacionadas mediante la expresión ${f_{thip}(x)=2f_{sigm}(x)-1}$, por lo que la utilización de una u otra depende de cual sea mas compatible con el tipo de patrón que se va a utilizar. La funcion sigmoidal tiene un nivel de saturación inferior igual a 0, y la tangente hiperbólica lo tiene a -1.\\
-Normalmente, la función de activacion suele ser la misma para todas las neuronas de la red exceptuando las neuronas de la capa de salida, que suelen utilizar dos funciones distintas: la funcion identidad, y la función escalon.
+Ambas funciones están relacionadas mediante la expresión ${f_{thip}(x)=2f_{sigm}(x)-1}$, por lo que la utilización de una u otra depende de cual sea mas compatible con el tipo de patrón que se va a utilizar. La función sigmoidal tiene un nivel de saturación inferior igual a 0, y la tangente hiperbólica lo tiene a -1.\\
+Normalmente, la función de activación suele ser la misma para todas las neuronas de la red exceptuando las neuronas de la capa de salida, que suelen utilizar dos funciones distintas: la función identidad, y la función sigmoidal.
 \subsection{Consideraciones de diseño}
 A la hora de diseñar un perceptrón multicapa para abordar un problema, el primer paso es determinar la arquitectura de la red. Esto implica determinar tres variables, ya explicadas anteriormente:
 \begin{itemize}
-\item Función de activación: se elige según el recorrido deseado, pero no influye en la capacidad de la red para resolver el problema.
-\item Numero de neuronas de entrada y de salida: viene dado por la definicion del problema. En ocasiones esta afirmación no tiene porque ser del todo cierta, y se ha de proceder a hacer un analisis previo basandose en tecnicas de analisis de correlacion, de sensebilidad, de importancia relativa...
-\item Numero de capas ocultas: pese a ser una variable que ha de definir el diseñador, no existe un mé'todo que determine el numero óptimo de neuronas ocultas para resolver el problema. Partiendo de una arquitectura ya entrenada, se van realizando pequeños cambios en el numero de neuronas/capas ocultas para buscar así el diseño optimo, ya que existen muchos tipos de arquitectura capaces de resolver un mismo problema.
+\item Función de activación: se elige según el comportamiento y el recorrido deseado, pero no influye en la capacidad de la red para resolver el problema.
+\item Número de neuronas de entrada y de salida: viene dado por la definición del problema. En ocasiones esta afirmación no tiene porque ser del todo cierta, y se ha de proceder a hacer un análisis previo basándose en técnicas de análisis de correlación, de sensibilidad, de importancia relativa...
+\item Número de capas ocultas: pese a ser una variable que ha de definir el diseñador, no existe un método que determine el numero óptimo de neuronas ocultas necesarias para resolver un problema, ya que existen muchos tipos de arquitectura capaces de resolver un mismo problema. Uno de los métodos, por ejemplo, sería partir de una arquitectura ya entrenada, e ir realizando pequeños cambios en el numero de neuronas/capas ocultas para buscar así el diseño óptimo.
 \end{itemize}
-\subsection{Algoritmo de Retropropagacion o Backpropagation}
-Como se ha comentado anteriormente, el proceso de aprendizaje del perceptron multicapa consiste en propagar hacia atrás cierta informacion desde la salida del perceptrón hasta su entrada. Esta información será el error entre la salida obtenida y la salida esperada, con el objetivo de que en las siguientes iteraciones la salida obtenida se aproxime lo máximo prosible a la salida esperada. Por tanto, nos encontramos ante un algoritmo de aprendizaje supervisado.\\
-Hay muchos errores que se pueden utilizar, pero el perceptrón multicapa usa la función error cuadrático medio, que se define como:
+\subsection{Algoritmo de Retropropagación o Backpropagation}
+Como se ha comentado anteriormente, el proceso de aprendizaje del perceptrón multicapa consiste en propagar hacia atrás cierta información desde la salida del perceptrón hasta su entrada. Esta información será el error entre la salida obtenida y la salida esperada, con el objetivo de que en las siguientes iteraciones la salida obtenida se aproxime lo máximo posible a la salida esperada. Por tanto, nos encontramos ante un algoritmo de aprendizaje supervisado.\\
+Hay muchas funciones de error que se pueden utilizar, pero el perceptrón multicapa usa habitualmente la función cuadrático medio, que se define como:
 \begin{equation}
 e(n) = \frac{1}{2}\sum_{i=1}^{n_{c}}(s_{i}(n)-y_{i}(n))^{2}
 \end{equation}
-siendo n cada una de las iteraciones del aprendizaje. El error obtenido e(n) es el error de una sola iteracion, por lo que si queremos entrenar la red con varios patrones, el error medio de esta será ${E=\frac{1}{N}\sum_{n=1}^{N}e(n)}$. En resumen, el perceptrón multicapa aprende encontrando el minimo de la función de error.\\
-Aunque el aprendizaje debe llevarse a cabo minimizando el error total, los metodos más utilizados son los basados en metodos de gradiente estocástico, que consisten en minimizar el error en cada patron e(n). Por tanto, aplicando el metodo de gradiente descendiente, cada peso de la red w se actualiza para cada patrón de entrada n, y siendo ${\alpha}$ la tasa de aprendizaje, de acuerdo con la siguiente ecuacion:
+siendo ${n}$ cada una de las iteraciones del aprendizaje. El error obtenido ${e(n)}$ es el error de una sola iteración, por lo que si queremos entrenar la red con varios patrones, el error medio de esta será ${E=\frac{1}{N}\sum_{n=1}^{N}e(n)}$. En resumen, el perceptrón multicapa aprende encontrando el mínimo de la función de error.\\
+Aunque el aprendizaje debe llevarse a cabo minimizando el error total, los meétodos más utilizados son los basados en métodos de gradiente estocástico, que consisten en minimizar el error en cada patrón ${e(n)}$. Por tanto, aplicando el método de gradiente descendiente, cada peso de la red ${w}$ se actualiza para cada patrón de entrada ${n}$, y siendo ${\alpha}$ la tasa de aprendizaje, de acuerdo con la siguiente ecuación:
 \begin{equation}
 w(n)=w(n-1)-\alpha \frac{\partial e(n)}{\partial w}
+\label{eq_grad}
 \end{equation}
-Dado que las neuronas de la red están agrupadas en capas ocultas segun niveles, es posible aplicar el metodo del gradiente descendente de forma eficiente en todas las neuronas, llevando a cabo el algoritmo de retropropagacion o regla delta generalizada.
+Dado que las neuronas de la red están agrupadas en capas ocultas según niveles, es posible aplicar el método del gradiente descendente de forma eficiente en todas las neuronas, llevando a cabo el algoritmo de retropropagación o regla delta generalizada.
 
 \subsection{Regla delta generalizada}
-Como ya se ha comentado, la regla delta generalizada no es mas que una forma eficiente de aplicar el método de gradiente a los parametros de la arquitectura (pesos y umbrales). Su aprendizaje es supervisado. Su uso consiste en ajustar pesos y bias tratando de minimizar la suma del error cuadrático. Para ello, se cambian dichas variables en la dirección contraria a la pendiente del error.\\
-Las redes neuronales entrenadas mediante esta técnica, dan respuestas mas que razonables cuando al sistema se le presentan entradas que nunca habia analizado. A una nueva entrada, le hará corresponder una entrada similar a la salida obtenida para un patrón de entrenamiento, siendo éste similar al patrón presentado a la red. Esta es una de las grandes propiedades de la regla delta, su capacidad de generalicación.\\
-Podriamos describir su funcionamiento básico en una serie de pasos:
-\begin{itemize}
-\item Se introduce un vector de entrada, y se calcula su salida.
-\item Se calcula el error
-\item Se determina en que direccion se deben cambiar los pesos para minimizar el error
-\item Se determina la cantidad en la que se cambiará cada peso
-\item Se modifican los pesos.
-\item Se repiten los pasos del 1 al 5 con todos los patrones de entrenamiento, hasta que el error de los vectores sea lo más reducido posible.
-\end{itemize}
-
+Como ya se ha comentado, la regla delta generalizada no es mas que una forma eficiente de aplicar el método de gradiente a los parámetros de la arquitectura (pesos y umbrales). Su aprendizaje es supervisado. Su uso consiste en ajustar pesos y bias tratando de minimizar la suma del error cuadrático. Para ello, se cambian dichas variables en la dirección contraria a la pendiente del error.\\
+Las redes neuronales entrenadas mediante esta técnica, dan respuestas mas que razonables cuando al sistema se le presentan entradas que nunca había analizado antes. A una nueva entrada, le hará corresponder una entrada similar a la salida obtenida para un patrón de entrenamiento, siendo éste similar al patrón presentado a la red. Esta es una de las grandes propiedades de la regla delta, su capacidad de generalicación.\\
 \subsection{Tasa de aprendizaje}
-La tasa de aprendizaje (${\alpha}$) es un parámetro que determina la velocidad a la que van a cambiar los pesos de las conexiones de la red. Tiene un rango [0,1], siendo los valores mas cercanos a cero los que hacen que los pesos cambien poco a poco, acercandose lentamente a la convergencia, y los cercanos a uno los que hacen que la red converja mas rapidamente al principio, pero siendo posible que los pesos oscilen demasiado al encontrar el peso óptimo final. Por esta razón es importante encontrar una tasa de aprendizaje óptima.\\
-Aquí es donde entra en juego un segundo termino llamado momento (${\eta}$), que pondera cuanto queremos que influya lo que los pesos han cambiado en la anterior iteración. Con ello, sabremos que si los pesos han cambiado mucho, es que estamos aun lejos del valor de la tasa de aprendizaje óptimo, por lo que avanzaremos en su busqueda mas rapidamente. Por otro lado, si los pesos no han cambiado a penas, sabremos que el valor optimo de ${\alpha}$ está cerca.\\
-Podemos modificar la ecuacion 2.XXXXXXXX para añadir esta mejora, de la siguiente manera:
+La tasa de aprendizaje (${\alpha}$) es un parámetro que determina la velocidad a la que van a cambiar los pesos de las conexiones de la red. Tiene generalmente un rango [0,1], siendo los valores mas cercanos a cero los que hacen que los pesos cambien poco a poco, acercándose lentamente a la convergencia, y los cercanos a uno los que hacen que la red converja mas rápidamente al principio, pero siendo posible que los pesos oscilen demasiado al encontrar el peso óptimo final. Por esta razón es importante encontrar una tasa de aprendizaje óptima.\\
+Aquí es donde entra en juego un segundo término llamado momento (${\eta}$), que pondera cuánto queremos que influya lo que los pesos han cambiado en la anterior iteración. Con ello, sabremos que si los pesos han cambiado mucho, es que estamos aun lejos del valor de la tasa de aprendizaje óptimo, por lo que avanzaremos en su búsqueda más rápidamente. Por otro lado, si los pesos no han cambiado apenas, sabremos que el valor óptimo de ${\alpha}$ está cerca.\\
+Si se modifica la ecuación \ref{eq_grad} para añadir esta mejora, quedaría de la siguiente manera:
 \begin{equation}
 w(n) = w(n-1) = - \alpha \frac{\partial e(n)}{\partial w} + \eta \Delta w(n-1)
 \end{equation}
-siendo ${\Delta}$w(n-1)=w(n-1)-w(n-2) el incremento que sufrió el parametro w en la anterior iteración.
+siendo ${\Delta w(n-1)=w(n-1)-w(n-2)}$ el incremento que sufrió el parámetro ${w}$ en la anterior iteración.
 \subsection{Sobreajuste y early stopping}
-El sobreajuste o overfitting es el efecto secundario de sobreentrenar un algoritmo de aprendizaje con ciertos datos para los que ya se conoce el resultado deseado. El algortismo debe alcanzar un estado en el cual sea capaz de predecir otros casos a partir de lo ya aprendido mediante datos de entrenamiento, generalizando para poder resolver distintas situaciones a las ya presentes durante el entrenamiento. No obstante, cuando un sistema se entrena demasiado o se entrena con datos extraños, el algoritmo tiende a quedarse ajustado a unas caracteristicas muy especificas de los datos de entrenamiento, que no representan un estado general de problema. En este estado, nuestro diseño es mas eficaz al responder a muestras del conjunto de entrenamiento, pero ante nuevas entradas el resultado empeora.\\
-Una manera de resolver este problema es extraer un conjunto de entradas del dataset de entrenamiento, y utilizarlo de manera auxiliar a modo de validación. Ya que este subconjunto se deja al margen durante el entrenamiento, su objetivo será evaluar el error en la red tras cada epoch, para determinar cuando este empieza a aumentar. Cuando aumente, se prodecerá a detener el entrenamiento y se conservarán los valores de los pesos del ciclo anterior. A este método se le llama early-stopping.
+El sobreajuste o overfitting es el efecto secundario de sobreentrenar un algoritmo de aprendizaje con ciertos datos para los que ya se conoce el resultado deseado. El algoritmo debe alcanzar un estado en el cual sea capaz de predecir otros casos a partir de lo ya aprendido mediante datos de entrenamiento, generalizando para poder resolver distintas situaciones a las ya presentes durante el entrenamiento. No obstante, cuando un sistema se entrena demasiado o se entrena con datos extraños, el algoritmo tiende a quedarse ajustado a unas características muy especificas de los datos de entrenamiento que no representan un estado general del problema. En este estado, nuestro diseño es más eficaz al responder a muestras del conjunto de entrenamiento, pero ante nuevas entradas el resultado empeora.\\
+Una manera de resolver este problema es extraer un conjunto de entradas del dataset de entrenamiento, y utilizarlo de manera auxiliar a modo de validación. Ya que este subconjunto se deja al margen durante el entrenamiento, su objetivo será evaluar el error en la red tras cada epoch, para determinar cuando éste empieza a aumentar. Cuando aumente, se prodecerá a detener el entrenamiento y se conservarán los valores de los pesos del ciclo anterior. A este método se le conoce como early-stopping.
 
 \section{Redes neuronales convolucionales}
 Las redes neuronales convolucionales son muy similares a las redes neuronales ordinarias descritas hasta ahora, como el perceptrón multicapa. Las neuronas tienen pesos, sesgos, reciben una entrada con la que realiza un producto escalar y sobre la que aplica una función de activación, tienen una función de perdida...\\
