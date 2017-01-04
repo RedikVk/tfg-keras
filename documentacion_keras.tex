@@ -84,7 +84,7 @@ Ejemplo de uso: \lstinline{model.add(Permute((2, 1), input_shape=(10, 64)))}
 Keras presenta diversas funciones para desarrollar capas convolucionales según las dimensiones de su entrada. La mas destacable, a modo de ejemplo, podría ser:\\
 \lstinline{Convolution2D(nb_filter, nb_row, nb_col, init='glorot_uniform', activation=None, weights=None, border_mode='valid', subsample=(1, 1), dim_ordering='default', W_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True)}\\\\
 Además de la versión en 2D, Keras nos ofrece funciones para entradas de 1 dimensión o 3 dimensiones. A parte, tenemos funcionalidades para desarrollar capas convolucionales dilatadas (AtrousConvolution2D), hacer deconvolución (Deconvolution2D), cropping (Cropping2D)...
-\subsection{Capas "pooling"}
+\subsection{Capas pooling}
 Al igual que ocurre con las capas convolucionales, Keras ofrece un buen numero de funciones para desarrollar capas pooling en redes convolucionales, dependiendo de las dimensiones de la entrada. Como en el caso anterior, una función representativa sería:\\
 \lstinline{MaxPooling2D(pool_size=(2, 2), strides=None, border_mode='valid', dim_ordering='default')}\\\\
 Si en vez de utilizar la función máximo se requiere que nuestra capa utilice otro tipo de algoritmos, Keras también nos ofrece funciones como: AveragePooling2D, GlobalMaxPooling2D, GlobalAveragePooling2D... Además de sus variantes para 1D y 3D.

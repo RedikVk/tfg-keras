@@ -2,20 +2,25 @@
 \lsection{Redes neuronales}
 \subsection {Historia de las redes neuronales}
 Desde hace cientos de años, se ha intentado estudiar el cerebro humano. Sin embargo, a partir de los años 50 cuando empezaron a desarrollarse las bases de la tecnología actual, hubo un fuerte avance en este estudio. Las redes neuronales, como su nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano.
+\\\\Años 40 :
 \begin{itemize}
-\\Años 40:\\
-\item A principios de los años 80, el neurólogo Warren McCulloch y el matemático Walter Pitts propusieron el primer modelo matemático de redes neuronales. Describieron como funcionaban las neuronas, y modelaron un red neuronal simple usando circuitos eléctricos.
+
+\item A principios de los años 40, el neurólogo Warren McCulloch y el matemático Walter Pitts propusieron el primer modelo matemático de redes neuronales. Describieron como funcionaban las neuronas, y modelaron un red neuronal simple usando circuitos eléctricos.
 \item A finales de década, Hebb definió dos conceptos muy importantes:
 \begin{itemize}
 \item El proceso de aprendizaje se localiza principalmente en la sinapsis o conexión entre neuronas.
 \item La información se representa en el cerebro mediante un conjunto de neuronas activas o inactivas.
 \end{itemize}
 Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue siendo usada en algunos modelos actuales. Esta regla nos dice que los cambios en los pesos de la sinapsis se basan en la interacción entre las neuronas pre y post sintacticas, y el numero de veces que se activan de manera simultanea.
-\\Años 50:\\
+\end{itemize}
+Años 50:
+\begin{itemize}
 \item En 1956 en la ciudad de Dartmouth, se llevó a cabo la primera conferencia sobre Inteligencia Artificial donde se discutió sobre la capacidad de las maquinas para simular el aprendizaje humano.
-\item A finales de los años 50,  el neurobiologo Frank Rosenblatt empezó a trabajar en el concepto de Perceptrón. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida.
+\item A finales de los años 50,  el neurobiólogo Frank Rosenblatt empezó a trabajar en el concepto de Perceptrón. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida.
 \item En 1959 Bernard Widrow y Marcian Hoff desarrollaron los algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Estos modelos fueron usados para desarrollar la primera red neuronal aplicada a un problema real. Un filtro que eliminaba el eco en las llamadas telefónicas.
-\\Años 80:\\
+\end{itemize}
+Años 80:
+\begin{itemize}
 \item En 1982, el interés por las redes neuronales se renovó. John Hopfield presentó informes a la Academia Nacional de Ciencias en los que no solo describría el modelado del cerebro humano, si no que demostró que aplicaciones que podría tener su estudio para crear nuevos dispositivos.
 \item En 1984, Kohonen desarrolló una familia de redes de memoria asociativa y mapas auto-organizativos, actualmente llamadas redes de Kohonen.
 \item En 1985, Paul Werbos desarrolló el algoritmo Backpropagation que resolvió el problema de entrenar redes neuronales multicapa de forma efectiva.
@@ -28,18 +33,18 @@ Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue sie
 \caption{Historia de las redes neuronales\\\textit{Imagen extraída de SlideShare}}
 \end{figure}
 
-\subsection {La neurona biologica} \mbox{}\\
+\subsection {La neurona biológica} \mbox{}\\
 El cerebro, visto a un alto nivel y simplificando enormemente su estructura, podríamos decir que es un conjunto de millones y millones de células, llamadas neuronas, interconectadas entre ellas mediante sinapsis. La sinapsis se lleva a cabo en la zona donde 2 neuronas se conectan, y las partes de la célula que se encargan de realizarla son las dendritas y las ramificaciones del axón.
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/neurona.png}
+\includegraphics[scale=0.6]{images/neurona.png}
 \caption{Estructura de una neurona\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}\\
 Cada neurona desarrolla impulsos eléctricos que se trasmiten a lo largo de esta mediante su axón. Este, al final se ramifica en ramificaciones axionales, que conectan con otras neuronas mediante sus dentritras.\\
 El conjunto de elementos que hay entre la ramificación axional y la dendrita forman la sinapsis, que regula la transmisión del impulso eléctrico mediante unos elementos químicos llamados neurotransmisores.
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.70]{images/sinapsis.png}
+\includegraphics[scale=0.50]{images/sinapsis.png}
 \caption{Sinapsis\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}\\
 Los neurotransmisores liberados en la sinapsis pueden tener un efecto negativo o positivo sobre la transmisión del impulso eléctrico en la neurona que los recibe en sus dendritas. Esta neurona recibe varias señales de las distintas sinapsis, y las combina consiguiendo un cierto nivel de estimulación. En función de este nivel de activación, la neurona emite señales eléctricas mediante impulsos, con una intensidad determinada y con una frecuencia llamada tasa de disparo.\\
@@ -90,7 +95,7 @@ f(x) = x
 \end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/Activation_identity.png}
+\includegraphics[scale=0.8]{images/Activation_identity.png}
 \caption{Funcion de activación identidad}
 \end{figure}
 \item Escalón binario: Es la más usada por redes neuronales binarias ya que no es lineal, y es bastante sencilla. El Perceptrón y Hopfield son algunos ejemplos de redes que usan esta función. Cuenta con un rango {0,1}, y es monótona.
@@ -102,7 +107,7 @@ f(x) = \begin{Bmatrix}
 \end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/Activation_binary_step.png}
+\includegraphics[scale=0.8]{images/Activation_binary_step.png}
 \caption{Función de activación escalón binario}
 \end{figure}
 \item Logística / Softstep: Es una de las funciones mas utilizadas para modelar redes neuronales. Su rango es continuo en los valores (0,1), es monótona e infinitamente diferenciable.
@@ -111,7 +116,7 @@ f(x) = \frac{1}{1+e^{-x}}
 \end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/Activation_logistic.png}
+\includegraphics[scale=0.8]{images/Activation_logistic.png}
 \caption{Funcion de activación logistica}
 \end{figure}
 \item Tangente hiperbólica: Esta función es utilizada por redes con salidas continuas. Un ejemplo sería el Perceptrón multicapa con retropropagación, ya que su algoritmo de aprendizaje necesita una función derivable. Cuenta con un rango (-1,1), es monótona, y se aproxima a la función identidad en su origen.
@@ -120,13 +125,13 @@ f(x) = \tanh(x) = \frac{2}{1+e^{-2x}}-1
 \end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/Activation_tanh.png}
+\includegraphics[scale=0.8]{images/Activation_tanh.png}
 \caption{Funcion de activación tangencial}
 \end{figure}
 \item Rectificadora (ReLU - Rectified Linear Unit): Esta función de activación la introdujo por primera vez en el año 2000 Hahnloser, con motivaciones biológicas y matemáticas. Se viene usando en redes convolucionales mas que la ampliamente extendida función logística sigmoide (se basa en probabilidades), y es más practica que la tangente hiperbólica. La función rectificadora es, por tanto, una de las funciones de activación más populares para deep learning.
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/Activation_rectified_linear.png}
+\includegraphics[scale=0.8]{images/Activation_rectified_linear.png}
 \caption{Funcion de activación rectificadora}
 \end{figure}
 \item Softplus: aproximación suavizada de la función de activación rectificadora.
@@ -135,20 +140,20 @@ f(x) = ln(1+e^{x})
 \end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1]{images/Activation_softplus.png}
+\includegraphics[scale=0.8]{images/Activation_softplus.png}
 \caption{Funcion de activación softplus}
 \end{figure}
 \end{itemize}
-TODO: Borrar estas propiedades
-Las propiedades deseables de una función de activación son:
-\begin{itemize}
-\item No lineal: Cuando contamos con una función de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una función universal de aproximación. La función identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activacion identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
-\item Continuamente diferenciable: Esta propiedad es necesaria para que sean posibles los métodos de optimización basados en el gradiente. Por ejemplo, la funcion de activación de escalón binario no es diferenciable en el 0, y su derivada es 0 en todos los demas valores, asi que los metodos basados en el gradiente no funcionan con ella.
-\item Rango: Cuando el rango de la funcion de activación es finito, los métodos de entrenamiento basados en gradiente tienden a ser mas estables porque los pesos a elegir son mas limitados. Cuando el rango es infinito, el entrenamiento es por lo general mas eficiente porque los patrones afectan mas a los pesos.
-\item Monotona: Cuando la funcion de activación es monotona, el error en un modelo con una sola capa tiende a converger.
-\item Suavidad: Las funciones con una derivación monotona tienden a ser mas generales en algunos casos.
-\item Se aproxima a la funcion identidad cerca del origen: Cuando la función de activación tiene esta propiedad, la red neuronal aprende de forma mas eficiente cuando sus pesos son inicializados con valores pequeños aleatorios.
-\end{itemize}
+%TODO: Borrar estas propiedades
+%Las propiedades deseables de una función de activación son:
+%\begin{itemize}
+%\item No lineal: Cuando contamos con una función de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una función universal de aproximación. La función identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activación identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
+%\item Continuamente diferenciable: Esta propiedad es necesaria para que sean posibles los métodos de optimización basados en el gradiente. Por ejemplo, la funcion de activación de escalón binario no es diferenciable en el 0, y su derivada es 0 en todos los demas valores, asi que los metodos basados en el gradiente no funcionan con ella.
+%\item Rango: Cuando el rango de la funcion de activación es finito, los métodos de entrenamiento basados en gradiente tienden a ser mas estables porque los pesos a elegir son mas limitados. Cuando el rango es infinito, el entrenamiento es por lo general mas eficiente porque los patrones afectan mas a los pesos.
+%\item Monotona: Cuando la funcion de activación es monotona, el error en un modelo con una sola capa tiende a converger.
+%\item Suavidad: Las funciones con una derivación monotona tienden a ser mas generales en algunos casos.
+%\item Se aproxima a la funcion identidad cerca del origen: Cuando la función de activación tiene esta propiedad, la red neuronal aprende de forma mas eficiente cuando sus pesos son inicializados con valores pequeños aleatorios.
+%\end{itemize}
 
 \subsection{Tipos de aprendizaje en redes neuronales}
 \subsubsection {Aprendizaje supervisado}
@@ -188,7 +193,7 @@ y =
 \end{array}
 \right.
 \end{equation}
-Con estas fórmulas, podemos deducir que la salida de la célula (${y}$) será 1 (neurona activada) si ${y' > \tetha}$, o 0 (neurona desactivada) en caso contrario.\\
+Con estas fórmulas, podemos deducir que la salida de la célula (${y}$) será 1 (neurona activada) si ${y' > \theta}$, o 0 (neurona desactivada) en caso contrario.\\
 La función de salida (${F}$) produce una salida binaria, por lo que es un diferenciador en dos categorías. En el caso de tener únicamente dos dimensiones, con las ecuaciones \ref{prop_perceptron}, \ref{salida_perceptron} y \ref{sistema} se podría llegar a la ecuación:
 \begin{equation}
 w_{1}x_{1} + w_{2}x_{2} + \theta = 0
@@ -248,11 +253,11 @@ El perceptrón muticapa tuvo su origen en los años 80, con la idea de soluciona
 \includegraphics[scale=1.2]{images/multilayerperceptron.png}
 \caption{Perceptrón multicapa.\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}
-\\Las capacidades de decisión de un perceptrón multicapa de 2 y 3 capas con una única neurona de salida se muestran en la figura \ref{perceptron23capas}:
+\\Las capacidades de decisión de un perceptrón multicapa de 2 y 3 capas con una única neurona de salida se muestran en la figura \ref{tablaperceptron}:
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/perceptron23capas.png}
-\label{perceptron23capas}
+\label{tablaperceptron}
 \caption{\textit{Imagen extraída de GitHub}}
 \end{figure}
 \\En el perceptrón multicapa, al igual que en el perceptrón simple, podemos diferenciar una fase de propagación de los valores de entrada hacia delante, y una fase de aprendizaje en la que los errores obtenidos a la salida del perceptrón se van propagando hacia atrás con el objetivo de actualizar los pesos de las conexiones mediante el gradiente de la función de error. Este algoritmo se llama backpropagation o retropropagación.
