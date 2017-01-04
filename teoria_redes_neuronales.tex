@@ -72,12 +72,15 @@ conexión.
 
 \subsection {Funciones de las neuronas artificiales}
 \subsubsection {Función de red o propagación}
-TODO: No entiendo bien lo que quieres decir\\
-Esta función se encarga de transformar las diferentes entradas que provienen de la sinapsis, en el potencial de la neurona. Normalmente, las neuronas han de tratar simultáneamente con varios valores de entrada, y han de hacerlo como si se tratase de uno solo. Esta función viene a resolver el problema de combinar las entradas simples (${x_{1},x_{2},x_{3}...}$) en una sola entrada global. Podría describirme mediante la siguiente ecuación:
+Esta función se encarga de transformar las diferentes entradas que provienen de la capa anterior, en el potencial de la neurona actual. Normalmente, las neuronas han de tratar simultáneamente con varios valores de entrada, y han de hacerlo como si se tratase de uno solo. Esta función viene a resolver el problema de combinar las entradas simples (${x_{1},x_{2},x_{3}...}$) en una sola entrada global. Podría describirme mediante la siguiente ecuación:
 \begin{equation}
 input = (x_{1}:w_{1})*(x_{2}:w_{2})*...*(x_{n}:w_{n})
 \end{equation}
-siendo ":" el operador apropiado (por ejemplo: máximo, sumatorio, producto...), "n" el numero de entradas y w el peso de las conexiones. Multiplicando las entradas por los pesos, se permite que un valo muy grande de entrada pueda tener una influencia pequeña, si sus pesos son pequeños.
+siendo ${":"}$ el operador apropiado (por ejemplo: sumatorio, máximo, producto...), ${x}$ las distintas entradas y ${w}$ el peso de las conexiones. Multiplicando las entradas por los pesos, se permite que un valor muy grande de entrada pueda tener una influencia pequeña, si sus pesos son pequeños.\\
+Por lo general, este operador suele ser la suma ponderada de todas las entradas multiplicadas por sus respectivos pesos.
+\begin{equation}\label{umbral_perceptron}
+y' =  \sum_{i=1}^{n} x_{i} * w_{i}
+\end{equation}
 \subsubsection {Función de activación}
 La función de activación combina el potencial que nos proporciona la función de propagación con el estado actual de la neurona, para conseguir el estado futuro de esta (activada/desactivada). Esta función es normalmente creciente y monótona. Las funciones mas comunes son:
 \begin{itemize}
@@ -102,8 +105,7 @@ f(x) = \begin{Bmatrix}
 \includegraphics[scale=1]{images/Activation_binary_step.png}
 \caption{Función de activación escalón binario}
 \end{figure}
-TODO: Logística
-\item Logística / Softstep: .............. Su rango va es (0,1), y es monótona.
+\item Logística / Softstep: Es una de las funciones mas utilizadas para modelar redes neuronales. Su rango es continuo en los valores (0,1), es monótona e infinitamente diferenciable.
 \begin{equation}
 f(x) = \frac{1}{1+e^{-x}}
 \end{equation}
@@ -127,7 +129,7 @@ f(x) = \tanh(x) = \frac{2}{1+e^{-2x}}-1
 \includegraphics[scale=1]{images/Activation_rectified_linear.png}
 \caption{Funcion de activación rectificadora}
 \end{figure}
-\item Softplus: aproximación suavizada de la funcion de activación rectificadora.
+\item Softplus: aproximación suavizada de la función de activación rectificadora.
 \begin{equation}
 f(x) = ln(1+e^{x})
 \end{equation}
@@ -147,15 +149,6 @@ Las propiedades deseables de una función de activación son:
 \item Suavidad: Las funciones con una derivación monotona tienden a ser mas generales en algunos casos.
 \item Se aproxima a la funcion identidad cerca del origen: Cuando la función de activación tiene esta propiedad, la red neuronal aprende de forma mas eficiente cuando sus pesos son inicializados con valores pequeños aleatorios.
 \end{itemize}
-
-\subsubsection {Funcion de salida}
-TODO: revisar, no veo diferencia con función de activación
-Esta función convierte el estado de la neurona en la salida hacia la siguiente. Recordar que esta salida es transmitida mediante la sinapsis. En ocasiones podemos encontrar redes neuronales sin funcion de salida, por lo que la salida es el propio estado de activación de la neurona. Nos encontramos dos grandes tipos de funciones de salidas.
-\begin{itemize}
-\item Funciones de salida que transforman el estado de activación en una salida binaria. Para ello, se utiliza la función escalón.
-\item Funciones de salida que transforman el estado de activación en probabilidades. Un ejemplo de uso nos lo encontramos en la máquina de Boltzman. Las redes con etse tipo de salidas no tiene un comportamiento determinista.
-\end{itemize}
-
 
 \subsection{Tipos de aprendizaje en redes neuronales}
 \subsubsection {Aprendizaje supervisado}
@@ -178,21 +171,29 @@ El perceptrón se basa en una arquitectura monocapa. Está constituido por un co
 \caption{Perceptron simple\\\textit{Imagen extraída de GitHub}}
 \label{perceptron}
 \end{figure}
-\\El umbral es un parámetro utilizado como factor de comparación a la hora de generar la salida. En esta arquitectura, la salida de la red se obtiene multiplicando los valores de las entradas, por los pesos de las conexiones:
-\begin{equation}\label{Umbral perceptron}
+\\El umbral (${\theta}$) es un parámetro utilizado como factor de comparación a la hora de generar la salida de una neurona. En esta arquitectura, la salida de la neurona se calcula multiplicando los valores de las entradas, por los pesos de las conexiones:
+\begin{equation}\label{prop_perceptron}
 y' =  \sum_{i=1}^{n} w_{i}x_{i}
 \end{equation}
-TODO: Revisar estas formulas
-La salida definitiva se obtiene aplicándole la función de salida al nivel de activación de la célula, es decir:
-\begin{equation}\label{Salida perceptron}
+Sin embargo, la salida definitiva depende del umbral, por lo que se obtiene aplicándole la función de salida al nivel de activación de la célula, es decir:
+\begin{equation}\label{salida_perceptron}
 y =  F(y', \theta)
 \end{equation}
-Con estas formulas, podemos deducir que la salida de la célula será 1 (neurona activada) si el umbral es mayor que 0, o 0 (neurona desactivada) en caso contrario.\\
-La funcion de salida (F) produce una salida binaria, por lo que es un diferenciador en dos categorías. En el caso de tener únicamente dos dimensiones, la ecuación anterior se transforma en:
+\begin{equation}\label{sistema}
+y =
+\left\lbrace
+\begin{array}{ll}
+\textup{si } y' + \theta & 1\\
+\textup{si no }  & 0
+\end{array}
+\right.
+\end{equation}
+Con estas fórmulas, podemos deducir que la salida de la célula (${y}$) será 1 (neurona activada) si ${y' > \tetha}$, o 0 (neurona desactivada) en caso contrario.\\
+La función de salida (${F}$) produce una salida binaria, por lo que es un diferenciador en dos categorías. En el caso de tener únicamente dos dimensiones, con las ecuaciones \ref{prop_perceptron}, \ref{salida_perceptron} y \ref{sistema} se podría llegar a la ecuación:
 \begin{equation}
 w_{1}x_{1} + w_{2}x_{2} + \theta = 0
 \end{equation}
-Que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation} y cuyo corte en la abscina en el eje y pasa por \begin{equation}-\frac{\theta}{w_{2}}\end{equation}
+Que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation} y cuyo corte en la abscisa en el eje x pasa por \begin{equation}-\frac{\theta}{w_{2}}\end{equation}
 Como podemos ver en la figura \ref{perceptron_recta}, podemos imaginarnos el perceptrón como una recta, que en un gráfica de dos dimensiones deja las dos categorías a separar a un lado y a otro de la misma.
 \begin{figure}[htp]
 \centering
@@ -201,9 +202,9 @@ Como podemos ver en la figura \ref{perceptron_recta}, podemos imaginarnos el per
 \label{perceptron_recta}
 \end{figure}
 \subsubsection{Aprendizaje}
-TODO: Volver a escribir esto
-El proceso de aprendizaje consiste en la inserción de un patrón de entrada del conjunto de aprendizaje perteneciente a la clase. Si la salida es correcta, no se realizará ninguna acciones, pero si no, se modificarán los pesos.
-Para el perceptrón, existen 2 tipos de aprendizaje: uno utiliza una tasa de aprendizaje, mientras que el otro no la utiliza. Esta tasa de aprendizaje regula la actualización de los valores de los pesos de la red, y es la misma para todas las neuronas. Los pasos a seguir para entrenar el perceptrón son:
+El perceptrón es un tipo de red que utiliza aprendizaje supervisado, es decir, necesita conocer los valores esperados para cada una de las entradas antes de realizar predicciones. Este proceso se lleva a cabo mediante la inserción de patrones de entrada del dataset con el que que se quiere entrenar la red.\\
+Entrenar la red no es más que encontrar los pesos sinápticos y el umbral que mejor haga predecir a nuestra red los resultados esperados. Para la determinación de estas variables, se sigue un proceso adaptativo. Se comienza con unos valores aleatorios, y se van modificando según la diferencia entre los valores deseados y los obtenidos por la red.\\
+En resumen, el perceptrón simple aprende iterativamente siguiendo estos pasos:
 \begin{enumerate}
 \item Inicialización de variables
 \item Bucle de iteraciones:
