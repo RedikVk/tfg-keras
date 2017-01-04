@@ -1,26 +1,25 @@
 \chapter{Redes neuronales: Deep Learning}
 \lsection{Redes neuronales}
 \subsection {Historia de las redes neuronales}
-TODO: Agrupar los items por fechas amplias: 50s, 60s...\\
-TODO: mencionar a Hinton-Sejnowski\\
-Las redes neuronales, como su nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano.
+Desde hace cientos de años, se ha intentado estudiar el cerebro humano. Sin embargo, a partir de los años 50 cuando empezaron a desarrollarse las bases de la tecnología actual, hubo un fuerte avance en este estudio. Las redes neuronales, como su nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano.
 \begin{itemize}
-\item Entre los pioneros en el modelado de neuronas se encuentra Warren McCulloch y Walter Pitts, investigadores que propusieron un modelo matemático.
-\item En 1949, Hebb definió dos conceptos muy importantes:
+\\Años 40:\\
+\item A principios de los años 80, el neurólogo Warren McCulloch y el matemático Walter Pitts propusieron el primer modelo matemático de redes neuronales. Describieron como funcionaban las neuronas, y modelaron un red neuronal simple usando circuitos eléctricos.
+\item A finales de década, Hebb definió dos conceptos muy importantes:
 \begin{itemize}
 \item El proceso de aprendizaje se localiza principalmente en la sinapsis o conexión entre neuronas.
 \item La información se representa en el cerebro mediante un conjunto de neuronas activas o inactivas.
 \end{itemize}
 Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue siendo usada en algunos modelos actuales. Esta regla nos dice que los cambios en los pesos de la sinapsis se basan en la interacción entre las neuronas pre y post sintacticas, y el numero de veces que se activan de manera simultanea.
-\item En 1956, en la ciudad de Dartmouth, se llevó a cabo la primera conferencia sobre Inteligencia Artificial donde se discutió sobre la capacidad de las maquinas para simular el aprendizaje humano.
-\item En 1959, Widrow escribió la Teoría sobre la adaptación neuronal, y desarrolló los Algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Con ellos, se consiguió llevar a cabo la primera aplicación de redes neuronales para solventar problemas reales: un filtro para eliminar ecos en las lineas telefonicas.
-\item En 1962 Rosemblatt desarrolló el concepto de perceptrón. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida.
+\\Años 50:\\
+\item En 1956 en la ciudad de Dartmouth, se llevó a cabo la primera conferencia sobre Inteligencia Artificial donde se discutió sobre la capacidad de las maquinas para simular el aprendizaje humano.
+\item A finales de los años 50,  el neurobiologo Frank Rosenblatt empezó a trabajar en el concepto de Perceptrón. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida.
+\item En 1959 Bernard Widrow y Marcian Hoff desarrollaron los algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Estos modelos fueron usados para desarrollar la primera red neuronal aplicada a un problema real. Un filtro que eliminaba el eco en las llamadas telefónicas.
+\\Años 80:\\
+\item En 1982, el interés por las redes neuronales se renovó. John Hopfield presentó informes a la Academia Nacional de Ciencias en los que no solo describría el modelado del cerebro humano, si no que demostró que aplicaciones que podría tener su estudio para crear nuevos dispositivos.
 \item En 1984, Kohonen desarrolló una familia de redes de memoria asociativa y mapas auto-organizativos, actualmente llamadas redes de Kohonen.
-\item Anderson desarrolló una red denominada Brain-State-in-a-Box, la cual trunca la salida lineal para que no se vuelva demasiado grande en las iteraciones de la red.
-\item Grossberg y Carpenter desarrollaron las redes autoorganizativas de categorías ART (Teoria de la Resonancia Adaptativa)
-\item Mediante las redes de Hopfield, se demostró que las redes asociativas pueden aprender por analogía a la autoorganización de los sistemas físicos.
-\item Neocognitrón: Kinihiko Fukushima desarrolló una familia de redes para el reconocimiento de caracteres.
-\item Mediante las máquinas de Boltzman se desarrolló la regla de aprendizaje basada en funciones de densidad de probabilidad.
+\item En 1985, Paul Werbos desarrolló el algoritmo Backpropagation que resolvió el problema de entrenar redes neuronales multicapa de forma efectiva.
+\item En 1986, los investigadores Hinton y Sejnowski desarrollaron la máquina de Boltzmann, un tipo de red neuronal recurrente estocástica.
 \end{itemize}
 
 \begin{figure}[htp]
