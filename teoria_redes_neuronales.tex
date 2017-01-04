@@ -26,7 +26,7 @@ Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue sie
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.60]{images/history.jpg}
-\caption{Historia de las redes neuronales}
+\caption{Historia de las redes neuronales\\\textit{Imagen extraída de SlideShare}}
 \end{figure}
 
 \subsection {La neurona biologica} \mbox{}\\
@@ -34,14 +34,14 @@ El cerebro, visto a un alto nivel y simplificando enormemente su estructura, pod
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{images/neurona.png}
-\caption{Estructura de una neurona}
+\caption{Estructura de una neurona\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}\\
 Cada neurona desarrolla impulsos eléctricos que se trasmiten a lo largo de esta mediante su axón. Este, al final se ramifica en ramificaciones axionales, que conectan con otras neuronas mediante sus dentritras.\\
 El conjunto de elementos que hay entre la ramificación axional y la dendrita forman la sinapsis, que regula la transmisión del impulso eléctrico mediante unos elementos químicos llamados neurotransmisores.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.70]{images/sinapsis.png}
-\caption{Sinapsis}
+\caption{Sinapsis\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}\\
 Los neurotransmisores liberados en la sinapsis pueden tener un efecto negativo o positivo sobre la transmisión del impulso eléctrico en la neurona que los recibe en sus dendritas. Esta neurona recibe varias señales de las distintas sinapsis, y las combina consiguiendo un cierto nivel de estimulación. En función de este nivel de activación, la neurona emite señales eléctricas mediante impulsos, con una intensidad determinada y con una frecuencia llamada tasa de disparo.\\
 En resumen, si consideramos que la información del cerebro está codificada en impulsos eléctricos que se transmiten entre neuronas, y que los impulsos se ven modificados básicamente en la sinapsis, podemos intuir que la codificación del aprendizaje estará en la sinapsis y en la forma en la que las neuronas dejan pasar o inhiben las señales segregando neurotransmisores.
@@ -51,7 +51,7 @@ Las neuronas artificiales son modelos que tratan de simular el comportamiento de
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1]{images/neuronaartificial.jpg}
-\caption{Esquema de una neurona artificial}
+\caption{Esquema de una neurona artificial\\\textit{Imagen extraída de ibiblio.org}}
 \end{figure}\\
 Como podemos intuir observando la imagen anterior, la neurona artificial se comporta en cierto modo como una biológica, pero de forma simplificada:
 \begin{itemize}
@@ -176,7 +176,7 @@ El perceptrón se basa en una arquitectura monocapa. Está constituido por un co
 \centering
 \vspace{-1em}
 \includegraphics[scale=0.5]{images/perceptron.png}
-\caption{Perceptron simple.}
+\caption{Perceptron simple\\\textit{Imagen extraída de GitHub}}
 \label{perceptron}
 \end{figure}
 \\El umbral es un parámetro utilizado como factor de comparación a la hora de generar la salida. En esta arquitectura, la salida de la red se obtiene multiplicando los valores de las entradas, por los pesos de las conexiones:
@@ -194,11 +194,11 @@ La funcion de salida (F) produce una salida binaria, por lo que es un diferencia
 w_{1}x_{1} + w_{2}x_{2} + \theta = 0
 \end{equation}
 Que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation} y cuyo corte en la abscina en el eje y pasa por \begin{equation}-\frac{\theta}{w_{2}}\end{equation}
-Como podemos ver en la \ref{perceptron_recta}, podemos imaginarnos el perceptrón como una recta, que en un gráfica de dos dimensiones deja las dos categorías a separar a un lado y a otro de la misma.
+Como podemos ver en la figura \ref{perceptron_recta}, podemos imaginarnos el perceptrón como una recta, que en un gráfica de dos dimensiones deja las dos categorías a separar a un lado y a otro de la misma.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.5]{images/Perceptron_example.png}
-\caption{Separacion lineal del perceptrón.}
+\caption{Separacion lineal del perceptrón.\\\textit{Imagen extraída de Wikipedia}}
 \label{perceptron_recta}
 \end{figure}
 \subsubsection{Aprendizaje}
@@ -230,12 +230,12 @@ Hasta ahora, hemos descrito el perceptrón como un clasificador. Sin embargo, ta
 \centering
 \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[scale=1]{images/perceptron_and.png}
-    \caption{Separacion lineal de la funcion AND.}
+    \caption{Separacion lineal de la funcion AND.\\\textit{Imagen extraída de Wikipedia}}
   \end{minipage}
 \hfill
 \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[scale=1]{images/perceptron_or.png}
-  \caption{Separacion lineal de la funcion OR.}
+  \caption{Separacion lineal de la funcion OR.\\\textit{Imagen extraída de Wikipedia}}
   \end{minipage}
 \end{figure}
 \\Sin embargo, la función XOR no puede ser aprendida por un único perceptrón, ya que requiere el uso de al menos dos lineas para separar las clases. Si se quiere alcanzar esta funcionalidad, es necesario utilizarse al menos una capa mas. Aquí es donde entra en juego el perceptrón multicapa.
@@ -246,13 +246,14 @@ El perceptrón muticapa tuvo su origen en los años 80, con la idea de soluciona
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1.2]{images/multilayerperceptron.png}
-\caption{Perceptrón multicapa.}
+\caption{Perceptrón multicapa.\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}
-\\Las capacidades de decisión de un perceptron multicapa de 2 y 3 capas con una única neurona de salida se muestran en la \ref{perceptron23capas}:
+\\Las capacidades de decisión de un perceptrón multicapa de 2 y 3 capas con una única neurona de salida se muestran en la figura \ref{perceptron23capas}:
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/perceptron23capas.png}
 \label{perceptron23capas}
+\caption{\textit{Imagen extraída de GitHub}}
 \end{figure}
 \\En el perceptrón multicapa, al igual que en el perceptrón simple, podemos diferenciar una fase de propagación de los valores de entrada hacia delante, y una fase de aprendizaje en la que los errores obtenidos a la salida del perceptrón se van propagando hacia atrás con el objetivo de actualizar los pesos de las conexiones mediante el gradiente de la función de error. Este algoritmo se llama backpropagation o retropropagación.
 \subsection{Propagación}
@@ -333,7 +334,7 @@ Además, la convolución proporciona herramientas para trabajar con entradas de 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/conv_layer.png}
-\caption{Funcionamiento de capa convolucional}
+\caption{Funcionamiento de capa convolucional.\\\textit{Imagen extraída de deeplearning.net}}
 \end{figure}\\
 \subsubsection{Capa de reducción o pooling}
 Esta capa se coloca generalmente después de la capa convolucional. Es la encargada de reducir la cantidad de parámetros a analizar reduciendo las dimensiones espaciales (ancho x alto), quedándose de esta forma con las características mas comunes. La operación que lleva a cabo esta capa también se llama reducción de muestreo, ya que la reducción de tamaño implica también una perdida de información. Sin embargo, para un red neuronal, este tipo de pérdida puede ser beneficioso debido a:
@@ -345,7 +346,7 @@ La operación que se suele aplicar en esta capa es "max-pooling", que divide la 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/max_pooling.png}
-\caption{Max-pooling aplicado a una imagen}
+\caption{Max-pooling aplicado a una imagen\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}
 \subsubsection{Capa clasificadora totalmente conectada}
 Una vez que la imagen ha pasado tanto por las capas convolucionales como las de pooling y se han extraído sus características mas destacadas, los datos llegan a la fase de clasificación. Para ello, ĺas redes convolucionales normalmente utilizan capas completamente conectadas en las que cada píxel se trata como una neurona independiente. Las neuronas de esta fase funcionan como las de un perceptrón multicapa, donde la salida de cada neurona se calcula multiplicando la salida de la capa anterior por el peso de la conexión, y aplicando a este dato una función de activación.
@@ -358,14 +359,14 @@ Y aquí es donde entran en juego las redes neuronales recurrentes, ya que estas 
 \centering
 \vspace{-1.5em}
 \includegraphics[scale=0.3]{images/rnnrolled.png}
-\caption{Ejemplo básico de red neuronal recurrente.}
+\caption{Ejemplo básico de red neuronal recurrente.\\\textit{Imagen extraída de GitHub}}
 \end{figure}
 \\En el diagrama 2.18, podemos ver como una parte de la red neuronal, \textbf{A}, recibe una entrada \textbf{x} y devuelve una salida \textbf{h}. El bucle permite que la información pase de un ciclo de la red al siguiente. Pese a que el concepto de bucle parezca algo extraño, las redes neuronales que cuentan con ellos no son tan distantes de la redes neuronales tradicionales. Una red neuronal recurrente puede ser creada utilizando múltiples copias de la misma red, pasando el mensaje o salida al nodo sucesor. Si desenrollamos el bucle, tendríamos algo parecido a la figura 2.19:\\
 \begin{figure}[htp]
 \centering
 \vspace{-1.5em}
 \includegraphics[scale=0.3]{images/RNNunrolled.png}
-\caption{Red neuronal recurrente desenrollada.}
+\caption{Red neuronal recurrente desenrollada.\\\textit{Imagen extraída de GitHub}}
 \end{figure}
 \\Esta forma de cadena hace prever que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas. En los últimos años, se han logrado auténticos grandes éxitos aplicando las RNN para resolver problemas como: reconocimiento de discursos, modelación de lenguajes, traducciones, captación de imágenes... Un factor clave en estos éxitos es el uso de las redes LSTMs, un tipo muy especial de redes neuronales recurrentes que trabajan por muchas razones de forma mas eficiente que la versión estándar.
 \subsubsection{El problema de la longitud de las dependencias.}
@@ -374,7 +375,7 @@ Algunas veces, solo necesitamos utilizar información reciente para la tarea act
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.3]{images/RNN-longtermdependencies.png}
-\caption{Red neuronal recurrente desenrollada.}
+\caption{Red neuronal recurrente desenrollada.\\\textit{Imagen extraída de GitHub}}
 \end{figure}
 \\En teoría, las RNN son perfectamente capaces de resolver este problema (long-term dependencies), pero en la práctica no lo parece tanto. En 1991, Hochreiter estudió este problema, y encontró algunas razones por las que las RNN encuentran dificultades a la hora de aprender información sobre grandes contextos. Por suerte, las redes LSTMs solventan estos problemas.
 \subsection{Redes LSTM}
@@ -383,12 +384,12 @@ Todas las redes neuronales recurrentes tienen forma de cadena al repetir sus mó
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.35]{images/LSTM3-chain.png}
-\caption{Estructura del modulo repetidor.}
+\caption{Estructura del modulo repetidor.\\\textit{Imagen extraída de GitHub}}
 \end{figure}
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.2]{images/LSTM2-notation.png}
-\caption{Notación del modulo repetidor.}
+\caption{Notación del modulo repetidor.\\\textit{Imagen extraída de GitHub}}
 \end{figure}
 \\La clave de las redes LSTMs se encuentra en el estado de la celda, es decir, en la linea horizontal que recorre la parte superior del diagrama 2.21, ya que permite a la información fluir por toda la red con solo algunas pequeñas interacciones, sin ser a penas alterada.
 La red también tiene la habilidad de borrar o añadir información al estado de la celda mediante estructuras llamadas puertas. Estas puertas son una manera de permitir opcionalmente a la información circular o no, y se componen de una capa sigmoide y una operación de multiplicación. Las salidas de la capa sigmoide alternan entre 0 y 1, describiendo si la información fluye o no. Una red LSTM tiene 3 de estas puertas, para proteger y controlar el estado de la celda.\\\\
