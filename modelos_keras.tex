@@ -282,10 +282,10 @@ def perceptron_model():
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
 \end{lstlisting}
-Como podemos observar, se trata de un modelo con una sola capa oculta, con el mismo numero de neuronas que de entradas, es decir, 784. Además, sobre ella se aplica una funcion de activacion rectificadora.\\
-En la capa de salida, se usa la funcion de activacion softmax para convertir las salidad en una probabilidad, y permitir que se seleccionen una de las 10 clases que el modelo ha de predecir. Como función de perdida, se utiliza la perdida logarítmica (en Keras, \lstinline{categorical_crossentropy}). Por último, para aprender los pesos, se utiliza el algoritmo gradiente descendiente ADAM.\\
+Como podemos observar, se trata de un modelo con una sola capa oculta, con el mismo numero de neuronas que de entradas, es decir, 784. Además, sobre ella se aplica una función de activación rectificadora.\\
+En la capa de salida, se usa la función de activación softmax para convertir las salidas en una probabilidad, y permitir que se seleccionen una de las 10 clases que el modelo ha de predecir. Como función de perdida, se utiliza la perdida logarítmica (en Keras, \lstinline{categorical_crossentropy}). Por último, para que la red entrene y aprenda los pesos, se utiliza el algoritmo gradiente descendiente ADAM.\\
 \subsubsection{Red convolucional}
-\begin{verbatim}
+\begin{lstlisting}[language=Python]
 def convolutional_model():
 	model = Sequential()
 	model.add(Convolution2D(32, 5, 5, border_mode='valid', input_shape=(1, 28, 28), activation='relu'))
@@ -296,24 +296,26 @@ def convolutional_model():
 	model.add(Dense(num_classes, activation='softmax'))
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
-	\begin{lstlisting}
-\end{verbatim}
-Como podemos observar, las redes convolucionales son bastante mas complejas que los perceptrones multicapa. En resumen, nuestro modelo cuenta con las siugientes capas:\\
-1. La primera capa es una capa convolucional (Convolution2D). Cuenta con 32 mapeadores, de tamaño 5x5, y una funcion de activación rectificadora. Al ser la capa de entrada, esperará imagenes de la forma [[pixeles][ancho][alto]].
-2. Después definiremos una capa de pooling que utilizará la funcion maximo, con un tamaño de 2x2.\\
-3. La siguiente capa será regularizadora. Se ha configurado para excluir aleatoreamente el 20\% de las neuronas de la capa para reducir el sobreajuste.\\
-4. La siguiente capa convertirá la matriz de 2 dimensiones en un vector, permitiendo asñi que la salida pueda ser procesada por una capa totalmente conectada.\\
-5. Después se ha añadido una capa totalmente conectada con 128 neuronas y una funcion de activacion rectificadora.\\
-6. Finalmente, la capa tendrá 10 neuronas, una por cada clase, y una funcion de activación softmax para hacer una aproximacion de la probabilidad de que cada entrada se corresponda con cada clase (es decir, con cada numero).
+\end{lstlisting}
+Como podemos ver, las redes convolucionales son bastante mas complejas que los perceptrones multicapa. En resumen, nuestro modelo cuenta con las siguientes capas:\\
+\begin{enumerate}
+\item La primera capa es una capa convolucional (\lstinline{Convolution2D}). Cuenta con 32 mapeadores, de tamaño 5x5, y una función de activación rectificadora. Al ser la capa de entrada, esperará imágenes de la forma [[píxeles][ancho][alto]].
+\item Después se define una capa pooling que utilizará la función máximo, con un tamaño de 2x2.\\
+\item La siguiente capa (\lstinline{Dropout}) será regularizadora. Se ha configurado para excluir aleatoriamente el 20\% de las neuronas de la capa y así reducir el sobreajuste.\\
+\item La siguiente capa (\lstinline{Flatten}) convertirá la matriz de 2 dimensiones en un vector, permitiendo de esta forma que la salida pueda ser procesada por una capa totalmente conectada.\\
+\item Después se ha añadido una capa totalmente conectada con 128 neuronas y una función de activación rectificadora.\\
+\item Finalmente, la capa de salida tendrá 10 neuronas, una por cada clase a predecir, y una función de activación softmax para hacer una aproximación de la probabilidad de que cada entrada se corresponda con cada clase (es decir, con cada numero).
+\end{enumerate}
+Como en el ejemplo del perceptrón multicapa, el modelo se entrenará usando la función de pérdida logarítmica y el algoritmo ADAM de gradiente descendiente.
 \subsection{Resultados}
-Ahora ya podemos ajustar y evaluar los modelos. Estos se ajustán cada 10 ciclos, con actualizaciones cada 200 imagenes. Finalmente, se pinta  el ratio de error de clasificación.
-\begin{verbatim}
+Ahora ya podemos ajustar y evaluar los modelos. Estos se ajustán cada 10 ciclos, con actualizaciones cada 200 imágenes. Finalmente, se pinta  el ratio de error de clasificación.
+\begin{lstlisting}[language=Python]
 model = perceptron_model() // model.convolutional_model
 model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=10, batch_size=200, verbose=2)
 scores = model.evaluate(X_test, y_test, verbose=0)
 print("Baseline Error: %.2f%%" % (100-scores[1]*100))
-\end{verbatim}
-Ejecutando todo el codigo anterior utilizando el modelo del perceptrón multicapa, veremos la siguiente salida. Como podemos observar, esta red neuronal tiene un ratio de error de 1.74\%.
+\end{lstlisting}
+Ejecutando todo el código anterior utilizando el modelo del perceptrón multicapa, veremos la siguiente salida. Como podemos observar, esta red neuronal tiene un ratio de error de 1.74\%.
 \begin{verbatim}
 Train on 60000 samples, validate on 10000 samples
 Epoch 1/10
@@ -331,7 +333,7 @@ Epoch 10/10
 12s - loss: 0.0072 - acc: 0.9989 - val\_loss: 0.0577 - val\_acc: 0.9826
 Baseline Error: 1.74\%
 \end{verbatim}
-Sin embargo, si ejecutamos el código utilizando el modelo convolucional, tendriamos un ratio de error de 1.10\%, y la siguiente salida:
+Sin embargo, si ejecutamos el código utilizando el modelo convolucional, tendríamos un ratio de error de 1.10\%, y la siguiente salida:
 \begin{verbatim}
 Epoch 1/10
 84s - loss: 0.2065 - acc: 0.9370 - val_loss: 0.0759 - val_acc: 0.9756
@@ -348,7 +350,7 @@ Epoch 10/10
 89s - loss: 0.0108 - acc: 0.9965 - val_loss: 0.0353 - val_acc: 0.9890
 Classification Error: 1.10%
 \end{verbatim}
-Como se puede observar, hemos reducido el error de clasificacion del 1.74\% al 1.10\%. Pero... ¿Podriamos obtener mejores resultados? La respuesta es sí. En este ejemplo, se ha utilizado una red convolucional muy simple. Sin embargo, añadiendo mas capas convolucionales, de pooling y totalmente conectadas, podemos acercanos a una ratios de error muy cercanos al state-of-art actual. Por ejemplo, añadiendo una nueva capa convolucional (model.add(Convolution2D(15, 3, 3, activation='relu')), model.add(MaxPooling2D(pool\_size=(2, 2)))),y una nueva capa totalmente conectada (model.add(Dense(50, activation='relu'))), obtendriamos un ratio de error de  0.89\%.
+Como se puede observar, hemos reducido el error de clasificacion del 1.74\% al 1.10\%. Pero... ¿Podríamos obtener mejores resultados? La respuesta es sí. En este ejemplo, se ha utilizado una red convolucional muy simple. Sin embargo, añadiendo mas capas convolucionales, de pooling y totalmente conectadas, podemos acercarnos a ratios de error muy cercanos al state-of-art actual. Por ejemplo, añadiendo una nueva capa convolucional (\lstinline{model.add(Convolution2D(15, 3, 3, activation='relu')), model.add(MaxPooling2D(pool\_size=(2, 2)))}),y una nueva capa totalmente conectada (\lstinline{model.add(Dense(50, activation='relu'))}), obtendríamos un ratio de error de  0.89\%.
 
 \section{Generación de textos - Red LSTM}
 En este ejemplo, vamos a intentar generar textos que más o menos tengan sentido. Hasta la aparición de las redes neuronales que un ordenador pudiese llevar a cabo esta tarea parecía una idea sacado de una pelicula de ciencia ficción. Sin embargo, con las redes LSTM esto es posible.\\
