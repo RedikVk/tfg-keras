@@ -353,12 +353,12 @@ Classification Error: 1.10%
 Como se puede observar, hemos reducido el error de clasificacion del 1.74\% al 1.10\%. Pero... ¿Podríamos obtener mejores resultados? La respuesta es sí. En este ejemplo, se ha utilizado una red convolucional muy simple. Sin embargo, añadiendo mas capas convolucionales, de pooling y totalmente conectadas, podemos acercarnos a ratios de error muy cercanos al state-of-art actual. Por ejemplo, añadiendo una nueva capa convolucional (\lstinline{model.add(Convolution2D(15, 3, 3, activation='relu')), model.add(MaxPooling2D(pool\_size=(2, 2)))}),y una nueva capa totalmente conectada (\lstinline{model.add(Dense(50, activation='relu'))}), obtendríamos un ratio de error de  0.89\%.
 
 \section{Generación de textos - Red LSTM}
-En este ejemplo, vamos a intentar generar textos que más o menos tengan sentido. Hasta la aparición de las redes neuronales que un ordenador pudiese llevar a cabo esta tarea parecía una idea sacado de una pelicula de ciencia ficción. Sin embargo, con las redes LSTM esto es posible.\\
-Las redes neuronales, además de ser usadas para predecir modelos, pueden ser utilizadas para aprender secuencias de un problema y generar mediante estos conocimientos nuevas secuencias. Los modelos que generan nuevas secuencias como este, no solo son utiles para saber como de bien nuestra máquina ha aprendido un problema, si no también para saber mas de un problema en sí mismo.\\
-En este ejemplo, vamos a utilizar el libro "La metamorfosis" de Kafka, como dataset para nuestra red neuronal. Esta, va a aprender  las dependencias entre los diferentes caracteres que se vaya encontrando a lo largo del texto, así como las probabilidades de que estos caracteres aparezcan, con el objetivo de generar una nueva secuencia de caracteres, formando así un nuevo texto, y una nueva historia. Sin embargo, este ejemplo también es válido para otro tipo de textos: poemas, código fuente... (siempre que estos se encuentren en codigo ASCII).
+En este ejemplo, se va a intentar generar textos que más o menos tengan sentido. Hasta la aparición de las redes neuronales, que un ordenador pudiese llevar a cabo esta tarea parecía una idea sacado de una película de ciencia ficción. Sin embargo, con las redes LSTM esto es posible.\\
+Las redes neuronales, además de ser usadas para predecir modelos, pueden ser utilizadas para aprender secuencias de un problema y generar mediante estos conocimientos nuevas secuencias. Los modelos que generan nuevas secuencias como este, no solo son útiles para saber como de bien nuestra máquina ha aprendido un problema, si no también para saber mas sobre un problema en sí mismo.\\
+En este ejemplo, se va a utilizar el libro "La metamorfosis" de Kafka como dataset para nuestra red neuronal. Ésta, va a aprender las dependencias entre los diferentes caracteres que se vaya encontrando a lo largo del texto así como las probabilidades de que estos caracteres aparezcan, con el objetivo de generar una nueva secuencia de caracteres, formando así un nuevo texto y una nueva historia. Sin embargo, este ejemplo también es válido para otro tipo de textos: poemas, código fuente... (siempre que éstos se encuentren en código ASCII).
 \subsection{Aprendiendo secuencias de caracteres}
-Primero importaremos las clases que vamos a utilizar en el modelo, y cargaremos el texto convirtiéndolo todo a minúsculas.
-\begin{verbatim}
+Primero se importan las clases que se van a utilizar en el problema, y se carga el texto convirtiéndolo todo a minúsculas.
+\begin{lstlisting}[language=Python]
 import numpy
 from keras.models import Sequential
 from keras.layers import Dense
@@ -367,26 +367,23 @@ from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
 
-# load ascii text and covert to lowercase
 filename = "metamorfosis.txt"
 raw_text = open(filename).read()
 raw_text = raw_text.lower()
-\end{verbatim}
-Una vez cargado el libro en memoria, debemos preparlo para ser tratado por una red neuronal. Una buena idea es convertir los caracteres a numeros enteros. Para ello, primero se identifican todos los caracteres que componen el texto y se asocia un numero a cada uno. Con ello, conseguiremos reducir el numero de caracteres a analizar, ya que también eliminado los repetidos.
-\begin{verbatim}
-# create mapping of unique chars to integers
+\end{lstlisting}
+Una vez cargado el libro en memoria, debemos prepararlo para ser tratado por una red neuronal. Una buena idea es convertir los caracteres a números enteros. Para ello, primero se identifican todos los caracteres que componen el texto y se asocia un numero a cada uno. Con ello, se consigue reducir el numero de caracteres a analizar, ya que también se eliminarán los repetidos.
+\begin{lstlisting}[language=Python]
 chars = sorted(list(set(raw_text)))
 char_to_int = dict((c, i) for i, c in enumerate(chars))
-\end{verbatim}
-El siguiente paso es definir el conjunto de entrenamiento. Se dividirá el texto en conjuntos de caracteres (en este ejemplo 100), para pasarselos como entrada a la red neuronal. El objetivo es que la red prediga el caracter 101. Esto se conseguirá desplazando de 1 en 1 los 100 caracteres seleccionados, permitiendo así que cada caracter sea aprendido por los 100 caracteres que le preceden. Por ejemplo, si hiciesemos divisiones de 5 en 5, y tuviesemos la palabra CAPITULO, las iteraciones serían:
+\end{lstlisting}
+El siguiente paso es definir el conjunto de entrenamiento. Se dividirá el texto en conjuntos de caracteres (en este ejemplo 100), para pasárselos como entrada a la red neuronal. El objetivo es que la red prediga el carácter 101. Esto se conseguirá desplazando de 1 en 1 los 100 caracteres seleccionados, permitiendo así que cada carácter sea aprendido por los 100 caracteres que le preceden. Por ejemplo, si hiciésemos divisiones de 5 en 5, y tuviésemos la palabra CAPITULO, las iteraciones serían:
 \begin{verbatim}
 CAPIT -> U
 APITU -> L
 PITUL -> O
-\end{lstlisting}
-Dado que las redes neuronales trabajan con numeros en vez de caracteres, debemos convertir estos caracteres a enteros usando la tabla que generamos anteriormente.
-\begin{lstlisting}
-# prepare the dataset of input to output pairs encoded as integers
+\end{verbatim}
+Dado que las redes neuronales trabajan con números en vez de caracteres, debemos convertir estos caracteres a enteros usando la tabla que generamos anteriormente.
+\begin{lstlisting}[language=Python]
 seq_length = 100
 dataX = []
 dataY = []
@@ -397,55 +394,52 @@ for i in range(0, n_chars - seq_length, 1):
 	dataY.append(char_to_int[seq_out])
 n_patterns = len(dataX)
 print "Total Patterns: ", n_patterns
-\end{verbatim}
-Si ejecutamos el código hasta este punto, podemos ver el numero de dataset de entrenamiento: 147574\\
-Una vez que hemos preparado el dataset, necesitamos tranformalo para que pueda ser usado por Keras. Primero, debemos transformar la lista de entradas (seq\_in) en una secuencia de de la forma [muestra, intervalo de tiempo, característica], esperada por una red LSTM. Después, se necesita escalar los enteros al rango 0-1 para conseguir patrones mas faciles de aprender por la red LSTM que usa la función de activación sigmoide. Finalmente, se convertirán los patrones de salida. Para ello, se representará la salida como una prababilidad de que aparezca cada uno de los 47 diferentes catacteres del vocabulario, en vez de intentar predecir estrictamente el siguiente caracter. Cada valor será convertido a un vector de longitud 47, relleno de 0 menos un 1 que concidirá con la columna de la letra que el patron representa. Por ejemplo, si la letra fuese la C (entero numero 3), la codificacion seróa... [0,0,1,0,0,0,0,0...0]
-Esto se consigue mediante las siguientes lineas de codigo.
-\begin{verbatim}
-# reshape X to be [samples, time steps, features]
+\end{lstlisting}
+Si ejecutamos el código hasta este punto, podemos ver el numero de dataset de entrenamiento: \lstinline{147574}\\
+Una vez que hemos preparado el dataset, necesitamos transformarlo para que pueda ser usado por Keras. Primero, debemos transformar la lista de entradas (\lstinline{seq_in}) en una secuencia de la forma \lstinline{[muestra, intervalo de tiempo, característica]}, esperada por una red LSTM. Después, se necesita escalar los enteros al rango 0-1 para conseguir patrones mas fáciles de aprender por la red LSTM que usa la función de activación sigmoide. Finalmente, se convertirán los patrones de salida. Para ello, se representará la salida como una probabilidad de que aparezca cada uno de los TODO:47 caracteres distintos del vocabulario, en vez de intentar predecir estrictamente el siguiente carácter. Cada valor será convertido a un vector de longitud 47, relleno de 0 menos un 1 que concidirá con la columna de la letra que el patrón representa. Por ejemplo, si la letra fuese la C (entero numero 3), la codificación sería... [0,0,1,0,0,0,0,0...0]
+Esto se consigue mediante las siguientes lineas de código.
+\begin{lstlisting}[language=Python]
 X = numpy.reshape(dataX, (n_patterns, seq_length, 1))
 # normalize
 X = X / float(n_vocab)
 # one hot encode the output variable
 y = np_utils.to_categorical(dataY)
-\end{verbatim}
-Una vez que tenemos los datos preparados, es hora de definir nuestra red LSTM. Para este ejemplo, se define una sola capa oculta LSTM con 256 unidades de memoria. En este ejemplo se usa la tecnica de regularización para evitar el sobreajuste conocida como Dropout, con una probabilidad de 20. La capa de salida será una capa Dense usando softmax como función de activación para producir una salida en función de la probabilidad de que aparezca uno de los 47 caracteres.\\
-En realidad, podemos observar que el problema es realmente un problema de clasificacion con 47 clases, y por ello se define la funcion de perdida logaritmica cross entropy, y se aplica el algoritmo de optimización ADAM para mejorar la velocidad.
-\begin{verbatim}
-# define the LSTM model
+\end{lstlisting}
+Una vez que tenemos los datos preparados, es hora de definir nuestra red LSTM. Para este ejemplo, se define una sola capa oculta LSTM con 256 unidades de memoria. Se usa la técnica de regularización para evitar el sobreajuste conocida como \lstinline{Dropout}, con una probabilidad del 20\%. La capa de salida será una capa Dense que usará \lstinline{softmax} como función de activación para producir una salida en función de la probabilidad de que aparezca uno de los 47 caracteres.\\
+En realidad, podemos observar que el problema es realmente un problema de clasificación con 47 clases, y por ello se define la función de perdida logarítmica \lstinline{cross entropy} y se aplica el algoritmo de optimización ADAM para mejorar la velocidad.
+\begin{lstlisting}[language=Python]
 model = Sequential()
 model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2])))
 model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam')
-\end{verbatim}
-En este ejemplo, no estamos interesados en la precisión de la clasificación, ya que creariamos un modelo que predeciría cada caracter del conjunto de entrenamiento perfectamente. En vez de eso, estamos interesados en una generalizacion del dataset que minimice la funcion de perdida. Es decir, estamos buscando un balance entre generalización y sobreajuste.\\
-Esta red es lenta de entrenar. Por ello, se ha decidido usar una serie de checkpoints para almacenar todos los pesos de la red en un fichero cada vez que se observe una mejora en la perdida, al final de cada ciclo. Usaremos los mejores pesos (menores perdidas) para generar nuestro modelo en el siguente punto.
-\begin{verbatim}
-# define the checkpoint
+\end{lstlisting}
+En este ejemplo, el interés no está en la precisión de la clasificación, ya que se crearía un modelo que predeciría cada carácter del conjunto de entrenamiento perfectamente. En vez de eso, estamos interesados en una generalización del dataset que minimice la función de perdida. Es decir, estamos buscando un balance entre generalización y sobreajuste.\\
+Esta red es lenta de entrenar. Por ello, se ha decidido usar una serie de checkpoints para almacenar todos los pesos de la red en un fichero cada vez que se observe una mejora en la perdida, al final de cada ciclo. Usaremos los mejores pesos (menores pérdidas) para generar nuestro modelo en el siguiente punto.
+\begin{lstlisting}[language=Python]
 filepath="weights-improvement-{epoch:02d}-{loss:.4f}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min')
 callbacks_list = [checkpoint]
-\end{verbatim}
-Por ultimo, ya solo queda ajustar nuestro modelo. Usaremos 20 ciclos y una tamaño de lote de 128 patrones.
-\begin{verbatim}
+\end{lstlisting}
+Por último, ya solo queda ajustar nuestro modelo. Usaremos 20 ciclos y una tamaño de lote de 128 patrones.
+\begin{lstlisting}[language=Python]
 model.fit(X, y, nb_epoch=20, batch_size=128, callbacks=callbacks_list)
-\end{verbatim}
-Cada vez que ejecutamos el modelo, podemos apreciar que nos encontramos ante diferentes valores. Esto es debido a la naturaleza aleatoria del modelo y a que es dificil elegir una semilla aleatoria para las redes LSTM que reproduzcan los resultados con un 100x100 de exactitud. A pesar de ello, este no es el objetivo del modelo.\\
-Una vez ejecutado el script completo, se deben haber generado una serie de archivos checkpoint con los mejores pesos de cada ciclo. Para ejecutar el codigo del siguiente apartado donde ya generaremos nuevas secuencias de caracteres, usaremos los valores del ultimo archivo, ya que son los que tienen un menor valor de perdida.
+\end{lstlisting}
+Cada vez que se ejecute el modelo, nos encontramos ante diferentes valores. Esto es debido a la naturaleza aleatoria del modelo y a que es difícil elegir una semilla aleatoria para las redes LSTM que reproduzcan los resultados con un 100x100 de exactitud. A pesar de ello, este no es el objetivo del modelo.\\
+Una vez ejecutado el script completo, se deben haber generado una serie de archivos checkpoint con los mejores pesos de cada ciclo. Para ejecutar el código del siguiente apartado donde ya se generarán nuevas secuencias de caracteres, se usarán los valores del ultimo archivo ya que son los que tienen un menor valor de pérdida.
 \subsection{Generando secuencias de caracteres}
-Una vez entrenada nuestra red, tenemos que cargar los pesos que hemos calculado anteriormente y hemos guardado en nuestro checkpoint.
-\begin{verbatim}
+Una vez entrenada nuestra red, se han cargar los pesos que se han calculado y guardado en nuestro checkpoint.
+\begin{lstlisting}[language=Python]
 filename = "weights-improvement-19-1.9435.hdf5"
 model.load_weights(filename)
 model.compile(loss='categorical_crossentropy', optimizer='adam')
-\end{verbatim}
-Además, tambien tenemos que crear un mapeo inverso de caracteres a enteros para convertir de nuevo los enteros utilizados en la red a caracteres.
-\begin{verbatim}
+\end{lstlisting}
+Además, también se ha de crear un mapeo inverso de caracteres a enteros para convertir de nuevo los enteros utilizados en la red a caracteres.
+\begin{lstlisting}[language=Python]
 int_to_char = dict((i, c) for i, c in enumerate(chars))
-\end{verbatim}
-Por último, ya solo queda hacer predicciones. La manera mas simple es iniciar con una secuencia de semillas como entrada, generar el siguiente caracter, después actualizar la secuencia de semillas para añadir el caracter generado al final, y quitar el primer caracter.  Este proceso se repetirá mientras queramos generar nuevos caracteres. Elegiremos un patron aleatorio de entrada como nuestra secuencia de semillas, y pintar los caracteres segun se vayan generando.
-\begin{verbatim}
+\end{lstlisting}
+Por último, solo queda hacer las predicciones. La manera más simple es iniciar con una secuencia de semillas como entrada, generar el siguiente carácter, después actualizar la secuencia de semillas para añadir el carácter generado al final, y quitar el primer carácter. Este proceso se repetirá mientras queramos generar nuevos carácteres. Elegiremos un patrón aleatorio de entrada como nuestra secuencia de semillas, y se pintarán los caracteres según se vayan generando.
+\begin{lstlisting}[language=Python]
 start = numpy.random.randint(0, len(dataX)-1)
 pattern = dataX[start]
 print "Seed:"
@@ -462,9 +456,9 @@ for i in range(1000):
 	pattern.append(index)
 	pattern = pattern[1:len(pattern)]
 print "\nDone."
-\end{verbatim}
+\end{lstlisting}
 \subsection{Analizando resultados}
-Al ejecutar el codigo anterior, nuestro programa genera el siguiente texto:
+Al ejecutar el código anterior, nuestro programa genera el siguiente texto:
 \begin{verbatim}
 R
 E
@@ -475,9 +469,9 @@ N
 A
 R
 \end{verbatim}
-Como podemos ver, los resultados no son perfectos. Hay palabras que si han sido generadas correctamente (como RELLENAR), y otras que sin embargo, no tienen mucho sentido (como RELLENAR).\\
+Como podemos ver, los resultados no son perfectos. Hay palabras que si han sido generadas correctamente (como TODO:), y otras que sin embargo, no tienen mucho sentido (como TODO:).\\
 Con diseños mas avanzados, nuestra red reflejaría mejores resultados. Una propuesta de modelo mas avanzado, pero que por tanto, tardaría mas en entrenarse sería por ejemplo la siguiente:
-\begin{verbatim}
+\begin{lstlisting}[language=Python]
 model = Sequential()
 model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
 model.add(Dropout(0.2))
@@ -485,15 +479,15 @@ model.add(LSTM(256))
 model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam')
-\end{verbatim}
-Además, tambien podemos incrementar el numero de ciclos de entrenamiento de 20 a 50, y disminuir el tamaño de lote de 128 a 64 para dar a la red la oportunidad de aprender más.
-\begin{verbatim}
+\end{lstlisting}
+Además, también podemos incrementar el numero de ciclos de entrenamiento de 20 a 50, y disminuir el tamaño de lote de 128 a 64 para dar a la red la oportunidad de aprender más.
+\begin{lstlisting}[language=Python]
 model.fit(X, y, nb_epoch=50, batch_size=64, callbacks=callbacks_list)
-\end{verbatim}
-Además, hay una serie de tecnicas que ayudarían a mejorar nuestro nuevo texto, pero que en este ejemplo no han sido aplicadas. Algunas de ellas son:
-\begin{itemize}
-\item Predecir menos de 1000 caracteres de salida por semilla
-\item Borrar todos los signos de puntuacion y por tanto, del vocabulario del modelo.
-\item Añadir mas capas al modelo
-\item Reducir el tamaño de lote (el más eficiente seria de 1, pero nuestro modelo tardaría mucho en entrenarse)
+\end{lstlisting}
+Por otro lado, hay una serie de técnicas que ayudarían a mejorar nuestro nuevo texto, pero que en este ejemplo no han sido aplicadas. Algunas de ellas son:
+\begin{itemize}[noitemsep]
+\item Predecir menos de 1000 caracteres de salida por semilla.
+\item Borrar todos los signos de puntuación y por tanto, del vocabulario del modelo.
+\item Añadir mas capas al modelo.
+\item Reducir el tamaño de lote (el más eficiente sería de 1, pero el modelo tardaría demasiado en entrenarse)
 \end{itemize}
