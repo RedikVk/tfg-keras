@@ -1,0 +1,423 @@
+\chapter{Códigos fuente}
+\label{Anexo:codigo}
+
+\section{4.1. Problema de diabetes - Regresión logística}
+\begin{lstlisting}[language=Python]
+from keras.models import Sequential
+from keras.layers import Dense
+import numpy
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+# carga del dataset de diabetes en indios americanos
+dataset = numpy.loadtxt("pima-indians-diabetes.csv", delimiter=",")
+# se separa el dataset en X (entrada) e Y (salida)
+X = dataset[:,0:8]
+Y = dataset[:,8]
+# creacion del modelo
+model = Sequential()
+model.add(Dense(12, input_dim=8, init='normal', activation='relu'))
+model.add(Dense(8, init='normal', activation='relu'))
+model.add(Dense(1, init='normal', activation='sigmoid'))
+# compilacion del modelo
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+# ajuste del modelo
+model.fit(X, Y, nb_epoch=150, batch_size=10)
+# evaluacion del modelo
+eva = model.evaluate(X, Y)
+print("%s: %.2f%%" % (model.metrics_names[1], eva[1]*100))
+
+# calculo de predicciones
+predicciones = model.predict(X)
+# redondeo de predicciones
+rounded = [round(x) for x in predicciones]
+print(rounded)
+\end{lstlisting}
+
+\section{4.2. Problema Boston Housing - Regresión lineal }
+\subsection{Modelo estándar}
+\begin{lstlisting}[language=Python]
+import numpy
+import pandas
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+# definicion del modelo
+def baseline_model():
+	# creacion del modelo
+	model = Sequential()
+	model.add(Dense(13, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	# compilacion del modelo
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+
+# carga del dataset de boston-housing
+dataframe = pandas.read_csv("housing.csv", delim_whitespace=True, header=None)
+dataset = dataframe.values
+# se separa el dataset en las variables X (entradas) e Y (salida)
+X = dataset[:,0:13]
+Y = dataset[:,13]
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+# evaluacion del modelo
+estimator = KerasRegressor(build_fn=baseline_model, nb_epoch=100, batch_size=5, verbose=0)
+
+kfold = KFold(n_splits=10, random_state=4)
+results = cross_val_score(estimator, X, Y, cv=kfold)
+print("Resultados: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+\end{lstlisting}
+
+\subsection{Modelo con datos de entrada normalizados}
+\begin{lstlisting}[language=Python]
+import numpy
+import pandas
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+# definicion del modelo de red neuronal
+def baseline_model():
+	# creación del modelo
+	model = Sequential()
+	model.add(Dense(13, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	# compilacion del modelo
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+
+# carga del dataset
+dataframe = pandas.read_csv("housing.csv", delim_whitespace=True, header=None)
+dataset = dataframe.values
+# se separa el dataset en las variables X (entradas) e Y (salida)
+X = dataset[:,0:13]
+Y = dataset[:,13]
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+# se evalúa el modelo con el dataset normalizado
+estimators = []
+estimators.append(('standardize', StandardScaler()))
+estimators.append(('mlp', KerasRegressor(build_fn=baseline_model, nb_epoch=50, batch_size=5, verbose=0)))
+pipeline = Pipeline(estimators)
+
+kfold = KFold(n_splits=10, random_state=4)
+results = cross_val_score(pipeline, X, Y, cv=kfold)
+print("Estandarizado: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+\end{lstlisting}
+
+\subsection{Modelo más profundo}
+\begin{lstlisting}[language=Python]
+import numpy
+import pandas
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+# Definicion del modelo de red neuronal mas profundo
+def larger_model():
+	# Creacion del modelo
+	model = Sequential()
+	model.add(Dense(13, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(6, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	# Compilacion del modelo
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+
+# carga del dataset
+dataframe = pandas.read_csv("housing.csv", delim_whitespace=True, header=None)
+dataset = dataframe.values
+# se separa el dataset en las variables X (entradas) e Y (salida)
+X = dataset[:,0:13]
+Y = dataset[:,13]
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+
+estimators = []
+estimators.append(('standardize', StandardScaler()))
+estimators.append(('mlp', KerasRegressor(build_fn=larger_model, nb_epoch=50, batch_size=5, verbose=0)))
+pipeline = Pipeline(estimators)
+
+kfold = KFold(n_splits=10, random_state=4)
+results = cross_val_score(pipeline, X, Y, cv=kfold)
+print("Resultados: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+\end{lstlisting}
+
+\subsection{Modelo más ancho}
+\begin{lstlisting}[language=Python]
+import numpy
+import pandas
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+# Definicion del modelo de red neuronal mas ancho
+def wider_model():
+	# Creacion del modelo
+	model = Sequential()
+	model.add(Dense(20, input_dim=13, init='normal', activation='relu'))
+	model.add(Dense(1, init='normal'))
+	# Compilacion del modelo
+	model.compile(loss='mean_squared_error', optimizer='adam')
+	return model
+
+# carga del dataset
+dataframe = pandas.read_csv("housing.csv", delim_whitespace=True, header=None)
+dataset = dataframe.values
+# se separa el dataset en las variables X (entradas) e Y (salida)
+X = dataset[:,0:13]
+Y = dataset[:,13]
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+
+estimators = []
+estimators.append(('standardize', StandardScaler()))
+estimators.append(('mlp', KerasRegressor(build_fn=wider_model, nb_epoch=100, batch_size=5, verbose=0)))
+pipeline = Pipeline(estimators)
+
+kfold = KFold(n_splits=10, random_state=4)
+results = cross_val_score(pipeline, X, Y, cv=kfold)
+print("Resultados: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+\end{lstlisting}
+
+\section{4.3 MNIST - Perceptrón multicapa vs Red convolucional}
+\subsection{Perceptrón multicapa}
+\begin{lstlisting}[language=Python]
+import numpy
+from keras.datasets import mnist
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.utils import np_utils
+
+# Definicion del modelo de red neuronal
+def baseline_model():
+	# Creacion del modelo
+	model = Sequential()
+	model.add(Dense(num_pixels, input_dim=num_pixels, init='normal', activation='relu'))
+	model.add(Dense(num_classes, init='normal', activation='softmax'))
+	# Compilacion del modelo
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+
+	# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+
+# carga del dataset
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+# -------------------------------------------------------flatten 28*28 images to a 784 vector for each image
+num_pixels = X_train.shape[1] * X_train.shape[2]
+X_train = X_train.reshape(X_train.shape[0], num_pixels).astype('float32')
+X_test = X_test.reshape(X_test.shape[0], num_pixels).astype('float32')
+
+# normalización de los valores de entrada de 0-255 a 0-1
+X_train = X_train / 255
+X_test = X_test / 255
+
+# -------------------------------------------------------one hot encode outputs
+y_train = np_utils.to_categorical(y_train)
+y_test = np_utils.to_categorical(y_test)
+num_classes = y_test.shape[1]
+
+model = baseline_model()
+# Ajuste del modelo
+model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=10, batch_size=200, verbose=2)
+# Evaluacion del modelo
+scores = model.evaluate(X_test, y_test, verbose=0)
+print("Baseline Error: %.2f%%" % (100-scores[1]*100))
+\end{lstlisting}
+
+\subsection{Red convolucional}
+\begin{lstlisting}[language=Python]
+import numpy
+from keras.datasets import mnist
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import Flatten
+from keras.layers.convolutional import Convolution2D
+from keras.layers.convolutional import MaxPooling2D
+from keras.utils import np_utils
+from keras import backend as K
+K.set_image_dim_ordering('th')
+
+def baseline_model():
+	# Creacion del modelo
+	model = Sequential()
+	model.add(Convolution2D(32, 5, 5, border_mode='valid', input_shape=(1, 28, 28), activation='relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+	model.add(Dropout(0.2))
+	model.add(Flatten())
+	model.add(Dense(128, activation='relu'))
+	model.add(Dense(num_classes, activation='softmax'))
+	# Compilacion del modelo
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+numpy.random.seed(4)
+
+# Carga del dataset
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+# reshape to be [samples][pixels][width][height]
+X_train = X_train.reshape(X_train.shape[0], 1, 28, 28).astype('float32')
+X_test = X_test.reshape(X_test.shape[0], 1, 28, 28).astype('float32')
+
+# normalización de los valores de entrada de 0-255 a 0-1
+X_train = X_train / 255
+X_test = X_test / 255
+# -------------------------------------------------------one hot encode outputs
+y_train = np_utils.to_categorical(y_train)
+y_test = np_utils.to_categorical(y_test)
+num_classes = y_test.shape[1]
+
+model = baseline_model()
+# Ajuste del modelo
+model.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=10, batch_size=200, verbose=2)
+# Evaluacion del modelo
+scores = model.evaluate(X_test, y_test, verbose=0)
+print("Baseline Error: %.2f%%" % (100-scores[1]*100))
+\end{lstlisting}
+
+\section{4.4 Generación de textos - Red LSTM}
+\subsection{Entrenamiento de la red}
+\begin{lstlisting}[language=Python]
+import numpy
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import LSTM
+from keras.callbacks import ModelCheckpoint
+from keras.utils import np_utils
+# Se carga el texto y se convierten todos los caracteres a minúscula
+filename = "kafka.txt"
+raw_text = open(filename).read()
+raw_text = raw_text.lower()
+# Creacion del mapeo caracter-entero
+chars = sorted(list(set(raw_text)))
+char_to_int = dict((c, i) for i, c in enumerate(chars))
+# Resumen del dataset de entrada
+n_chars = len(raw_text)
+n_vocab = len(chars)
+print "Total Characters: ", n_chars
+print "Total Vocab: ", n_vocab
+# -------------------------------------------------------prepare the dataset of input to output pairs encoded as integers
+seq_length = 100
+dataX = []
+dataY = []
+for i in range(0, n_chars - seq_length, 1):
+	seq_in = raw_text[i:i + seq_length]
+	seq_out = raw_text[i + seq_length]
+	dataX.append([char_to_int[char] for char in seq_in])
+	dataY.append(char_to_int[seq_out])
+n_patterns = len(dataX)
+print "Total Patterns: ", n_patterns
+# -------------------------------------------------------reshape X to be [samples, time steps, features]
+X = numpy.reshape(dataX, (n_patterns, seq_length, 1))
+# Normalización de los datos de entrada
+X = X / float(n_vocab)
+# -------------------------------------------------------one hot encode the output variable
+y = np_utils.to_categorical(dataY)
+# Definicion del modelo de red neuronal LSTM
+model = Sequential()
+model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(256))
+model.add(Dropout(0.2))
+model.add(Dense(y.shape[1], activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='adam')
+# Definicion de los checkpoint (punto de guardado de pesos)
+filepath="weights-improvement-{epoch:02d}-{loss:.4f}-bigger.hdf5"
+checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min')
+callbacks_list = [checkpoint]
+# Ajuste del modelo
+model.fit(X, y, nb_epoch=50, batch_size=64, callbacks=callbacks_list)
+\end{lstlisting}
+
+\subsection{Generacion de texto}
+\begin{lstlisting}[language=Python]
+import sys
+import numpy
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import LSTM
+from keras.callbacks import ModelCheckpoint
+from keras.utils import np_utils
+# Se carga el texto y se convierten todos los caracteres a minúscula
+filename = "kafka.txt"
+raw_text = open(filename).read()
+raw_text = raw_text.lower()
+# Creacion del mapeo caracter-entero, y su inverso
+chars = sorted(list(set(raw_text)))
+char_to_int = dict((c, i) for i, c in enumerate(chars))
+int_to_char = dict((i, c) for i, c in enumerate(chars))
+# Resumen del dataset de entrada
+n_chars = len(raw_text)
+n_vocab = len(chars)
+print "Total Characters: ", n_chars
+print "Total Vocab: ", n_vocab
+# -------------------------------------------------------prepare the dataset of input to output pairs encoded as integers
+seq_length = 100
+dataX = []
+dataY = []
+for i in range(0, n_chars - seq_length, 1):
+	seq_in = raw_text[i:i + seq_length]
+	seq_out = raw_text[i + seq_length]
+	dataX.append([char_to_int[char] for char in seq_in])
+	dataY.append(char_to_int[seq_out])
+n_patterns = len(dataX)
+print "Total Patterns: ", n_patterns
+# reshape X to be [samples, time steps, features]
+X = numpy.reshape(dataX, (n_patterns, seq_length, 1))
+# Normalización de los datos de entrada
+X = X / float(n_vocab)
+# -------------------------------------------------------one hot encode the output variable
+y = np_utils.to_categorical(dataY)
+# Definicion del modelo de red neuronal LSTM
+model = Sequential()
+model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(256))
+model.add(Dropout(0.2))
+model.add(Dense(y.shape[1], activation='softmax'))
+# Carga de los pesos de la red a partir de los checkpoints generados previamente
+filename = "weights-improvement-47-1.2219-bigger.hdf5"
+model.load_weights(filename)
+model.compile(loss='categorical_crossentropy', optimizer='adam')
+# se elige una semilla aleatoria para reproducir el mismo ejemplo varias veces
+start = numpy.random.randint(0, len(dataX)-1)
+pattern = dataX[start]
+print "Seed:"
+print "\"", ''.join([int_to_char[value] for value in pattern]), "\""
+# Generacion de caracteres
+for i in range(1000):
+	x = numpy.reshape(pattern, (1, len(pattern), 1))
+	x = x / float(n_vocab)
+	prediction = model.predict(x, verbose=0)
+	index = numpy.argmax(prediction)
+	result = int_to_char[index]
+	seq_in = [int_to_char[value] for value in pattern]
+	sys.stdout.write(result)
+	pattern.append(index)
+	pattern = pattern[1:len(pattern)]
+\end{lstlisting}
+
+\newpage \thispagestyle{empty} % Página vacía

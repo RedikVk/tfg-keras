@@ -1,5 +1,5 @@
 %% Los margenes, tipo de hoja y estilo BOOK
-\documentclass[a4paper,11pt,twoside,openright,titlepage]{book}
+\documentclass[a4paper,11pt,twoside,openany,titlepage]{book}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{graphicx}
@@ -7,6 +7,7 @@
 \usepackage{subcaption}
 \usepackage{enumitem}
 \usepackage{multicol}
+\usepackage{float}
 
 \usepackage[nodisplayskipstretch]{setspace} \setstretch{1}
 \let\oldv\verbatim
@@ -114,6 +115,9 @@ extendedchars=false,
 inputencoding=utf8,
 }
 
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+\usepackage[Bjornstrup]{fncychap}
+
 
 \begin{document}
 \setlength{\baselineskip}{18pt}  %% Espacio interlinea
@@ -153,7 +157,7 @@ inputencoding=utf8,
 
 \include{teoria_redes_neuronales}
 \include{documentacion_keras}
-\include{modelos_keras}
+\include{modelos_keras}	
 \include{cap_conclusiones}
 
 \input{glosario}
@@ -165,9 +169,7 @@ inputencoding=utf8,
 
 %\frontmatter %Para poner los anexos en numeros romanos
 
-\input{anexo_manualuso}
-
-%\input{anexo_maualprogramador}
+\input{anexo_codigo}
 
 %Hoja final en blanco
 \newpage \thispagestyle{empty} % Pagina vacia

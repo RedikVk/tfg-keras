@@ -1,27 +1,27 @@
-\chapter{Redes neuronales: Deep Learning}
+\chapter{Estado del arte: Redes neuronales}
 \lsection{Redes neuronales}
 \subsection {Historia de las redes neuronales}
-Desde hace cientos de años, se ha intentado estudiar el cerebro humano. Sin embargo, a partir de los años 50 cuando empezaron a desarrollarse las bases de la tecnología actual, hubo un fuerte avance en este estudio. Las redes neuronales, como su nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano.
+Desde hace cientos de años, se ha intentado estudiar el cerebro humano. Sin embargo, a partir de los años 50 cuando empezaron a desarrollarse las bases de la tecnología actual, hubo un fuerte avance en este estudio. Las redes neuronales artificiales, como su propio nombre indica, pretenden imitar la forma de funcionamiento de las neuronas que forman el cerebro humano.
 \\\\Años 40 :
 \begin{itemize}
 
-\item A principios de los años 40, el neurólogo Warren McCulloch y el matemático Walter Pitts propusieron el primer modelo matemático de redes neuronales. Describieron como funcionaban las neuronas, y modelaron un red neuronal simple usando circuitos eléctricos.
+\item A principios de los años 40, el neurólogo Warren McCulloch y el matemático Walter Pitts propusieron los primeros modelos matemáticos y eléctricos de redes neuronales. Describieron como funcionaban las neuronas, y modelaron un red neuronal simple usando circuitos eléctricos.
 \item A finales de década, Hebb definió dos conceptos muy importantes:
 \begin{itemize}
 \item El proceso de aprendizaje se localiza principalmente en la sinapsis o conexión entre neuronas.
 \item La información se representa en el cerebro mediante un conjunto de neuronas activas o inactivas.
 \end{itemize}
-Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue siendo usada en algunos modelos actuales. Esta regla nos dice que los cambios en los pesos de la sinapsis se basan en la interacción entre las neuronas pre y post sintacticas, y el numero de veces que se activan de manera simultanea.
+Estas dos reglas se sintetizan en la regla de aprendizaje de Hebb, que sigue siendo usada en algunos modelos actuales. Esta regla nos dice que los cambios en los pesos de la sinapsis se basan en la interacción entre las neuronas pre y post sintácticas, y el numero de veces que se activan de manera simultanea.
 \end{itemize}
 Años 50:
 \begin{itemize}
 \item En 1956 en la ciudad de Dartmouth, se llevó a cabo la primera conferencia sobre Inteligencia Artificial donde se discutió sobre la capacidad de las maquinas para simular el aprendizaje humano.
 \item A finales de los años 50,  el neurobiólogo Frank Rosenblatt empezó a trabajar en el concepto de Perceptrón. Esto dio lugar a la regla de aprendizaje Delta, que permitía emplear señales continuas de entrada y de salida.
-\item En 1959 Bernard Widrow y Marcian Hoff desarrollaron los algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Estos modelos fueron usados para desarrollar la primera red neuronal aplicada a un problema real. Un filtro que eliminaba el eco en las llamadas telefónicas.
+\item En 1959 Bernard Widrow y Marcian Hoff desarrollaron los algoritmos Adaline (Adaptative Linear Neuron) y Madaline (Multiple Adaline). Estos modelos fueron usados para desarrollar la primera red neuronal aplicada a un problema real: un filtro que eliminaba el eco en las llamadas telefónicas.
 \end{itemize}
 Años 80:
 \begin{itemize}
-\item En 1982, el interés por las redes neuronales se renovó. John Hopfield presentó informes a la Academia Nacional de Ciencias en los que no solo describría el modelado del cerebro humano, si no que demostró que aplicaciones que podría tener su estudio para crear nuevos dispositivos.
+\item En 1982, el interés por las redes neuronales se renovó. John Hopfield presentó varios artículos a la Academia Nacional de Ciencias en los que no solo describría el modelado del cerebro humano, si no que demostró que aplicaciones que podría tener su estudio para crear nuevos dispositivos.
 \item En 1984, Kohonen desarrolló una familia de redes de memoria asociativa y mapas auto-organizativos, actualmente llamadas redes de Kohonen.
 \item En 1985, Paul Werbos desarrolló el algoritmo Backpropagation que resolvió el problema de entrenar redes neuronales multicapa de forma efectiva.
 \item En 1986, los investigadores Hinton y Sejnowski desarrollaron la máquina de Boltzmann, un tipo de red neuronal recurrente estocástica.
@@ -40,7 +40,7 @@ El cerebro, visto a un alto nivel y simplificando enormemente su estructura, pod
 \includegraphics[scale=0.6]{images/neurona.png}
 \caption{Estructura de una neurona\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}\\
-Cada neurona desarrolla impulsos eléctricos que se trasmiten a lo largo de esta mediante su axón. Este, al final se ramifica en ramificaciones axionales, que conectan con otras neuronas mediante sus dentritras.\\
+Cada neurona desarrolla impulsos eléctricos que se trasmiten a lo largo de esta mediante su axón. Este, al final se ramifica en ramificaciones axionales, que conectan con otras neuronas mediante sus dendritas.\\
 El conjunto de elementos que hay entre la ramificación axional y la dendrita forman la sinapsis, que regula la transmisión del impulso eléctrico mediante unos elementos químicos llamados neurotransmisores.
 \begin{figure}[htp]
 \centering
@@ -59,11 +59,10 @@ Las neuronas artificiales son modelos que tratan de simular el comportamiento de
 \end{figure}\\
 Como podemos intuir observando la imagen anterior, la neurona artificial se comporta en cierto modo como una biológica, pero de forma simplificada:
 \begin{itemize}
-\item Entradas (${x_{1}, x_{2}}$): estos valores pueden ser enteros, reales o binarios y equivaldrían a los impulsos que envían otras neuronas a través de sus dendritas.
-\item Pesos (${w_{1}, w_{2}}$): equivaldrían a los mecanismos de sinapsis para transmitir el impulso.
+\item Entradas (${x_{1}, x_{2}, ...}$): estos valores pueden ser enteros, reales o binarios y equivaldrían a los impulsos que envían otras neuronas a través de sus dendritas.
+\item Pesos (${w_{1}, w_{2}, ...}$): equivaldrían a los mecanismos de sinapsis para transmitir el impulso.
 \item De este modo, el producto de los valores ${x_{i} , w_{i}}$ equivaldría a las señales químicas inhibidoras y excitadoras que se dan en la neurona. Estos valores son la entrada de la función de activación, que convierte todo el conjunto de valores en uno solo llamado potencial. La función de ponderación suele ser la suma ponderada de las entradas y los pesos sinápticos.
-\item La salida de función de ponderación llega a la función de activación que transforma este valor en otro en el dominio que trabajen las salidas de las neuronas. Suele ser una función no lineal como la función paso o la función sigmoide, aunque también se usa funciones lineales.
-\item El valor de salida cumpliría la función de la tasa de disparo en las neuronas biológicas.
+\item La salida de la función de ponderación llega a la función de activación que transforma este valor en otro en el dominio que trabajen las salidas de las neuronas. Suele ser una función no lineal como la función paso o la función sigmoide, aunque también se usa funciones lineales.
 \end{itemize}
 En resumen, podemos establecer las siguientes analogías:
 \begin{itemize}
@@ -86,88 +85,120 @@ Por lo general, este operador suele ser la suma ponderada de todas las entradas 
 \begin{equation}\label{umbral_perceptron}
 y' =  \sum_{i=1}^{n} x_{i} * w_{i}
 \end{equation}
-\subsubsection {Función de activación}
-La función de activación combina el potencial que nos proporciona la función de propagación con el estado actual de la neurona, para conseguir el estado futuro de esta (activada/desactivada). Esta función es normalmente creciente y monótona. Las funciones mas comunes son:
+\subsubsection {Función de activación} \label{def_funcion_activacion}
+La función de activación combina el potencial que nos proporciona la función de propagación con el estado actual de la neurona, para conseguir el estado futuro de esta (activada/desactivada). Esta función es normalmente creciente y monótona. Las funciones más comunes son:
 \begin{itemize}
-\item Identidad: es una función de activación muy simple que siempre devuelve como salida su valor de entrada. Su rango es va de menos infinito a infinito, es monótona y derivativamente monótona.
-\begin{equation}
-f(x) = x
-\end{equation}
+\item Identidad: es una función de activación muy simple que siempre devuelve como salida su valor de entrada. Su rango es ${(-\infty,\infty)}$, y es una función monótona.\\
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.8]{images/Activation_identity.png}
-\caption{Funcion de activación identidad}
+\begin{minipage}[b]{0.4\textwidth}
+  \begin{equation}
+  f(x) = x
+  \end{equation}
+  \end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[scale=0.8]{images/Activation_identity.png}
+  \caption{Función identidad}
+  \end{minipage}
 \end{figure}
+
 \item Escalón binario: Es la más usada por redes neuronales binarias ya que no es lineal, y es bastante sencilla. El Perceptrón y Hopfield son algunos ejemplos de redes que usan esta función. Cuenta con un rango {0,1}, y es monótona.
-\begin{equation}
-f(x) = \begin{Bmatrix}
-0 & x<0\\
-1 & x\geq 0
-\end{Bmatrix}
-\end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.8]{images/Activation_binary_step.png}
-\caption{Función de activación escalón binario}
+\begin{minipage}[b]{0.4\textwidth}
+  \begin{equation}
+  f(x) = \begin{Bmatrix}
+  0 & x<0\\
+  1 & x\geq 0
+  \end{Bmatrix}
+  \end{equation}
+  \end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[scale=0.8]{images/Activation_binary_step.png}
+  \caption{Función escalón binario}
+\end{minipage}
 \end{figure}
-\item Logística / Softstep: Es una de las funciones mas utilizadas para modelar redes neuronales. Su rango es continuo en los valores (0,1), es monótona e infinitamente diferenciable.
-\begin{equation}
-f(x) = \frac{1}{1+e^{-x}}
-\end{equation}
+
+\item Logística / Sigmoide / Softstep: Es una de las funciones más utilizadas para modelar redes neuronales. Su rango es continuo en los valores (0,1), es monótona e infinitamente diferenciable.
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.8]{images/Activation_logistic.png}
-\caption{Funcion de activación logistica}
+\begin{minipage}[b]{0.4\textwidth}
+  \begin{equation}
+  f(x) = \frac{1}{1+e^{-x}}
+  \end{equation}
+  \end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[scale=0.8]{images/Activation_logistic.png}
+  \caption{Función logística}
+\end{minipage}
 \end{figure}
-\item Tangente hiperbólica: Esta función es utilizada por redes con salidas continuas. Un ejemplo sería el Perceptrón multicapa con retropropagación, ya que su algoritmo de aprendizaje necesita una función derivable. Cuenta con un rango (-1,1), es monótona, y se aproxima a la función identidad en su origen.
-\begin{equation}
-f(x) = \tanh(x) = \frac{2}{1+e^{-2x}}-1
-\end{equation}
-\begin{figure}[htp]
+
+\item Tangente hiperbólica: Esta función es utilizada por redes con salidas continuas. Un ejemplo sería el Perceptrón multicapa con retropropagación, ya que su algoritmo de aprendizaje necesita una función derivable. Cumple con un rango (-1,1), es monótona, y se aproxima a la función identidad en su origen.
+\begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{images/Activation_tanh.png}
-\caption{Funcion de activación tangencial}
+\begin{minipage}[b]{0.4\textwidth}
+  \begin{equation}
+  f(x) = \tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}
+  \end{equation}
+  \end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[scale=0.8]{images/Activation_tanh.png}
+  \caption{Función tangencial}
+\end{minipage}
 \end{figure}
-\item Rectificadora (ReLU - Rectified Linear Unit): Esta función de activación la introdujo por primera vez en el año 2000 Hahnloser, con motivaciones biológicas y matemáticas. Se viene usando en redes convolucionales mas que la ampliamente extendida función logística sigmoide (se basa en probabilidades), y es más practica que la tangente hiperbólica. La función rectificadora es, por tanto, una de las funciones de activación más populares para deep learning.
-\begin{figure}[htp]
+
+\item Rectificadora (ReLU - Rectified Linear Unit): Esta función de activación la introdujo por primera vez en el año 2000 Hahnloser, con motivaciones biológicas y matemáticas. Se viene usando en redes convolucionales más que la ampliamente extendida función logística sigmoide (se basa en probabilidades), y es más practica que la tangente hiperbólica. La función rectificadora es, por tanto, una de las funciones de activación más populares para deep learning.
+\begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{images/Activation_rectified_linear.png}
-\caption{Funcion de activación rectificadora}
+\begin{minipage}[b]{0.4\textwidth}
+  \begin{equation}
+    f(x) = \begin{Bmatrix}
+    0 & x<0\\
+    x & x\geq 0
+    \end{Bmatrix}
+  \end{equation}
+  \end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[scale=0.8]{images/Activation_rectified_linear.png}
+  \caption{Función rectificadora}
+\end{minipage}
 \end{figure}
+
 \item Softplus: aproximación suavizada de la función de activación rectificadora.
-\begin{equation}
-f(x) = ln(1+e^{x})
-\end{equation}
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.8]{images/Activation_softplus.png}
-\caption{Funcion de activación softplus}
+\begin{minipage}[b]{0.4\textwidth}
+  \begin{equation}
+  f(x) = ln(1+e^{x})
+  \end{equation}
+  \end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[scale=0.8]{images/Activation_softplus.png}
+  \caption{Funcion de activación softplus}
+\end{minipage}
 \end{figure}
 \end{itemize}
-%TODO: Borrar estas propiedades
-%Las propiedades deseables de una función de activación son:
-%\begin{itemize}
-%\item No lineal: Cuando contamos con una función de activación no lineal, se puede probar que una red neuronal de dos capas pueda ser una función universal de aproximación. La función identidad no satisface esta propiedad, ya que si todas las capas utilizar la funcion de activación identidad, la red neuronal entera equivaldría a un modelo con una sola capa.
-%\item Continuamente diferenciable: Esta propiedad es necesaria para que sean posibles los métodos de optimización basados en el gradiente. Por ejemplo, la funcion de activación de escalón binario no es diferenciable en el 0, y su derivada es 0 en todos los demas valores, asi que los metodos basados en el gradiente no funcionan con ella.
-%\item Rango: Cuando el rango de la funcion de activación es finito, los métodos de entrenamiento basados en gradiente tienden a ser mas estables porque los pesos a elegir son mas limitados. Cuando el rango es infinito, el entrenamiento es por lo general mas eficiente porque los patrones afectan mas a los pesos.
-%\item Monotona: Cuando la funcion de activación es monotona, el error en un modelo con una sola capa tiende a converger.
-%\item Suavidad: Las funciones con una derivación monotona tienden a ser mas generales en algunos casos.
-%\item Se aproxima a la funcion identidad cerca del origen: Cuando la función de activación tiene esta propiedad, la red neuronal aprende de forma mas eficiente cuando sus pesos son inicializados con valores pequeños aleatorios.
-%\end{itemize}
+
 
 \subsection{Tipos de aprendizaje en redes neuronales}
 \subsubsection {Aprendizaje supervisado}
 Los modelos de aprendizaje supervisado son aquellos utilizados cuando el problema nos presenta el conjunto de datos y los atributos que queremos predecir. Nos encontramos dos categorías:
 \begin{itemize}
-\item Regresión: los valores de salida son una o mas variables continuas. Un ejemplo sería predecir el valor de una casa en función de sus metros cuadrados, el numero de habitaciones, tamaño de la piscina... (Problema Boston-Housing detallado en el punto 4.2)
-\item Clasificación: los datos pertenecen a dos o mas clases, y se busca aprender como clasificar nuevas entradas en esas clases a partir de datos que ya conocemos. Uno de los ejemplos más conocidos es el Iris dataset, donde se intenta clasificar los datos en 4 tipos de flores según la longitud y la anchura de sus pétalos y sépalos. Otro de ellos es el problema del dataset MNIST, que busca clasificar imágenes de números en los 10 tipos de caracteres numéricos (Problema detallado en el punto 4.3).
+\item Regresión: los valores de salida son una o más variables continuas. Un ejemplo sería predecir el valor de una casa en función de sus metros cuadrados, el numero de habitaciones, tamaño de la piscina... (Problema Boston-Housing detallado en el punto 4.2)
+\item Clasificación: los datos pertenecen a dos o más clases, y se busca aprender como clasificar nuevas entradas en esas clases a partir de datos que ya conocemos. Uno de los ejemplos más conocidos es el Iris dataset, donde se intenta clasificar los datos en 4 tipos de flores según la longitud y la anchura de sus pétalos y sépalos. Otro de ellos es el problema del dataset MNIST, que busca clasificar imágenes de números en los 10 tipos de caracteres numéricos (Problema detallado en el punto 4.3).
 \end{itemize}
 \subsubsection {Aprendizaje no supervisado}
 Cuando no hay información previa de salidas dado un conjunto de entradas. En estos casos, el objetivo es encontrar grupos mediante clustering, o determinar una distribución de probabilidad sobre un conjunto de entrada.
 
 
-\section {Perceptrón}
-En los años 50, F.Rosenblatt desarrolló por primera vez la idea de Perceptrón, basándose en la regla de aprendizaje de Hebb y en los modelos de neuronas biológicas de McCulloch y Pitts. Uno de las carácteristicas que mas interés despertó de este modelo fue su capacidad para aprender a reconocer patrones.\\
+\lsection {Perceptrón}
+En los años 50, F.Rosenblatt desarrolló por primera vez la idea de Perceptrón, basándose en la regla de aprendizaje de Hebb y en los modelos de neuronas biológicas de McCulloch y Pitts. Uno de las características que más interés despertó de este modelo fue su capacidad para aprender a reconocer patrones.\\
 El perceptrón se basa en una arquitectura monocapa. Está constituido por un conjunto de células de entrada, que reciben los patrones a reconocer o clasificar, y una o varias células de salida que se ocupan de clasificar estos patrones de entrada en clases. Cada célula de entrada está conectada con todas las células de salida. En la figura \ref{perceptron} se puede observar la arquitectura de un perceptrón simple con 4 entradas y 1 salida.
 \begin{figure}[htp]
 \centering
@@ -188,17 +219,17 @@ y =  F(y', \theta)
 y =
 \left\lbrace
 \begin{array}{ll}
-\textup{si } y' + \theta & 1\\
-\textup{si no }  & 0
+\textup{si } y' \geq \theta & 1\\
+\textup{si } y' < \theta & 0
 \end{array}
 \right.
 \end{equation}
 Con estas fórmulas, podemos deducir que la salida de la célula (${y}$) será 1 (neurona activada) si ${y' > \theta}$, o 0 (neurona desactivada) en caso contrario.\\
-La función de salida (${F}$) produce una salida binaria, por lo que es un diferenciador en dos categorías. En el caso de tener únicamente dos dimensiones, con las ecuaciones \ref{prop_perceptron}, \ref{salida_perceptron} y \ref{sistema} se podría llegar a la ecuación:
+La función de salida (${F}$) produce una salida binaria, por lo que es un diferenciador en dos categorías. En el caso de tener únicamente dos dimensiones, con las ecuaciones \ref{prop_perceptron}, \ref{salida_perceptron} y \ref{sistema} se podría llegar a la ecuación
 \begin{equation}
 w_{1}x_{1} + w_{2}x_{2} + \theta = 0
 \end{equation}
-Que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation} y cuyo corte en la abscisa en el eje x pasa por \begin{equation}-\frac{\theta}{w_{2}}\end{equation}
+que es la ecuación de una recta con pendiente \begin{equation}-\frac{w_{1}}{w_{2}}\end{equation} y cuyo corte en la abscisa en el eje x pasa por \begin{equation}-\frac{\theta}{w_{2}}.\end{equation}
 Como podemos ver en la figura \ref{perceptron_recta}, podemos imaginarnos el perceptrón como una recta, que en un gráfica de dos dimensiones deja las dos categorías a separar a un lado y a otro de la misma.
 \begin{figure}[htp]
 \centering
@@ -207,7 +238,7 @@ Como podemos ver en la figura \ref{perceptron_recta}, podemos imaginarnos el per
 \label{perceptron_recta}
 \end{figure}
 \subsubsection{Aprendizaje}
-El perceptrón es un tipo de red que utiliza aprendizaje supervisado, es decir, necesita conocer los valores esperados para cada una de las entradas antes de realizar predicciones. Este proceso se lleva a cabo mediante la inserción de patrones de entrada del dataset con el que que se quiere entrenar la red.\\
+El perceptrón es un tipo de red que utiliza aprendizaje supervisado, es decir, necesita conocer los valores esperados para cada una de las entradas antes de construir el modelo. Este proceso se lleva a cabo mediante la inserción de patrones de entrada del dataset con el que que se quiere entrenar la red.\\
 Entrenar la red no es más que encontrar los pesos sinápticos y el umbral que mejor haga predecir a nuestra red los resultados esperados. Para la determinación de estas variables, se sigue un proceso adaptativo. Se comienza con unos valores aleatorios, y se van modificando según la diferencia entre los valores deseados y los obtenidos por la red.\\
 En resumen, el perceptrón simple aprende iterativamente siguiendo estos pasos:
 \begin{enumerate}
@@ -243,46 +274,37 @@ Hasta ahora, hemos descrito el perceptrón como un clasificador. Sin embargo, ta
   \caption{Separacion lineal de la funcion OR.\\\textit{Imagen extraída de Wikipedia}}
   \end{minipage}
 \end{figure}
-\\Sin embargo, la función XOR no puede ser aprendida por un único perceptrón, ya que requiere el uso de al menos dos lineas para separar las clases. Si se quiere alcanzar esta funcionalidad, es necesario utilizarse al menos una capa mas. Aquí es donde entra en juego el perceptrón multicapa.
+\\Sin embargo, la función XOR no puede ser aprendida por un único perceptrón, ya que requiere el uso de al menos dos lineas para separar las clases. Si se quiere alcanzar esta funcionalidad, es necesario utilizarse al menos una capa más. Aquí es donde entra en juego el perceptrón multicapa.
 
-\section {Perceptron multicapa}
+\lsection {Perceptron multicapa}
 El perceptrón muticapa tuvo su origen en los años 80, con la idea de solucionar el mayor problema del perceptrón simple: no ser capaz de aprender funciones no linealmente separables (como es el caso de la función XOR). Se ha demostrado que es un aproximador universal de funciones.
 \\El perceptrón multicapa es un modelo de red neuronal con alimentación hacia delante, es decir, con conexiones sin bucles (tipo de red feedforward). Está compuesto de varias capas ocultas entre la entrada y la salida de la misma, y caracterizado por tener salidas disjuntas pero relacionadas entre si, ya que la salida de una neurona es la entrada de la siguiente.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=1.2]{images/multilayerperceptron.png}
 \caption{Perceptrón multicapa.\\\textit{Imagen extraída de Wikipedia}}
+\label{ooo}
 \end{figure}
-\\Las capacidades de decisión de un perceptrón multicapa de 2 y 3 capas con una única neurona de salida se muestran en la figura \ref{tablaperceptron}:
+\\Las capacidades de decisión de un perceptrón multicapa de 2 y 3 capas con una única neurona de salida se muestran en la figura \ref{tabla_perceptron}:
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/perceptron23capas.png}
-\label{tablaperceptron}
-\caption{\textit{Imagen extraída de GitHub}}
+\caption{Tabla comparativa del perceptrón segun sus capas.\\\textit{Imagen extraída de GitHub}}
+\label{tabla_perceptron}
 \end{figure}
 \\En el perceptrón multicapa, al igual que en el perceptrón simple, podemos diferenciar una fase de propagación de los valores de entrada hacia delante, y una fase de aprendizaje en la que los errores obtenidos a la salida del perceptrón se van propagando hacia atrás con el objetivo de actualizar los pesos de las conexiones mediante el gradiente de la función de error. Este algoritmo se llama backpropagation o retropropagación.
 \subsection{Propagación}
-Imaginemos un perceptrón multicapa con C capas. Llamemos ${W^{C} = W^{c}_{ij}}$ a la matriz de pesos de la capa ${c}$ y ${c+1}$, donde ${W^{c}_{ij}}$ representa el peso de la neurona ${i}$ de la capa ${c}$ a la neurona ${j}$ de la capa c+1. Denominaremos ${U^{C} = u^{c}_{i}}$ al vector de umbrales de las neuronas de la capa ${c}$. Se denomina ${a^{c}_{i}}$ a la activación o entrada de la neurona ${i}$ de la capa ${c}$. Las activaciones de las neuronas se calculan de forma distinta dependiendo de la capa en la que nos encontremos.
+Imaginemos un perceptrón multicapa con ${C}$ capas. Llamemos ${W^{C} = W^{c}_{ij}}$ a la matriz de pesos de la capa ${c}$ y ${c+1}$, donde ${W^{c}_{ij}}$ representa el peso de la neurona ${i}$ de la capa ${c}$ a la neurona ${j}$ de la capa c+1. Denominaremos ${U^{C} = u^{c}_{i}}$ al vector de umbrales de las neuronas de la capa ${c}$. Se denomina ${a^{c}_{i}}$ a la activación o entrada de la neurona ${i}$ de la capa ${c}$. Las activaciones de las neuronas se calculan de forma distinta dependiendo de la capa en la que nos encontremos.
 \begin{itemize}
 \item Capa de entrada: la activación se corresponde con el patrón de entrada del perceptrón.
-\item Capa oculta: la activación procede de las salidas de las capas anteriores conectadas a las neuronas de esta capa. Esta activación se calcula como la suma de los productos de las activaciones que reciben las neuronas de las capas anteriores multiplicadas por su peso, añadiendoles el umbral, es decir:\\
+\item Capa oculta: la activación procede de las salidas de las capas anteriores conectadas a las neuronas de esta capa. Esta activación se calcula como la suma de los productos de las activaciones que reciben las neuronas de las capas anteriores multiplicadas por su peso, añadiéndoles el umbral, es decir:\\
 \begin{equation}
-a_{i}^{c} = f(\sum_{j=1}^{n_{c-1}}w_{ji}^{c-1}a_{j}^{c-1}+u_{i}^{c})
+out_{i}^{c} = f(\sum_{j=1}^{n_{c-1}}w_{ji}^{c-1}a_{j}^{c-1}+u_{i}^{c})
 \end{equation}
 \item Capa de salida: ocurre lo mismo que en las capas ocultas, salvo que ahora la salida de las neuronas se corresponde con la salida de la red.
 \end{itemize}
-La función ${f}$ es a lo que llamamos función de activación. Las funciones de activación mas utilizadas en el perceptrón multicapa son la función sigmoidal y la función tangente hiperbólica. Ambas poseen un intervalo continuo dentro de [0,1] y [-1,1] y vienen dadas por las siguientes ecuaciones.
-\begin{itemize}
-\item Función sigmoidal ${f_{sigm}(x)=\frac{1}{1+e^{-x}}}$
-\item Función tangente hiperbólica ${f_{thip}(x)=\frac{1-e^{-x}}{1+e^{-x}}}$
-\end{itemize}
-\begin{figure}[htp]
-\centering
-\vspace{-1.5em}
-\includegraphics[scale=0.6]{images/tansig_vs_logsig.png}
-\end{figure}
-Ambas funciones están relacionadas mediante la expresión ${f_{thip}(x)=2f_{sigm}(x)-1}$, por lo que la utilización de una u otra depende de cual sea mas compatible con el tipo de patrón que se va a utilizar. La función sigmoidal tiene un nivel de saturación inferior igual a 0, y la tangente hiperbólica lo tiene a -1.\\
-Normalmente, la función de activación suele ser la misma para todas las neuronas de la red exceptuando las neuronas de la capa de salida, que suelen utilizar dos funciones distintas: la función identidad, y la función sigmoidal.
+La función ${f}$ es a lo que llamamos función de activación. Las funciones de activación más utilizadas en el perceptrón multicapa son la función sigmoidal y la función tangente hiperbólica. Ambas poseen un intervalo continuo dentro de [0,1] y [-1,1] y están relacionadas mediante la expresión ${f_{thip}(x)=2f_{sigm}(x)-1}$, por lo que la utilización de una u otra depende de cual sea más compatible con el tipo de patrón que se va a utilizar. La función sigmoidal tiene un nivel de saturación inferior igual a 0, y la tangente hiperbólica lo tiene a -1.\\
+Normalmente, la función de activación suele ser la misma en todas las neuronas de la red exceptuando las neuronas de la capa de salida que suelen utilizar dos funciones distintas: la función identidad, generalmente utilizada en problemas de regresión, y la función sigmoidal, en problemas de clasificación.
 \subsection{Consideraciones de diseño}
 A la hora de diseñar un perceptrón multicapa para abordar un problema, el primer paso es determinar la arquitectura de la red. Esto implica determinar tres variables, ya explicadas anteriormente:
 \begin{itemize}
@@ -290,25 +312,25 @@ A la hora de diseñar un perceptrón multicapa para abordar un problema, el prim
 \item Número de neuronas de entrada y de salida: viene dado por la definición del problema. En ocasiones esta afirmación no tiene porque ser del todo cierta, y se ha de proceder a hacer un análisis previo basándose en técnicas de análisis de correlación, de sensibilidad, de importancia relativa...
 \item Número de capas ocultas: pese a ser una variable que ha de definir el diseñador, no existe un método que determine el numero óptimo de neuronas ocultas necesarias para resolver un problema, ya que existen muchos tipos de arquitectura capaces de resolver un mismo problema. Uno de los métodos, por ejemplo, sería partir de una arquitectura ya entrenada, e ir realizando pequeños cambios en el numero de neuronas/capas ocultas para buscar así el diseño óptimo.
 \end{itemize}
-\subsection{Algoritmo de Retropropagación o Backpropagation}
+\subsection{Algoritmo de Retropropagación o Backpropagation} \label{backpropagation}
 Como se ha comentado anteriormente, el proceso de aprendizaje del perceptrón multicapa consiste en propagar hacia atrás cierta información desde la salida del perceptrón hasta su entrada. Esta información será el error entre la salida obtenida y la salida esperada, con el objetivo de que en las siguientes iteraciones la salida obtenida se aproxime lo máximo posible a la salida esperada. Por tanto, nos encontramos ante un algoritmo de aprendizaje supervisado.\\
-Hay muchas funciones de error que se pueden utilizar, pero el perceptrón multicapa usa habitualmente la función cuadrático medio, que se define como:
+Hay muchas funciones de error que se pueden utilizar, pero el perceptrón multicapa usa habitualmente la función del error cuadrático medio, que se define como:
 \begin{equation}
 e(n) = \frac{1}{2}\sum_{i=1}^{n_{c}}(s_{i}(n)-y_{i}(n))^{2}
 \end{equation}
 siendo ${n}$ cada una de las iteraciones del aprendizaje. El error obtenido ${e(n)}$ es el error de una sola iteración, por lo que si queremos entrenar la red con varios patrones, el error medio de esta será ${E=\frac{1}{N}\sum_{n=1}^{N}e(n)}$. En resumen, el perceptrón multicapa aprende encontrando el mínimo de la función de error.\\
-Aunque el aprendizaje debe llevarse a cabo minimizando el error total, los meétodos más utilizados son los basados en métodos de gradiente estocástico, que consisten en minimizar el error en cada patrón ${e(n)}$. Por tanto, aplicando el método de gradiente descendiente, cada peso de la red ${w}$ se actualiza para cada patrón de entrada ${n}$, y siendo ${\alpha}$ la tasa de aprendizaje, de acuerdo con la siguiente ecuación:
+Aunque el aprendizaje debe llevarse a cabo minimizando el error total, los métodos más utilizados son los basados en métodos de gradiente estocástico, que consisten en minimizar el error en cada patrón ${e(n)}$. Por tanto, aplicando el método de gradiente descendiente, cada peso de la red ${w}$ se actualiza para cada patrón de entrada ${n}$, y siendo ${\alpha}$ la tasa de aprendizaje, de acuerdo con la siguiente ecuación:
 \begin{equation}
 w(n)=w(n-1)-\alpha \frac{\partial e(n)}{\partial w}
 \label{eq_grad}
 \end{equation}
 Dado que las neuronas de la red están agrupadas en capas ocultas según niveles, es posible aplicar el método del gradiente descendente de forma eficiente en todas las neuronas, llevando a cabo el algoritmo de retropropagación o regla delta generalizada.
 
-\subsection{Regla delta generalizada}
-Como ya se ha comentado, la regla delta generalizada no es mas que una forma eficiente de aplicar el método de gradiente a los parámetros de la arquitectura (pesos y umbrales). Su aprendizaje es supervisado. Su uso consiste en ajustar pesos y bias tratando de minimizar la suma del error cuadrático. Para ello, se cambian dichas variables en la dirección contraria a la pendiente del error.\\
-Las redes neuronales entrenadas mediante esta técnica, dan respuestas mas que razonables cuando al sistema se le presentan entradas que nunca había analizado antes. A una nueva entrada, le hará corresponder una entrada similar a la salida obtenida para un patrón de entrenamiento, siendo éste similar al patrón presentado a la red. Esta es una de las grandes propiedades de la regla delta, su capacidad de generalicación.\\
+\subsection{Regla delta generalizada} \label{regla_delta}
+Como ya se ha comentado, la regla delta generalizada no es más que una forma eficiente de aplicar el método de gradiente a los parámetros de la arquitectura (pesos y umbrales). Su aprendizaje es supervisado. Su uso consiste en ajustar pesos y bías tratando de minimizar la suma del error cuadrático. Para ello, se cambian dichas variables en la dirección contraria al gradiente del error.\\
+Las redes neuronales entrenadas mediante esta técnica, dan respuestas más que razonables cuando al sistema se le presentan entradas que nunca había analizado antes. A una nueva entrada, le hará corresponder una entrada similar a la salida obtenida para un patrón de entrenamiento, siendo éste similar al patrón presentado a la red. Esta es una de las grandes propiedades de la regla delta, su capacidad de generalización.\\
 \subsection{Tasa de aprendizaje}
-La tasa de aprendizaje (${\alpha}$) es un parámetro que determina la velocidad a la que van a cambiar los pesos de las conexiones de la red. Tiene generalmente un rango [0,1], siendo los valores mas cercanos a cero los que hacen que los pesos cambien poco a poco, acercándose lentamente a la convergencia, y los cercanos a uno los que hacen que la red converja mas rápidamente al principio, pero siendo posible que los pesos oscilen demasiado al encontrar el peso óptimo final. Por esta razón es importante encontrar una tasa de aprendizaje óptima.\\
+La tasa de aprendizaje (${\alpha}$) es un parámetro que determina la velocidad a la que van a cambiar los pesos de las conexiones de la red. Tiene generalmente un rango [0,1], siendo los valores más cercanos a cero los que hacen que los pesos cambien poco a poco, acercándose lentamente a la convergencia, y los cercanos a uno los que hacen que la red converja más rápidamente al principio, pero siendo posible que los pesos oscilen demasiado al encontrar el peso óptimo final. Por esta razón es importante encontrar una tasa de aprendizaje óptima.\\
 Aquí es donde entra en juego un segundo término llamado momento (${\eta}$), que pondera cuánto queremos que influya lo que los pesos han cambiado en la anterior iteración. Con ello, sabremos que si los pesos han cambiado mucho, es que estamos aun lejos del valor de la tasa de aprendizaje óptimo, por lo que avanzaremos en su búsqueda más rápidamente. Por otro lado, si los pesos no han cambiado apenas, sabremos que el valor óptimo de ${\alpha}$ está cerca.\\
 Si se modifica la ecuación \ref{eq_grad} para añadir esta mejora, quedaría de la siguiente manera:
 \begin{equation}
@@ -317,34 +339,34 @@ w(n) = w(n-1) = - \alpha \frac{\partial e(n)}{\partial w} + \eta \Delta w(n-1)
 siendo ${\Delta w(n-1)=w(n-1)-w(n-2)}$ el incremento que sufrió el parámetro ${w}$ en la anterior iteración.
 \subsection{Sobreajuste y early stopping}
 El sobreajuste o overfitting es el efecto secundario de sobreentrenar un algoritmo de aprendizaje con ciertos datos para los que ya se conoce el resultado deseado. El algoritmo debe alcanzar un estado en el cual sea capaz de predecir otros casos a partir de lo ya aprendido mediante datos de entrenamiento, generalizando para poder resolver distintas situaciones a las ya presentes durante el entrenamiento. No obstante, cuando un sistema se entrena demasiado o se entrena con datos extraños, el algoritmo tiende a quedarse ajustado a unas características muy especificas de los datos de entrenamiento que no representan un estado general del problema. En este estado, nuestro diseño es más eficaz al responder a muestras del conjunto de entrenamiento, pero ante nuevas entradas el resultado empeora.\\
-Una manera de resolver este problema es extraer un conjunto de entradas del dataset de entrenamiento, y utilizarlo de manera auxiliar a modo de validación. Ya que este subconjunto se deja al margen durante el entrenamiento, su objetivo será evaluar el error en la red tras cada epoch, para determinar cuando éste empieza a aumentar. Cuando aumente, se prodecerá a detener el entrenamiento y se conservarán los valores de los pesos del ciclo anterior. A este método se le conoce como early-stopping.
+Una manera de resolver este problema es extraer un conjunto de entradas del dataset de entrenamiento, y utilizarlo de manera auxiliar a modo de validación. Ya que este subconjunto se deja al margen durante el entrenamiento, su objetivo será evaluar el error en la red tras cada época para determinar cuando éste empieza a aumentar. Cuando aumente, se prodecerá a detener el entrenamiento y se conservarán los valores de los pesos del ciclo anterior. A este método se le conoce como early-stopping.
 
-\section{Redes neuronales convolucionales}
+\lsection{Redes neuronales convolucionales}
 Las redes neuronales convolucionales son muy similares a las redes neuronales ordinarias descritas hasta ahora, como el perceptrón multicapa. Las neuronas tienen pesos, sesgos, reciben una entrada con la que realiza un producto escalar y sobre la que aplica una función de activación, tienen una función de perdida...\\
 Sin embargo, se utilizan principalmente para resolver el mayor problema que tienen las redes neuronales ordinarias: el tratamiento de imágenes. Pese a que con las redes neuronales estándar es posible manejar imágenes (veremos el ejemplo del MNIST en el apartado 4.3), en cuanto las imágenes aumentan su tamaño y calidad esto se vuelve intratable. Al tratarse de neuronas totalmente conectadas, provocaríamos un desperdicio de recursos así como un rápido sobreajuste.\\
-Las redes neuronales convolucionales trabajan dividiendo y modelando la información en partes mas pequeñas, y combinando esta información en las capas mas profundas de la red. Por ejemplo, en el caso del tratamiento de una imagen, las primeras capas tratarían de detectar los bordes de las figuras. Las siguientes capas buscarían combinar los patrones de detección de bordes para conseguir formas mas simples, y aplicar patrones de posición de objetos, iluminación... Por ultimo, en las últimas capas se intentará hacer coincidir la imagen con todos los patrones descubiertos, para conseguir una predicción final de la suma de todos ellos. Así es como las redes neuronales convolucionales consiguen modelar una gran cantidad de datos, dividiendo previamente el problema en partes para conseguir predicciones mas sencillas y precisas.
+Las redes neuronales convolucionales trabajan dividiendo y modelando la información en partes más pequeñas, y combinando esta información en las capas más profundas de la red. Por ejemplo, en el caso del tratamiento de una imagen, las primeras capas tratarían de detectar los bordes de las figuras. Las siguientes capas buscarían combinar los patrones de detección de bordes para conseguir formas más simples, y aplicar patrones de posición de objetos, iluminación... Por ultimo, en las últimas capas se intentará hacer coincidir la imagen con todos los patrones descubiertos, para conseguir una predicción final de la suma de todos ellos. Así es como las redes neuronales convolucionales consiguen modelar una gran cantidad de datos, dividiendo previamente el problema en partes para conseguir predicciones más sencillas y precisas.
 \subsection{Estructura}
 En general, todas las redes neuronales convoluciones están formadas por una estructura compuesta por 3 tipos de capas:
 \subsubsection{Capa convolucional}
 Esta capa le da nombre de la red. En vez de utilizar la multiplicación de matrices como en la redes neuronales estándar, se aplica una operación llamada convolución. Esta operación recibe como entrada una imagen, y sobre ella aplica un filtro que nos devuelve su mapa de características, reduciendo así el tamaño de sus parámetros. La convolución utiliza tres ideas que ayudan a mejorar cualquier sistema sobre el que se aplique machine learning:
 \begin{itemize}
-\item{\textbf{Iteracciones dispersas}:}
+\item{\textbf{Interacciones dispersas}:}
 Al aplicar un filtro de menos tamaño sobre la entrada, reducimos bastante el numero de parámetros y cálculos.
 \item{\textbf{Parametros compartidos}:}
 Compartir parámetros entre los distintos tipos de filtros ayuda a mejorar la eficiencia del sistema.
 \item{\textbf{Representaciones equivariantes}:}
 Si las entradas cambian, las salidas cambian de forma similar.
 \end{itemize}
-Además, la convolución proporciona herramientas para trabajar con entradas de tamaño variable, lo cual es muy útil cuando se trabaja con imágenes (cada imagen tiene un numero distinto de píxeles). Se basa en un operador matemático que transforma dos funciones f y g, en una tercera, que en cierto sentido, representa la magnitud en la que se superponen f y una versión trasladada y rotada de g.
+Además, la convolución proporciona herramientas para trabajar con entradas de tamaño variable, lo cual es muy útil cuando se trabaja con imágenes (cada imagen tiene un numero distinto de píxeles). Se basa en un operador matemático que transforma dos funciones ${f}$ y ${g}$, en una tercera, que en cierto sentido, representa la magnitud en la que se superponen ${f}$ y una versión trasladada y rotada de ${g}$.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{images/conv_layer.png}
 \caption{Funcionamiento de capa convolucional.\\\textit{Imagen extraída de deeplearning.net}}
 \end{figure}\\
 \subsubsection{Capa de reducción o pooling}
-Esta capa se coloca generalmente después de la capa convolucional. Es la encargada de reducir la cantidad de parámetros a analizar reduciendo las dimensiones espaciales (ancho x alto), quedándose de esta forma con las características mas comunes. La operación que lleva a cabo esta capa también se llama reducción de muestreo, ya que la reducción de tamaño implica también una perdida de información. Sin embargo, para un red neuronal, este tipo de pérdida puede ser beneficioso debido a:
+Esta capa se coloca generalmente después de la capa convolucional. Es la encargada de reducir la cantidad de parámetros a analizar reduciendo las dimensiones espaciales (ancho x alto), quedándose de esta forma con las características más comunes. La operación que lleva a cabo esta capa también se llama reducción de muestreo o submuestreo, ya que la reducción de tamaño implica también una perdida de información. Sin embargo, para un red neuronal, este tipo de pérdida puede ser beneficioso debido a:
 \begin{itemize}
-\item La reducción del tamaño provoca una menor sobrecarga de calculo en las próximas capas de la red.
+\item La reducción del tamaño provoca una menor sobrecarga de cálculo en las próximas capas de la red.
 \item Reduce habitualmente el sobreajuste.
 \end{itemize}
 La operación que se suele aplicar en esta capa es "max-pooling", que divide la imagen de entrada en un conjunto de rectángulos, y respecto a cada uno de ellos, se queda con el valor máximo.
@@ -354,29 +376,32 @@ La operación que se suele aplicar en esta capa es "max-pooling", que divide la 
 \caption{Max-pooling aplicado a una imagen\\\textit{Imagen extraída de Wikipedia}}
 \end{figure}
 \subsubsection{Capa clasificadora totalmente conectada}
-Una vez que la imagen ha pasado tanto por las capas convolucionales como las de pooling y se han extraído sus características mas destacadas, los datos llegan a la fase de clasificación. Para ello, ĺas redes convolucionales normalmente utilizan capas completamente conectadas en las que cada píxel se trata como una neurona independiente. Las neuronas de esta fase funcionan como las de un perceptrón multicapa, donde la salida de cada neurona se calcula multiplicando la salida de la capa anterior por el peso de la conexión, y aplicando a este dato una función de activación.
+Una vez que la imagen ha pasado tanto por las capas convolucionales como las de pooling y se han extraído sus características más destacadas, los datos llegan a la fase de clasificación. Para ello, ĺas redes convolucionales normalmente utilizan capas completamente conectadas en las que cada píxel se trata como una neurona independiente. Las neuronas de esta fase funcionan como las de un perceptrón multicapa, donde la salida de cada neurona se calcula multiplicando la salida de la capa anterior por el peso de la conexión, y aplicando a este dato una función de activación.
 
-\section{Redes neuronales recurrentes}
+\lsection{Redes neuronales recurrentes}
+\label{redes_neuronales_recurrentes}
 Los humanos no empiezan a pensar de cero a cada segundo. Por ejemplo, mientras leemos, entendemos cada palabra basándonos en el contexto que forman las palabras previas. No desperdiciamos los ideas anteriores, sino que estas tienen persistencia en la memoria.\\
-Las redes neuronales tradicionales no cuentan con esta capacidad, y es su mayor defecto. Por ejemplo, imaginemos el caso en el que queremos clasificar que clase de evento está pasando en una punto de una película. No está muy claro cómo una red neuronal tradicional podría usar razonablemente las escenas anteriores para predecir las siguientes.\\
+Las redes neuronales tradicionales no cuentan con esta capacidad, y es su mayor defecto. Por ejemplo, imaginemos el caso en el que queremos clasificar que clase de evento está pasando en un punto de una película. No está muy claro cómo una red neuronal tradicional podría usar razonablemente las escenas anteriores para predecir las siguientes.\\
 Y aquí es donde entran en juego las redes neuronales recurrentes, ya que estas sí resuelven este problema. Su principal característica es que son redes con bucles, que permiten que la información persista.\\
 \begin{figure}[htp]
 \centering
 \vspace{-1.5em}
 \includegraphics[scale=0.3]{images/rnnrolled.png}
 \caption{Ejemplo básico de red neuronal recurrente.\\\textit{Imagen extraída de GitHub}}
+\label{rnn1}
 \end{figure}
-\\En el diagrama 2.18, podemos ver como una parte de la red neuronal, \textbf{A}, recibe una entrada \textbf{x} y devuelve una salida \textbf{h}. El bucle permite que la información pase de un ciclo de la red al siguiente. Pese a que el concepto de bucle parezca algo extraño, las redes neuronales que cuentan con ellos no son tan distantes de la redes neuronales tradicionales. Una red neuronal recurrente puede ser creada utilizando múltiples copias de la misma red, pasando el mensaje o salida al nodo sucesor. Si desenrollamos el bucle, tendríamos algo parecido a la figura 2.19:\\
+\\En el diagrama \ref{rnn1}, podemos ver cómo una parte de la red neuronal, \textbf{A}, recibe una entrada \textbf{x} y devuelve una salida \textbf{h}. El bucle permite que la información pase de un ciclo de la red al siguiente. Pese a que el concepto de bucle parezca algo extraño, las redes neuronales que cuentan con ellos no son tan distantes de la redes neuronales tradicionales. Una red neuronal recurrente puede ser creada utilizando múltiples copias de la misma red, pasando el mensaje o salida al nodo sucesor. Si desenrollamos el bucle, tendríamos algo parecido a la figura \ref{rnn2}:\\
 \begin{figure}[htp]
 \centering
 \vspace{-1.5em}
 \includegraphics[scale=0.3]{images/RNNunrolled.png}
 \caption{Red neuronal recurrente desenrollada.\\\textit{Imagen extraída de GitHub}}
+\label{rnn2}
 \end{figure}
-\\Esta forma de cadena hace prever que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas. En los últimos años, se han logrado auténticos grandes éxitos aplicando las RNN para resolver problemas como: reconocimiento de discursos, modelación de lenguajes, traducciones, captación de imágenes... Un factor clave en estos éxitos es el uso de las redes LSTMs, un tipo muy especial de redes neuronales recurrentes que trabajan por muchas razones de forma mas eficiente que la versión estándar.
+\\Esta forma de cadena hace prever que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas. En los últimos años, se han logrado auténticos grandes éxitos aplicando las RNN para resolver problemas como reconocimiento de discursos, modelación de lenguajes, traducciones, captación de imágenes... Un factor clave en estos éxitos es el uso de las redes LSTMs, un tipo muy especial de redes neuronales recurrentes que trabajan por muchas razones de forma más eficiente que la versión estándar.
 \subsubsection{El problema de la longitud de las dependencias.}
 Uno de los intereses de las RNNs es la idea de conectar información antigua con la tarea actual. En temas de vídeo, sería útil por ejemplo utilizar frames anteriores para entender el frame actual, pero... ¿pueden las RNN hacer esto? La respuesta es, depende.\\
-Algunas veces, solo necesitamos utilizar información reciente para la tarea actual. Por ejemplo, en temas de modelación de lenguaje, para adivinar la siguiente palabra en un contexto, en la mayoría de los casos bastaría con analizar la frase en la que se encuentra. Sin embargo, hay casos en los que se necesita acceder a un contexto mas grande. Desafortunadamente, a medida que el espacio entre la información requerida y la tarea actual aumenta, las RNN tardan cada vez más en aprender a conectar la información.\\
+Algunas veces, sólo necesitamos utilizar información reciente para la tarea actual. Por ejemplo, en temas de modelación de lenguaje, para adivinar la siguiente palabra en un contexto, en la mayoría de los casos bastaría con analizar la frase en la que se encuentra. Sin embargo, hay casos en los que se necesita acceder a un contexto más grande. Desafortunadamente, a medida que el espacio entre la información requerida y la tarea actual aumenta, las RNN tardan cada vez más en aprender a conectar la información.\\
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.3]{images/RNN-longtermdependencies.png}
@@ -396,18 +421,18 @@ Todas las redes neuronales recurrentes tienen forma de cadena al repetir sus mó
 \includegraphics[scale=0.2]{images/LSTM2-notation.png}
 \caption{Notación del modulo repetidor.\\\textit{Imagen extraída de GitHub}}
 \end{figure}
-\\La clave de las redes LSTMs se encuentra en el estado de la celda, es decir, en la linea horizontal que recorre la parte superior del diagrama 2.21, ya que permite a la información fluir por toda la red con solo algunas pequeñas interacciones, sin ser a penas alterada.
+\\La clave de las redes LSTMs se encuentra en el estado de la celda, es decir, en la linea horizontal que recorre la parte superior del diagrama 2.21, ya que permite a la información fluir por toda la red con sólo algunas pequeñas interacciones, sin ser a penas alterada.
 La red también tiene la habilidad de borrar o añadir información al estado de la celda mediante estructuras llamadas puertas. Estas puertas son una manera de permitir opcionalmente a la información circular o no, y se componen de una capa sigmoide y una operación de multiplicación. Las salidas de la capa sigmoide alternan entre 0 y 1, describiendo si la información fluye o no. Una red LSTM tiene 3 de estas puertas, para proteger y controlar el estado de la celda.\\\\
 Las redes neuronales LSTM siguen una serie de pasos para decidir qué información se va a ir almacenando o borrando. Podemos destacar los siguientes:
 \begin{enumerate}
 \item \textbf{Decidir qué información despreciar}. Esta decisión la toma la capa sigmoide, que devuelve una salida igual a 1 si se busca mantener la información, o 0 si queremos deshacernos de ella.\\
 Volvamos al ejemplo de modelado del lenguaje, donde se quiere predecir una palabra basándose en las anteriores. En este problema, el estado de la celda puede almacenar el género del sujeto para usar los pronombres adecuados. Cuando nos encontremos un nuevo sujeto, olvidaremos el genero del anterior ya que no será de utilidad.
-\item \textbf{Decidir que información se va a almacenar}. Consta de dos partes: primero, una capa sigmoide decide que valores son actualizados. Después, una capa tanh crea un vector con los nuevos valores candidatos, que pueden ser añadidos al estado.\\
+\item \textbf{Decidir qué información se va a almacenar}. Consta de dos partes: primero, una capa sigmoide decide qué valores son actualizados. Después, una capa tanh crea un vector con los nuevos valores candidatos que pueden ser añadidos al estado.\\
 En el ejemplo anterior, se decidiría que queremos añadir el género del nuevo sujeto al estado de la celda, para reemplazar el viejo que queremos olvidar.
-\item \textbf{Actualizar el estado de la celda}. En el paso anterior se decide que hacer, y ahora toca hacerlo. Se multiplica el viejo estado por la salida de la capa sigmoide del primer paso, olvidando así las cosas que decidimos olvidar. A esto, se le suma el producto de la salida de la capa sigmoide y de la capa tanh del segundo paso. Con ello, se consiguen saber los nuevos valores candidatos, escalados según la decisión de actualizar el estado de la celda.\\
-En el caso de modelado de lenguaje, ahora es cuando se desecha la información sobre el género del viejo sujeto, y se añade la nueva información, como decidimos en los pasos anteriores.
-\item \textbf{Decidir la salida basandonos en el estado de la celda, pero de manera filtrada}. Primero, mediante una capa sigmoide, se decide que partes del nuevo estado de la celda se van a sacar como salida. Después, se pasa el estado de la celda por una capa tanh para tener valores entre -1 y 1, y lo multiplicamos por la salida de la capa sigmoide, para sacar solo las partes que decidamos.\\
-En el ejemplo de modelado de lenguaje, una vez que se encuentre el nuevo sujeto, se sacará información a cerca de él como puede ser si éste es singular o plural, para después poder conjugar correctamente el verbo que le sigue.
+\item \textbf{Actualizar el estado de la celda}. En el paso anterior se decide qué hacer, y ahora toca hacerlo. Se multiplica el viejo estado por la salida de la capa sigmoide del primer paso, olvidando así las cosas que se decidieron olvidar. A esto, se le suma el producto de la salida de la capa sigmoide y de la capa tanh del segundo paso. Con ello, se consiguen saber los nuevos valores candidatos, escalados según la decisión de actualizar el estado de la celda.\\
+En el caso de modelado de lenguaje, ahora es cuando se desecha la información sobre el género del viejo sujeto y se añade la nueva información, como se decidió en los pasos anteriores.
+\item \textbf{Decidir la salida basándose en el estado de la celda, pero de manera filtrada}. Primero, mediante una capa sigmoide, se decide qué partes del nuevo estado de la celda se van a sacar como salida. Después, se pasa el estado de la celda por una capa tanh para tener valores entre -1 y 1, y se multiplica por la salida de la capa sigmoide para sacar solo las partes que se decidan.\\
+En el ejemplo de modelado de lenguaje, una vez que se encuentre el nuevo sujeto, se sacará información acerca de él como puede ser si éste es singular o plural, para después poder conjugar correctamente el verbo que le sigue.
 \end{enumerate}
-Como se ha comentado anteriormente, la mayoría de los mejores resultados utilizando redes recurrentes, es mediante las redes LSTMs. Pero a pesar de que su descubrimiento ha sido un gran hito, todavía quedan metas por cumplir. Una de ellas sería dotar a las RNN de una capacidad para decidir que información consultar en una fuente muy grande de información. Por ejemplo, si estamos usando redes RNN para crear un titulo que describa una imagen, sería útil elegir que partes de la imagen usar para cada palabra.
+Como se ha comentado anteriormente, la mayoría de los mejores resultados utilizando redes recurrentes, es mediante las redes LSTMs. Pero a pesar de que su descubrimiento ha sido un gran hito, todavía quedan metas por cumplir. Una de ellas sería dotar a las RNN de una capacidad para decidir qué información consultar en una fuente muy grande de información. Por ejemplo, si estamos usando redes RNN para crear un titulo que describa una imagen, sería útil elegir que partes de la imagen usar para cada palabra.
 \label{ch:teoria}

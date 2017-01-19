@@ -1,5 +1,5 @@
-\chapter{Keras}
-\section{Introducción}
+\chapter{La librería Keras}
+\lsection{Introducción}
 Keras es una librería de redes neuronales escrita en Python y capaz de ejecutarse tanto sobre Tensorflow como sobre Theano. Sus principales características son:
 \begin{itemize}[noitemsep]
 \item Fácil y rápido prototipado gracias a su modularidad, minimalismo y extensibilidad.
@@ -9,7 +9,7 @@ Keras es una librería de redes neuronales escrita en Python y capaz de ejecutar
 \item Es compatible con Python 2.7-3.5
  \end{itemize}
 
- \section{Instalación}
+ \lsection{Instalación}
  Para la instalacion de Keras, son necesarias las siguientes dependencias:
  \begin{itemize}[noitemsep]
 \item \lstinline{numpy} y \lstinline{scipy} : librerías cientificas para Python numéricas.
@@ -31,15 +31,13 @@ Existen 2 modos de instalación:
     "backend": "tensorflow"
 \end{lstlisting}
 
-\section{Modelos}
+\lsection{Modelos}
 Hay dos tipos de modelos disponibles para su implementacion en Keras: el modelo secuencial, y la clase \lstinline{Model} (más general). Ambos modelos presentan varios métodos en común, como \lstinline{summary()}, \lstinline{get_config()} o \lstinline{to_json()} que devuelven información basica sobre el modelo, o \lstinline{get_weights()} y \lstinline{set_weights()}, los métodos \lstinline{getter} y \lstinline{setter} propios de los pesos del modelo.
 \subsection{Modelo secuencial}
 Los métodos básicas del modelo secuencial son:
 \begin{itemize}
-TODO: comentaría lo de los self; al final son métodos de una clase
-\item \lstinline{compile(self, optimizer, loss, metrics=[], sample_weight_mode=None)} : Ccalcula automáticamente la función gradiente y prepara el modelo para una forma concreta de entrenamiento.
-TODO: fit -> cuánto? Habría que explicar un poco las distintas variables
-\item \lstinline{fit(self, x, y, batch_size=32, nb_epoch=10, verbose=1, callbacks=[], validation_split=0.0, validation_data=None, shuffle=True, class_weight=None, sample_weight=None)} : Entrena el modelo para un número fijado de ciclos.
+\item \lstinline{compile(self, optimizer, loss, metrics=[], sample_weight_mode=None)} : Calcula automáticamente la función gradiente y prepara el modelo para una forma concreta de entrenamiento.
+\item \lstinline{fit(self, x, y, batch_size=32, nb_epoch=10, verbose=1, callbacks=[], validation_split=0.0, validation_data=None, shuffle=True, class_weight=None, sample_weight=None)} : Entrena el modelo para un número fijado de ciclos (\lstinline{nb_epoch}), con actualizaciones de gradiente cada \lstinline{batch_size} ejemplos.
 \item \lstinline{evaluate(self, x, y, batch_size=32, verbose=1, sample_weight=None)} : Calcula la función de perdida dados unos datos de entrada, lote por lote.
 \item \lstinline{predict(self, x, batch_size=32, verbose=0)} : Genera predicciones para unos valores de entrada.
 \end{itemize}
@@ -51,18 +49,15 @@ b = Dense(32)(a)
 model = Model(input=a, output=b)
 \end{lstlisting}
 En caso de que tengamos múltiples conjuntos de entradas y de salidas, también podríamos inicializarlo de la siguiente manera:
-TODO: ¿Como poner así capas ocultas?
 \begin{lstlisting}[language=Python]
 model = Model(input=[a1, a2], output=[b1, b3, b3])
 \end{lstlisting}
-\section{Capas}
+\lsection{Capas}
 \subsection{Funciones básicas de las capas}
 A la hora de diseñar las capas de nuestra red neuronal, tenemos una serie de funciones disponibles:
 \begin{itemize}
 \item \lstinline{Dense}: Para capas regulares totalmente conectadas.\\
-\lstinline{keras.layers.core.Dense(output_dim, init='glorot_uniform', activation='linear', weights=None, W_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True, input_dim=None)}\\
-TODO: estos ejemplos en una linea a parte
-Ejemplo de uso: \lstinline{model.add(Dense(32, input_dim=16))} sería un modelo que contaría con una array de entrada de tamaño 16, y de salida de 32.
+\lstinline{keras.layers.core.Dense(output_dim, init='glorot_uniform', activation='linear', weights=None, W_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True, input_dim=None)}
 \item \lstinline{Activation}: Se aplica una función de activación a una salida. Las principales funciones que nos ofrece Keras son:
 \begin{itemize}
 \item \lstinline{softmax}: generalización de la función logística.
@@ -74,59 +69,60 @@ Ejemplo de uso: \lstinline{model.add(Dense(32, input_dim=16))} sería un modelo 
 \item \lstinline{hard_sigmoid}
 \item \lstinline{linear}: función lineal
 \end{itemize}
-Podemos encontrar funciones de activación mas avanzadas como \lstinline{PReLu} o \lstinline{LeakyReLU} en el módulo \lstinline{keras.layers.advanced_activations}.\\
-Ejemplo de uso: \lstinline{model.add(Activation('tanh'))}
-TODO: Explicar mas el dropout
-\item \lstinline{Dropout}: Proporciona una manera simple de prevenir que se produzca sobreajuste.\\
+Podemos encontrar funciones de activación más avanzadas como \lstinline{PReLu} o \lstinline{LeakyReLU} en el módulo \lstinline{keras.layers.advanced_activations}.
+\item \lstinline{Dropout}: Consiste en establecer al azar una fracción de unidades de entrada a 0 en cada actualización durante la fase de entrenamiento. Esto ayuda a evitar el sobreajuste.
 \lstinline{keras.layers.core.Dropout(p)}
-\item \lstinline{Reshape}: Transforma la salida en una forma concreta.\\
-Ejemplo de uso: \lstinline{model.add(Reshape((3, 4), input_shape=(12,)))} definiría una capa de salida de 3x4 para nuestro modelo.
+\item \lstinline{Reshape}: Transforma la salida en una forma concreta.
+\end{itemize}
+Algunos ejemplos de uso prodrían ser:
+\begin{itemize}[noitemsep]
+\item \lstinline{model.add(Dense(32, input_dim=16))} : modelo que contaría con una array de entrada de tamaño 16, y de salida de 32.
+\item \lstinline{model.add(Activation('tanh'))} : aplica la función de activación tangencial.
+\item \lstinline{model.add(Dropout(0.2))} : establecería entradas a 0 en el 20\% de los casos.
+\item \lstinline{model.add(Reshape((3, 4), input_shape=(12,)))} : define una capa de salida de 3x4 para nuestro modelo.
 \end{itemize}
 
 \subsection{Capas convolucionales}
-Keras presenta diversas funciones para desarrollar capas convolucionales según las dimensiones de su entrada. La mas destacable, a modo de ejemplo, podría ser:\\
-TODO: dar ejemplo como en los apartados anteriores
+Keras presenta diversas funciones para desarrollar capas convolucionales según las dimensiones de su entrada. La más destacable, a modo de ejemplo, es:\\
 \lstinline{Convolution2D(nb_filter, nb_row, nb_col, init='glorot_uniform', activation=None, weights=None, border_mode='valid', subsample=(1, 1), dim_ordering='default', W_regularizer=None, b_regularizer=None, activity_regularizer=None, W_constraint=None, b_constraint=None, bias=True)}\\\\
+Un ejemplo de uso donde se define una capa convolucional de dos dimensiones, con 32 mapeadores de tamaño 5x5 y una funcion de activación rectificadora, sería:\\
+\lstinline{model.add(Convolution2D(32, 5, 5, border_mode='valid', activation='relu'))} : \\\\
 Además de la versión en 2D, Keras nos ofrece funciones para entradas de 1 dimensión o 3 dimensiones. Aparte, tenemos funcionalidades para desarrollar capas convolucionales dilatadas (\lstinline{AtrousConvolution2D}), hacer deconvolución (\lstinline{Deconvolution2D}), etc.
 \subsection{Capas pooling}
-TODO: Explicar que hace
 Al igual que ocurre con las capas convolucionales, Keras ofrece un buen numero de funciones para desarrollar capas pooling en redes convolucionales, dependiendo de las dimensiones de la entrada. Como en el caso anterior, una función representativa sería:\\
 \lstinline{MaxPooling2D(pool_size=(2, 2), strides=None, border_mode='valid', dim_ordering='default')}\\\\
 Si en vez de utilizar la función máximo se requiere que nuestra capa utilice otro tipo de algoritmos, Keras también nos ofrece funciones como: \lstinline{AveragePooling2D}, \lstinline{GlobalMaxPooling2D}, \lstinline{GlobalAveragePooling2D}... Además de sus variantes para 1D y 3D.
 \subsection{Capas recurrentes}
 Keras presenta 3 tipos de capas recurrentes:
-TODO: Explicar un poco mas relacionandolo por ejemplo con el punto 2.5
 \begin{itemize}[noitemsep]
-\item \lstinline{SimpleRNN} : Red recurrente totalmente conectada cuya salida realimenta la entrada.
-\item \lstinline{LSTM} : Long-Short Term Memory unit
-\item \lstinline{GRU} : Gated Recurrent Unit
+\item \lstinline{SimpleRNN} : Red recurrente estándar totalmente conectada cuya salida realimenta la entrada.
+\item \lstinline{LSTM} : Redes Long-Short Term Memory. Este tipo de red ha sido descrito en el apartado \ref{redes_neuronales_recurrentes}, y será puesto en ejemplo en el apartado \ref{ej_lstm}
+\item \lstinline{GRU} : Gated Recurrent Unit. Red neuronal recurrente muy similar a las redes LSTM, pero que no dispone de una unidad de memoria interna y utiliza dos puertas en lugar de tres.
 \end{itemize}
 
-\section{Inicializadores}
-Los inicializadores definen la manera de inicializar los pesos de las capas de nuestro modelo. El argumento usado en para definir este inicializador en las capas es \textbf{init}. Las opciones mas comunes son:
+\lsection{Inicializadores}
+Los inicializadores definen la manera de inicializar los pesos de las capas de nuestro modelo. El argumento usado en para definir este inicializador en las capas es \textbf{init}. Las opciones más comunes son:
 \begin{itemize}[noitemsep]
 \item uniform
 \item normal
 \item identity
 \item zero
+\item glorot\_normal
+\item glorot\_uniform
 \end{itemize}
 
-\section{Activaciones}
+\lsection{Activaciones}
 El modo de activación puede ser implementado mediante una capa \lstinline{Activation} (\lstinline{model.add(Dense(64)); model.add(Activation('tanh')))}, o mediante un parámetro que soportan todas las capas (\lstinline{model.add(Dense(64, activation='tanh'))}).\\
-Las funciones más comunes son:
-TODO: Relacionar con 2.3.1 y explicar aqui o alli las nuevas
+Las funciones más comunes, descritas previamente en el punto \ref{def_funcion_activacion}, son :
 \begin{itemize}[noitemsep]
-\item softmax
-\item softsign
-\item tanh
-\item sigmoid
-\item linear
-\item glorot_normal
-\item glorot_uniform
+\item linear: función lineal.
+\item sigmoid: función sigmoide / logística.
+\item tanh: función tangente hiperbólica.
+\item relu: función rectificadora.
+\item softplus: aproximación suavizada de la función rectificadora.
 \end{itemize}
-\section{Funciones de pérdida}
-La función de perdida es uno de los dos parámetros necesarios para compilar un modelo. Algunas de las funciones mas conocidas que nos proporciona Keras son:
-TODO: ¿Poner formulas?
+\lsection{Funciones de pérdida}
+La función de perdida es uno de los dos parámetros necesarios para compilar un modelo. Algunas de las funciones más conocidas que nos proporciona Keras son:
 \begin{itemize}[noitemsep]
 \item \lstinline{mean_squared_error(y_true, y_pred)} : Calcula el error cuadrático medio.
 \item \lstinline{mean_absolute_error / mae} : Calcula el error medio absoluto.
@@ -137,27 +133,27 @@ Los regularizadores permiten aplicar penalizaciones en las capas durante la opti
 Ejemplo de uso:
 \lstinline{model.add(Dense(64, input_dim=64, W_regularizer=l2(0.01), activity_regularizer=activity_l2(0.01)))}
 
-\section{Optimizadores}
-El optimizador es otro de los dos valores necesarios para compilar un modelo (junto con la función de pérdida). En los ejemplos que se describirán mas adelante, se usará el optimizador Adam.
-\begin{itemize}
-\item \lstinline{Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)}
+\lsection{Optimizadores}
+El optimizador es otro de los dos valores necesarios para compilar un modelo (junto con la función de pérdida). Los principales optimizadores disponibles son:
+\begin{itemize}[noitemsep]
+\item \lstinline{SGD} : aproximación estocástica del metodo de gradiente descendiente descrito en los puntos \ref{backpropagation} y \ref{regla_delta}.
+\item \lstinline{Adagrad} : algoritmo basado en gradiente que adapta el ratio de aprendizaje a los parámetros, realizando grandes actualizaciones cuando éstos son infrecuentes, y pequeñas actualizaciones cuando son frecuentes.
+\item \lstinline{Adadelta} : extensión del algoritmo Adagrad
+\item \lstinline{Adam} : algoritmo basado en el gradiente de primer orden de funciones estocásticas objetivas. Este método es sencillo de implementar, es eficiente computacionalmente hablando, necesita poca capacidad de memoria, y es muy bueno en problemas con una gran cantidad de datos y/o parámetros. Es utilizado por defecto en los modelos de Keras.
 \end{itemize}
-TODO: jopé; ya sabes lo que dices?? ;-)
-Empieza con SGD y explícalo un poco y luego menciona Adadelta, Adagrad y Adam; da referncias y no te metas en detalles complicados\\
-Adam es un algoritmo para la optimización basado en el gradiente de primer orden de funciones estocásticas objetivas. Está basado en estimaciones adaptativas de momentos de orden inferior. Este método es sencillo de implementar, es eficiente computacionalmente hablando, necesita poca capacidad de memoria, y es muy bueno en problemas con una gran cantidad de datos y/o parámetros.
 
-\section{Callbacks}
+\lsection{Callbacks}
 Los callbacks son una serie de funciones que pueden ser aplicadas en ciertos momentos del proceso de entrenamiento. Estos callbacks pueden ser utilizados para echar un vistazo a los estados internos así como a las estadísticas del modelo que estamos entrenando. Para utilizarlos, basta con pasar como argumento a la función \lstinline{fit(...)} una lista de métodos, que serán llamados en cada fase del entrenamiento.\\
 Las principales funciones son:
 \begin{itemize}
-\item \lstinline{BaseLogger()}: Se aplica en todo modelo de Keras, y acumula la media de las métricas por época. TODO: Ampliar un poco
+\item \lstinline{BaseLogger()}: Se aplica en todo modelo de Keras, y acumula la media de las métricas por época que se han definido para ser monitorizadas.
 \item \lstinline{Callback()}: Clase base abstracta, utilizada para crear nuevos callbacks. Como parámetros, recibe los propios para configurar el entrenamiento (numero de ciclos, verbosidad...), así como la instancia del modelo que queremos entrenar.
-\item \lstinline{ProgbarLogger()}: Callback que muestra métricas en la salida estándar (stdout). TODO: Ampliar un poco
+\item \lstinline{ProgbarLogger()}: Callback que muestra métricas en la salida estándar (stdout).
 \item \lstinline{History()}: Callback aplicado en cada modelo Keras, que almacena eventos en un objeto de tipo \lstinline{History}.
 \item \lstinline{ModelCheckpoint(...)}: Almacena el modelo después de cada época. Como argumentos recibe el fichero donde dejar la información, la cantidad de de elementos a monitorizar, el modo de verbosidad, un booleano para decidir si sobreescribir o no el mejor modelo, el modo, y otro booleano para guardar solo pesos o información de todo el modelo.
 \end{itemize}
 
-\section{Datasets}
+\lsection{Datasets}
 Keras cuenta con una serie de dataset ya predefinidos y listos para realizar nuestras pruebas:
 \begin{itemize}
 \item \textbf{CIFAR10}: dataset que cuenta con 50.000 imágenes a color de entrenamiento, a clasificar en 10 categorías, y 10.000 imágenes para testear los resultados. También existe una versión con 100 categorías (\textbf{CIFAR100}).
@@ -165,7 +161,7 @@ Keras cuenta con una serie de dataset ya predefinidos y listos para realizar nue
 \item \textbf{MNIST}: dataset que contiene 60.000 imágenes en blanco y negro de 10 tipos de dígitos, y 10.000 imágenes para testear los modelos.
 \end{itemize}
 
-\section{Preprocesado}
+\lsection{Preprocesado}
 Keras cuenta con una serie de funciones para procesar tanto modelos secuenciales, como texto, como imágenes. Las más importantes son:
 \begin{itemize}
 \item Modelos secuenciales: \lstinline{pad_sequences(...)} transforma una lista en un array 2D.
@@ -173,12 +169,12 @@ Keras cuenta con una serie de funciones para procesar tanto modelos secuenciales
 \item Imágenes: \lstinline{ImageDataGenerator(...)} define la configuración para la preparación y el aumento de una imágen, a la hora de ser procesada.
 \end{itemize}
 
-\section{Visualización}
+\lsection{Visualización}
 El módulo \lstinline{keras.utils.visualize_util} proporciona funciones útiles para pintar gráficamente un modelo (acompañado del uso de \lstinline{graphviz}). La siguiente función mostraría una gráfica del modelo y lo guardaría en un fichero .png.\\
 \lstinline{plot(model, to_file='model.png')}
-\section{Wrapper para Scikit-Learn API}
-TODO: amplía un poco esto. La integración con sklearn es una de las cosas nuevas en keras y de las más útiles. Igual se puede hacer algo en esta línea en algún ejemplo de la secc 4\\
-Keras presenta compatibilidad con Scikit-Learn API. Se pueden usar modelos Keras secuenciales como parte del ciclo de trabajo de Scikit-Learn mediante sus wrappers. Hay 2 disponibles:
+\lsection{Wrapper para Scikit-Learn API}
+Keras presenta compatibilidad con Scikit-Learn API. Esta conocida librería open source proporciona herramientas para la mineria y analisis de datos. Trabaja junto con las librerias SciPy y NumPy de Python, y permite resolver problemas de regresión, clasificación y clustering.\\
+Se pueden usar modelos Keras secuenciales como parte del ciclo de trabajo de Scikit-Learn mediante sus wrappers. Existen dos interfaces disponibles:
 \begin{itemize}[noitemsep]
 \item \lstinline{KerasClassifier(build_fn=None, **sk_params)} : Implementa una interfaz de clasificación.
 \item \lstinline{KerasRegressor(build_fn=None, **sk_params)} : Implementa una interfaz de regresión.
